@@ -30,7 +30,7 @@ Kada zadatak završite, označite ga (`[x]`) i dodajte poveznicu na PR. Uz svako
 - [ ] Potvrda statusa studenta studentskom e-mail domenom (bez potvrde nema generiranja kupona)
 - [ ] Uređivanje profila i deaktivacija vlastitog računa
 - [x] Zajednički layout i navigacija
-- [ ] Postavljanje na Vercel i `.env.example` s popisom varijabli okruženja (bez stvarnih ključeva)
+- [x] Postavljanje na Vercel i `.env.example` s popisom varijabli okruženja (bez stvarnih ključeva)
 - [ ] CI: zamijeniti `echo` u `.github/workflows/ci.yml` stvarnim lintom, buildom i testovima
 - [ ] Ažurirati README (Brzi početak, Postavljanje) i [6. Postavljanje](6-Postavljanje-instalacija-i-konfiguracija.md)
 

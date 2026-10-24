@@ -60,7 +60,7 @@ npm run dev
 
 **Adresa:** http://localhost:3000
 
-**Konfiguracija:** Trenutačno nije potrebna; aplikacija koristi lažne podatke iz `src/lib/mock-data.ts` dok se ne poveže sa Supabaseom.
+**Konfiguracija:** Kopirajte `.env.example` u `.env.local` i upišite URL i javni (publishable) ključ Supabase projekta; potrebni su za prijavu Google računom. Ponude i partneri još se čitaju iz lažnih podataka u `src/lib/mock-data.ts`.
 
 [Dodajte kratak korak provjere, primjerice koja se stranica treba otvoriti ili koja naredba pokreće osnovnu provjeru.] Za detaljno postavljanje pogledajte [projektnu dokumentaciju](docs/Home.md).
 
