@@ -6,28 +6,25 @@ komentare s uputama i ogledne <details> blokove te prije predaje izbrišite ovu
 napomenu. Nemojte kopirati nastavni primjer kao rezultat svojeg projekta.
 -->
 
-# [Naziv aplikacije]
+# UniDeal
 
-<details>
-<summary>Zašto je ovaj odjeljak važan</summary>
-
-Započnite README nazivom svojeg projekta i sažetim opisom njegove svrhe. Naziv projekta ne mora sam po sebi objašnjavati čemu projekt služi, ali opis uz naziv treba novom čitatelju omogućiti da brzo razumije što aplikacija radi.
-
-</details>
-
-[U jednoj rečenici navedite što aplikacija omogućuje svojim korisnicima.]
+UniDeal je web platforma na kojoj studenti na jednom mjestu pronalaze i koriste popuste i pogodnosti partnera (trgovina, kafića, restorana, teretana, servisa i kulturnih ustanova).
 
 **Projekt na kolegiju:** Ovu je aplikaciju razvio studentski tim u sklopu kolegija [Programsko inženjerstvo](https://www.fer.unizg.hr/predmet/proinz) na Fakultetu elektrotehnike i računarstva Sveučilišta u Zagrebu (FER).
 
 ## Opis aplikacije
 
-[U dvije ili tri rečenice objasnite problem, ciljane korisnike i glavnu korist svoje aplikacije. Trenutačne funkcionalnosti navedite odvojeno od planiranih; opišite stvarni opseg umjesto obećanih mogućnosti.]
+Studentske ponude danas su razbacane po web-stranicama, društvenim mrežama i letcima, često su zastarjele, a partneri nemaju jednostavan način da dopru do studenata. UniDeal okuplja aktualne ponude na jednom mjestu: studenti ih besplatno pretražuju, vide na karti i koriste putem kupona s QR kodom, a partneri uz mjesečnu ili godišnju pretplatu objavljuju ponude i prate njihovu učinkovitost. Administrator odobrava partnere i moderira sadržaj platforme.
 
-**Ključne funkcionalnosti**
+Aplikacija je u izradi; sve funkcionalnosti u nastavku su **planirane**. Stanje izrade prati se u [popisu zadataka](docs/TODO.md).
 
-- [Reprezentativna funkcionalnost koju korisnici mogu isprobati]
-- [Druga reprezentativna funkcionalnost]
-- [Po želji dodatna funkcionalnost; nemojte kopirati cijeli popis zahtjeva]
+**Ključne funkcionalnosti (planirano)**
+
+- Prijava Google računom (OAuth 2.0) i potvrda statusa studenta studentskom e-mail adresom
+- Pretraga ponuda prema kategoriji, gradu, visini popusta i roku trajanja te prikaz partnera na interaktivnoj karti
+- Digitalni kupon s jedinstvenim kodom i QR kodom koji partner potvrđuje pri korištenju
+- Ocjene i recenzije koje može ostaviti samo student koji je ponudu stvarno iskoristio
+- Pretplata partnera (Stripe) i statistika pregleda i iskorištenja ponuda
 
 Za potpuni opseg, zahtjeve, oblikovanje i dokaze ispitivanja pogledajte [docs](docs/Home.md).
 
@@ -69,34 +66,35 @@ cd [repository directory]
 
 ## Tehnologije
 
-Navedite nekoliko tehnologija i vanjskih usluga koje bitno određuju kako vaša aplikacija radi. Za svaku navedite njezinu konkretnu ulogu i jedan razlog ili ograničenje važno za projekt. Alat za razvoj ili ispitivanje uključite samo ako je njegova uloga važna za razumijevanje načina na koji je projekt izrađen ili provjeren. Nemojte prepisivati popis ovisnosti (engl. dependencies), statistiku programskih jezika ni popis razvojnih okruženja i komunikacijskih alata. Tablicu provjerite prema stvarnom repozitoriju i pokrenutoj aplikaciji; potrebne verzije i konfiguraciju dokumentirajte u vodiču za instalaciju.
+Dogovoreni tehnološki skup (planirano; tablicu ažurirati prema stvarnom repozitoriju kada aplikacija bude postavljena):
 
 | Tehnologija ili alat | Uloga u ovom projektu | Razlog uporabe ili važno ograničenje |
 | --- | --- | --- |
-| [Naziv] | [Što radi u ovoj aplikaciji] | [Razlog ili ograničenje specifično za projekt] |
-
-<details>
-<summary><strong>Primjer: objašnjenje ključnih tehnoloških odluka</strong></summary>
-
-**Primjer — CrisisMap:**
-
-| Tehnologija ili alat | Uloga u ovom projektu | Razlog uporabe ili važno ograničenje |
-| --- | --- | --- |
-| React | Prikazuje obrazac za prijavu i kartu kriznih događaja u pregledniku. | Karta i poslane prijave mogu se ažurirati bez ponovnog učitavanja cijele stranice. |
-| PostgreSQL | Pohranjuje prijave, lokacije i njihove odnose. | Zapisi o prijavama moraju ostati povezani s autorima i lokacijama; promjene sheme zahtijevaju migracije baze podataka (engl. database migrations). |
-| Usluga kartografskih pločica (engl. map tile service) | Omogućuje prikaz karte u pregledniku. | Karta ovisi o vanjskoj usluzi; aplikacija mora imati definirano ponašanje i kada kartografske pločice nisu dostupne. |
-
-**Analiza primjera:** Svaki redak opisuje ulogu ili posljedicu konkretne tehnologije u ovoj aplikaciji. Verzije paketa pripadaju datotekama s ovisnostima projekta; verzije izvršnog okruženja i konfiguracija važna za postavljanje pripadaju vodiču za instalaciju. Važne kompromise u oblikovanju (engl. design trade-offs) objasnite na stranici arhitekture u direktoriju `docs/` umjesto da ovdje ponavljate cijeli zapis odluke. Navodite samo usluge koje vaš tim stvarno integrira.
-
-</details>
+| Next.js (TypeScript) + Tailwind CSS | Korisničko sučelje i poslužiteljska logika aplikacije | Klijentski i poslužiteljski dio u jednom projektu koji se izravno postavlja na Vercel |
+| Supabase Postgres | Pohrana korisnika, partnera, ponuda, kupona i recenzija | Promjene sheme vode se migracijama preko Supabase CLI-ja |
+| Supabase Auth (Google OAuth 2.0) | Registracija i prijava studenata i partnera | Status studenta potvrđuje se samo studentskom e-mail domenom |
+| Row Level Security (RLS) | Ograničavanje pristupa podacima prema ulozi (student, partner, administrator) | Pravila se provode u bazi, pa ih treba ispitati za svaku ulogu |
+| Supabase Storage | Pohrana logotipa partnera i slika ponuda | — |
+| pg_cron ili Supabase Edge Function | Automatski istek ponuda | Istekle ponude moraju nestati iz pretrage bez ručne radnje |
+| Stripe (test mode) | Naplata mjesečne i godišnje pretplate partnera | Status pretplate ažurira se putem webhooka; bez aktivne pretplate ponude nisu javne |
+| Google Maps JavaScript API | Karta partnera i ponuda, geokodiranje adrese, ponude u blizini | Vanjska usluga s API ključem i ograničenjem korištenja |
+| Resend | Slanje e-mail obavijesti | Obavijesti o odobrenju partnera, novim ponudama i ponudama koje uskoro istječu |
+| Vercel | Javno postavljanje aplikacije | — |
 
 <a id="team-members"></a>
 ## Članovi tima
 
 | Član | Glavna uloga ili doprinos |
 | --- | --- |
-| [Ime] | [Uloga ili doprinos] |
-| [Ime] | [Uloga ili doprinos] |
+| [Ime] | 1. Temelji i autentifikacija |
+| [Ime] | 2. Partneri i obavijesti |
+| [Ime] | 3. Ponude |
+| [Ime] | 4. Pretraga, karta i favoriti |
+| [Ime] | 5. Kuponi, QR i recenzije |
+| [Ime] | 6. Plaćanje i pretplate |
+| [Ime] | 7. Admin i izvještaji |
+
+Detaljan opis zadataka po području nalazi se u [popisu zadataka](docs/TODO.md).
 
 Uloge se tijekom projekta mogu mijenjati. Repozitorij i dogovoreni alat za praćenje zadataka (engl. task tracker) služe kao dodatni dokazi timskog rada.
 

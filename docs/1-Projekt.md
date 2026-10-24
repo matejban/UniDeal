@@ -6,7 +6,9 @@
 
 **Cilj:** Jasno razgraničiti problem koji se rješava od predloženog rješenja i stvarne koristi za korisnika.
 
-[Problem, cilj i očekivana korist vlastitim riječima tima.]
+Studenti imaju pravo na brojne popuste i pogodnosti, ali ih je teško pronaći: ponude su razbacane po web-stranicama, društvenim mrežama i letcima i često su zastarjele. Partneri (trgovine, kafići, restorani, teretane, servisi, kulturne ustanove) nemaju jednostavan način da dopru do studentske populacije ni da saznaju koliko se njihove ponude stvarno koriste.
+
+Cilj projekta je web platforma UniDeal koja povezuje studente i partnere na jednom mjestu. Studenti besplatno pretražuju aktualne ponude, vide ih na karti i koriste ih putem digitalnog kupona s QR kodom koji partner potvrđuje. Partneri uz mjesečnu ili godišnju pretplatu objavljuju ponude i vide broj pregleda i iskorištenja. Očekivana korist je pregled ponuda na jednom mjestu, zabilježeno stvarno korištenje popusta i recenzije koje mogu ostaviti samo studenti koji su ponudu iskoristili.
 
 <details>
 <summary><strong>Očekivane koristi i potkrepljujući dokazi</strong></summary>
@@ -23,7 +25,9 @@
 
 | Skupina korisnika ili dionika | Potreba ili interes relevantan za ovaj projekt |
 | --- | --- |
-|  |  |
+| Student | Pronaći aktualne popuste prema kategoriji, gradu i blizini, spremiti favorite, generirati kupon i ocijeniti iskorištenu ponudu. Platformu koristi besplatno; kupone može generirati tek kada potvrdi status studenta studentskom e-mail adresom. |
+| Partner | Objaviti ponude, potvrditi korištenje kupona (kod ili QR) i pratiti broj pregleda, iskorištenja i prosječnu ocjenu. Plaća mjesečnu ili godišnju pretplatu; profil postaje javan nakon odobrenja administratora i aktivacije pretplate. |
+| Administrator | Odobravati partnere, upravljati korisnicima, kategorijama i sadržajem, uklanjati neprimjerene ponude i recenzije, određivati cijenu pretplate te pregledavati i izvoziti statistiku (CSV ili PDF). |
 
 <details>
 <summary><strong>Korisnici, dionici i neobavezna persona</strong></summary>
@@ -46,9 +50,9 @@ Riječ je o dvjema različitim potrebama, a ne o dvjema izmišljenim biografijam
 
 **Cilj:** Jasno definirati granice sustava — što je obuhvaćeno odobrenim zadatkom, što je svjesno izostavljeno ili odgođeno te o kojim vanjskim uslugama sustav izravno ovisi.
 
-**Uključeno:** [Glavne mogućnosti.]  
-**Izvan opsega ili odgođeno:** [Navedite funkcionalnosti koje su namjerno izostavljene ili prebačene u buduće verzije, uz kratko inženjersko ili vremensko obrazloženje.] 
-**Vanjske ovisnosti:** [Navedite nužne vanjske usluge, API-je, baze podataka ili izvore informacija bez kojih sustav ne može funkcionirati (npr. Google Maps, platni pristupnici, vanjski pružatelj identiteta (OAuth)).]
+**Uključeno:** Prijava Google računom i odabir uloge (student, partner, administrator); potvrda statusa studenta studentskom e-mail adresom; profili partnera i ponude sa statusima nacrt, aktivna i istekla; pretraga, filtriranje i prikaz ponuda na karti; favoriti; kuponi s kodom i QR kodom te partnerska potvrda korištenja; ocjene i recenzije nakon iskorištenja; pretplata partnera; e-mail obavijesti; administratorski panel, statistika i izvoz izvještaja.  
+**Izvan opsega ili odgođeno:** [Tim treba dogovoriti, npr. plaćanje samih popusta kroz platformu ili mobilnu aplikaciju.] 
+**Vanjske ovisnosti:** Google OAuth 2.0 (prijava), Google Maps API (karta i geokodiranje), Stripe (naplata pretplate), servis za slanje e-maila (Resend), Supabase (baza, autentifikacija i pohrana datoteka) i Vercel (smještaj aplikacije).
 
 <details>
 <summary><strong>Primjer početne granice projekta</strong></summary>

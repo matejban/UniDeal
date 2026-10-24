@@ -1,7 +1,7 @@
-# [Naziv aplikacije] — Projektna dokumentacija
+# UniDeal — Projektna dokumentacija
 
 **Kolegij:** [Programsko inženjerstvo](https://www.fer.unizg.hr/predmet/proinz), Fakultet elektrotehnike i računarstva Sveučilišta u Zagrebu  
-**Akademska godina:** [20XX./20XX.]  
+**Akademska godina:** 2026./2027.  
 **Tim:** [Oznaka i naziv tima]  
 **Nastavnik:** Vlado Sruk  
 **Asistent / demonstrator:** [Ime i uloga u ovom izvođenju kolegija]
@@ -10,7 +10,7 @@
 
 **Cilj:** Omogućiti čitatelju koji prvi put vidi projekt da u dvije ili tri rečenice prepozna aplikaciju, njezine ciljane korisnike i glavnu svrhu.
 
-[Opis projekta.]
+UniDeal je web platforma za studentske pogodnosti i popuste. Studenti na jednom mjestu besplatno pretražuju ponude partnera, vide ih na karti i koriste ih putem kupona s QR kodom, a partneri uz pretplatu objavljuju ponude i prate koliko se koriste. Detaljan opis nalazi se u [1. Opseg projekta](1-Projekt.md), a otvoreni zadaci u [popisu zadataka](TODO.md).
 
 <details>
 <summary><strong>Sažet pregled projekta</strong></summary>
@@ -51,7 +51,7 @@ Dokumentacija se kontinuirano ažurira kako se aplikacija razvija.
 ## Organizacija projekta i razvojni proces
 
 **Način rada:** [Stvarni način rada i trajanje iteracije, ako je relevantno.]  
-**Praćenje trenutačnih zadataka i nedostataka:** [Poveznica na GitHub Issues ili stvarno korištenu ploču zadataka.]
+**Praćenje trenutačnih zadataka i nedostataka:** [Popis zadataka](TODO.md)
 
 <details>
 <summary><strong>Opis načina rada tima</strong></summary>
