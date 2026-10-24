@@ -24,6 +24,7 @@ Kada zadatak završite, označite ga (`[x]`) i dodajte poveznicu na PR. Uz svako
 - [ ] Izraditi Supabase projekt i povezati ga sa Supabase CLI-jem
 - [ ] Shema baze i prve migracije (korisnici, partneri, kategorije, ponude, kuponi, recenzije, favoriti, pretplate)
 - [ ] RLS pravila za uloge student, partner i administrator
+- [ ] Supabase implementacije sučelja `OfferRepository` i `PartnerRepository` (`src/repositories/`) i njihovo uključivanje u `src/services/index.ts` umjesto lažnih repozitorija
 - [ ] Prijava Google računom (Supabase Auth, OAuth 2.0)
 - [ ] Odabir uloge i dopuna podataka nakon prve prijave
 - [ ] Potvrda statusa studenta studentskom e-mail domenom (bez potvrde nema generiranja kupona)

@@ -1,8 +1,7 @@
 import Link from "next/link";
-import { getPartner, type Offer } from "@/lib/mock-data";
+import type { OfferListing } from "@/services/OfferService";
 
-export default function OfferCard({ offer }: { offer: Offer }) {
-  const partner = getPartner(offer.partnerId);
+export default function OfferCard({ listing: { offer, partner } }: { listing: OfferListing }) {
   return (
     <Link
       href={`/ponude/${offer.id}`}
@@ -11,11 +10,11 @@ export default function OfferCard({ offer }: { offer: Offer }) {
       <div className="flex items-start justify-between gap-2">
         <h3 className="font-semibold">{offer.title}</h3>
         <span className="rounded bg-blue-100 px-2 py-0.5 text-sm font-semibold text-blue-700">
-          −{offer.discount}
+          {offer.discountLabel}
         </span>
       </div>
       <p className="mt-1 text-sm text-gray-600">
-        {partner?.name} · {partner?.city}
+        {partner.name} · {partner.city}
       </p>
       <p className="mt-2 text-xs text-gray-500">
         {offer.category} · vrijedi do {offer.validUntil}

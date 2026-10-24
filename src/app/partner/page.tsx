@@ -1,10 +1,10 @@
-import { offers } from "@/lib/mock-data";
+import { offerService } from "@/services";
 
 // Dok nema prijave, prikazuju se ponude jednog lažnog partnera.
 const partnerId = "kafic-kampus";
 
-export default function PartnerDashboardPage() {
-  const myOffers = offers.filter((o) => o.partnerId === partnerId);
+export default async function PartnerDashboardPage() {
+  const myOffers = await offerService.getPartnerOffers(partnerId);
 
   return (
     <div>

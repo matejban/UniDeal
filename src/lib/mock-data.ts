@@ -1,31 +1,9 @@
 // Lažni podaci dok shema baze (Supabase) ne bude gotova.
+// Čitaju ih samo lažni repozitoriji u src/repositories/mock/.
 
-export type Partner = {
-  id: string;
-  name: string;
-  category: string;
-  city: string;
-  address: string;
-  phone: string;
-  hours: string;
-  description: string;
-};
+import type { OfferStatus } from "@/domain/Offer";
 
-export type Offer = {
-  id: string;
-  partnerId: string;
-  title: string;
-  description: string;
-  category: string;
-  discount: string;
-  validUntil: string;
-  conditions: string;
-  status: "nacrt" | "aktivna" | "istekla";
-};
-
-export const categories = ["Hrana", "Zdravlje i sport", "Obrazovanje", "Zabava"];
-
-export const partners: Partner[] = [
+export const partners = [
   {
     id: "kafic-kampus",
     name: "Kafić Kampus",
@@ -58,7 +36,19 @@ export const partners: Partner[] = [
   },
 ];
 
-export const offers: Offer[] = [
+type OfferRecord = {
+  id: string;
+  partnerId: string;
+  title: string;
+  description: string;
+  category: string;
+  discount: string;
+  validUntil: string;
+  conditions: string;
+  status: OfferStatus;
+};
+
+export const offers: OfferRecord[] = [
   {
     id: "1",
     partnerId: "kafic-kampus",
@@ -104,9 +94,3 @@ export const offers: Offer[] = [
     status: "nacrt",
   },
 ];
-
-export const activeOffers = offers.filter((o) => o.status === "aktivna");
-
-export function getPartner(id: string) {
-  return partners.find((p) => p.id === id);
-}

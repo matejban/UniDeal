@@ -1,8 +1,10 @@
 import Link from "next/link";
 import OfferCard from "@/components/OfferCard";
-import { activeOffers } from "@/lib/mock-data";
+import { offerService } from "@/services";
 
-export default function Home() {
+export default async function Home() {
+  const listings = await offerService.search();
+
   return (
     <div className="space-y-10">
       <section>
@@ -24,8 +26,8 @@ export default function Home() {
       <section>
         <h2 className="mb-4 text-xl font-semibold">Aktualne ponude</h2>
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {activeOffers.map((o) => (
-            <OfferCard key={o.id} offer={o} />
+          {listings.map((l) => (
+            <OfferCard key={l.offer.id} listing={l} />
           ))}
         </div>
       </section>

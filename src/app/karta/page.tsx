@@ -1,7 +1,9 @@
 import Link from "next/link";
-import { partners } from "@/lib/mock-data";
+import { partnerService } from "@/services";
 
-export default function MapPage() {
+export default async function MapPage() {
+  const partners = await partnerService.getAll();
+
   return (
     <div>
       <h1 className="text-2xl font-bold">Karta partnera</h1>

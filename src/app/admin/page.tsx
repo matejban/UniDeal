@@ -1,6 +1,7 @@
-import { activeOffers, partners } from "@/lib/mock-data";
+import { offerService, partnerService } from "@/services";
 
-export default function AdminPage() {
+export default async function AdminPage() {
+  const [partners, activeOffers] = await Promise.all([partnerService.getAll(), offerService.search()]);
   const stats = [
     { label: "Partneri", value: partners.length },
     { label: "Aktivne ponude", value: activeOffers.length },

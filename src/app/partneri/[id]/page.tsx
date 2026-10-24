@@ -1,12 +1,12 @@
 import { notFound } from "next/navigation";
 import OfferCard from "@/components/OfferCard";
-import { activeOffers, getPartner } from "@/lib/mock-data";
+import { partnerService } from "@/services";
 
 export default async function PartnerProfilePage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
-  const partner = getPartner(id);
-  if (!partner) notFound();
-  const partnerOffers = activeOffers.filter((o) => o.partnerId === partner.id);
+  const profile = await partnerService.getProfile(id);
+  if (!profile) notFound();
+  const { partner, listings } = profile;
 
   return (
     <div>
@@ -20,8 +20,8 @@ export default async function PartnerProfilePage({ params }: { params: Promise<{
       </dl>
       <h2 className="mb-4 mt-8 text-xl font-semibold">Aktivne ponude</h2>
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-        {partnerOffers.map((o) => (
-          <OfferCard key={o.id} offer={o} />
+        {listings.map((l) => (
+          <OfferCard key={l.offer.id} listing={l} />
         ))}
       </div>
     </div>

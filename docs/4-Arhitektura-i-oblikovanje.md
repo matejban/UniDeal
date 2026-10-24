@@ -106,9 +106,16 @@ Započnite crtanjem granice oko predloženog sustava. Unutar nje prepoznajte dij
 
 **Cilj:** Prije implementacije reprezentativnog dijela sustava modelirati i prikazati razrede ili sučelja potrebna za dodjelu odgovornosti, operacija i veza. Oblikovanje ažurirajte kada se te odluke promijene.
 
-**Dijagram razreda:** [Ugradite čitljiv UML dijagram razreda za reprezentativni dio oblikovanja.]  
-**PlantUML izvor:** [Poveznica na odgovarajuću `.puml` datoteku.]  
-**Referenca na kod pri završnom pregledu:** [Poveznica na odgovarajuću implementaciju.]
+**Dijagram razreda:**
+
+![Dijagram razreda za ponude i partnere sustava UniDeal](./assets/diagrams/4-3-unideal-domain-CD.svg)
+
+**Slika 4.3. Dijagram razreda za ponude i partnere sustava UniDeal**
+
+`Offer` sam određuje je li ponuda aktivna (`isActive()`), pa servisi ne ponavljaju to pravilo. `OfferService` i `PartnerService` koordiniraju dohvat podataka za stranice, a sučelja `OfferRepository` i `PartnerRepository` opisuju potrebne operacije trajne pohrane. Trenutačno ih implementiraju lažni repozitoriji; kada se poveže Supabase, dodaju se nove implementacije istih sučelja bez promjene servisa i stranica.
+
+**PlantUML izvor:** [4-3-unideal-domain-CD.puml](./puml/4-3-unideal-domain-CD.puml)  
+**Referenca na kod pri završnom pregledu:** [`src/domain`](../src/domain), [`src/services`](../src/services), [`src/repositories`](../src/repositories)
 
 <details>
 <summary><strong>Oblikovanje odgovornosti prijave i dopuštenih promjena</strong></summary>
@@ -234,6 +241,7 @@ ADR pišite samo za odluku čije će obrazloženje ostati važno i nakon promjen
 | --- | --- | --- | --- |
 | [Npr. Sigurnost] | [Npr. Autorizacija korisnika] | [Npr. Ovlasti se provjeravaju na poslužiteljskoj strani za svaki zaštićeni zahtjev; skrivanje elemenata korisničkog sučelja nije dovoljna zaštita.] | [Npr. Middleware za autorizaciju / zaštita API usmjernika.] |
 | [Npr. Validacija podataka] | [Npr. Provjera ulaznih podataka] | [Npr. Geoprostorni podaci, uključujući koordinate, provjeravaju se prije pohrane.] | [Npr. Sloj za obradu zahtjeva / odgovarajuća usluga.] |
+| Upravljanje ovisnostima | Injektiranje ovisnosti | Servisi ne stvaraju sami konkretne repozitorije, nego ih primaju kroz konstruktor; stranice podatke dohvaćaju samo preko servisa. | `OfferService` i `PartnerService` primaju `OfferRepository` i `PartnerRepository`; implementacije se biraju na jednom mjestu, u `src/services/index.ts`. |
 
 <details>
 <summary><strong>Primjer zajedničkih pravila i mehanizama</strong></summary>

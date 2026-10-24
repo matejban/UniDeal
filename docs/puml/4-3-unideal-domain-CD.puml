@@ -1,0 +1,92 @@
+' ==============================================================================
+' 4-3-unideal-domain-CD.puml
+'
+' Svrha:    Prikazuje domenske razrede Offer i Partner, servise OfferService i
+'           PartnerService te sučelja repozitorija kojima je trajna pohrana
+'           apstrahirana. Servisi primaju repozitorije kroz konstruktor.
+' Kod:      src/domain, src/services, src/repositories
+'
+' Diagram level: Structural / Domain Design
+' Diagram type:  Class Diagram
+' ==============================================================================
+
+@startuml
+!pragma layout smetana
+title UniDeal – domenski model ponuda i partnera
+
+skinparam shadowing false
+skinparam defaultFontName Arial
+skinparam packageStyle rectangle
+skinparam ArrowColor #212529
+
+skinparam class {
+    BackgroundColor #E7F1FF
+    BorderColor #0D6EFD
+}
+
+package "Aplikacijski sloj" {
+    class OfferService {
+        +search(filter: OfferFilter): OfferListing[]
+        +getActiveOffer(id: String): OfferListing
+        +getPartnerOffers(partnerId: String): Offer[]
+    }
+    class PartnerService {
+        +getAll(): Partner[]
+        +getCities(): String[]
+        +getProfile(id: String): Profile
+    }
+}
+
+package "Domenski sloj" {
+    enum OfferStatus {
+        nacrt
+        aktivna
+        istekla
+    }
+    class Offer {
+        +id: String
+        +title: String
+        +category: String
+        +discount: String
+        +validUntil: String
+        +conditions: String
+        +status: OfferStatus
+        +isActive(): Boolean
+        +discountLabel: String
+    }
+    class Partner {
+        +id: String
+        +name: String
+        +category: String
+        +city: String
+        +address: String
+        +hours: String
+    }
+    interface OfferRepository {
+        +findAll(): Offer[]
+        +findById(id: String): Offer
+        +findByPartner(partnerId: String): Offer[]
+    }
+    interface PartnerRepository {
+        +findAll(): Partner[]
+        +findById(id: String): Partner
+    }
+}
+
+package "Infrastruktura" {
+    class MockOfferRepository
+    class MockPartnerRepository
+}
+
+Partner "1" -- "0..*" Offer : objavljuje >
+Offer --> OfferStatus
+
+OfferService --> OfferRepository
+OfferService --> PartnerRepository
+PartnerService --> PartnerRepository
+PartnerService --> OfferRepository
+
+MockOfferRepository ..|> OfferRepository
+MockPartnerRepository ..|> PartnerRepository
+
+@enduml
