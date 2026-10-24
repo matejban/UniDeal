@@ -76,7 +76,7 @@ Ovaj pregled zadržite na razini opsega: navedite glavnu mogućnost i njezinu gr
 
 **Cilj:** Objasniti kako korisnici trenutačno rješavaju problem i koja preostala potreba opravdava odobreni projekt.
 
-[U dvije do četiri rečenice opišite jedan postojeći postupak ili relevantno rješenje, što ono već omogućuje i koja konkretna potreba motivira ovaj projekt. Činjenične tvrdnje o vanjskim proizvodima ili praksama potkrijepite izvorom.]
+Student koji danas traži popust obično pretražuje web-stranice i profile pojedinih partnera na društvenim mrežama ili se oslanja na preporuke kolega, a postojeći popisi studentskih pogodnosti uglavnom su statični popisi ponuda bez karte, bez provjere korištenja i bez povratne informacije o kvaliteti ponude. Partner pritom ne zna koliko je studenata ponudu vidjelo ili iskoristilo. UniDeal objedinjuje aktualne ponude s prikazom na karti, bilježi stvarno korištenje kuponom koji partner potvrđuje i dopušta recenzije samo studentima koji su ponudu iskoristili.
 
 <details>
 <summary><strong>Postojeći pristupi i opravdanost projekta</strong></summary>
