@@ -14,6 +14,10 @@ export async function GET(request: NextRequest) {
     const supabase = await createClient();
     const { error } = await supabase.auth.exchangeCodeForSession(code);
     if (!error) return NextResponse.redirect(target);
+    console.error("Prijava: zamjena koda nije uspjela:", error.message);
+  } else {
+    // Supabase šalje razlog neuspjeha u parametrima error i error_description.
+    console.error("Prijava: povratak bez koda:", searchParams.get("error"), searchParams.get("error_description"));
   }
 
   return NextResponse.redirect(new URL("/prijava?greska=1", origin));
