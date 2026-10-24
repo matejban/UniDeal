@@ -48,13 +48,15 @@ export default function GoogleLoginButton({ next }: { next: string }) {
       size: "large",
       text: "signin_with",
       locale: "hr",
+      width: 280,
     });
   }
 
   return (
     <>
       <Script src="https://accounts.google.com/gsi/client" onReady={() => void initGoogle()} />
-      <div ref={buttonRef} className="mt-6 flex justify-center" />
+      {/* Stalna visina: Google pri učitavanju nakratko prikazuje privremeni i pravi gumb jedan ispod drugog. */}
+      <div ref={buttonRef} className="mt-6 flex h-11 justify-center overflow-hidden" />
       {failed && <p className="mt-4 text-sm text-red-600">Prijava nije uspjela. Pokušaj ponovno.</p>}
     </>
   );
