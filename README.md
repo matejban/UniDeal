@@ -49,18 +49,18 @@ Za Iteraciju 1 i Završni pregled navedite konkretne podatke. Provjerite vodi li
 
 <!-- Obavezno od Demo 1 nadalje. Zamijenite mjesta za unos naredbama koje je drugi član tima uspješno provjerio nakon čistog kloniranja repozitorija. Detaljne upute za administraciju držite u projektnoj dokumentaciji u direktoriju docs/. -->
 
-**Preduvjeti:** [Navedite potrebno izvršno okruženje (engl. runtime) i verzija, upravitelj paketa (engl. package manager), baza podataka ili vanjska usluga ako je nužna.]
+**Preduvjeti:** Node.js 20.9 ili noviji i npm.
 
 ```bash
-git clone [repository URL]
-cd [repository directory]
-[install dependencies]
-[run the application]
+git clone https://github.com/matejban/UniDeal.git
+cd UniDeal
+npm install
+npm run dev
 ```
 
-**Adresa:** [Stvarna adresa koju aplikacija ispiše nakon pokretanja.]
+**Adresa:** http://localhost:3000
 
-**Konfiguracija:** [Navedite potrebne varijable okruženja (engl. environment variables) ili uputite na sigurnu datoteku `.env.example`; objasnite gdje se dobivaju vrijednosti. Nikada ne stavljajte stvarne pristupne podatke u ovu datoteku, primjer konfiguracije, snimke zaslona, zapise ni zapise promjena (engl. commits).]
+**Konfiguracija:** Trenutačno nije potrebna; aplikacija koristi lažne podatke iz `src/lib/mock-data.ts` dok se ne poveže sa Supabaseom.
 
 [Dodajte kratak korak provjere, primjerice koja se stranica treba otvoriti ili koja naredba pokreće osnovnu provjeru.] Za detaljno postavljanje pogledajte [projektnu dokumentaciju](docs/Home.md).
 

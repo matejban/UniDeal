@@ -20,7 +20,7 @@ Kada zadatak završite, označite ga (`[x]`) i dodajte poveznicu na PR. Uz svako
 
 ## 1. Temelji i autentifikacija — [Ime]
 
-- [ ] Postaviti Next.js (TypeScript) + Tailwind CSS projekt umjesto praznih `frontend/` i `backend/` direktorija iz predloška
+- [x] Postaviti Next.js (TypeScript) + Tailwind CSS projekt umjesto praznih `frontend/` i `backend/` direktorija iz predloška (osnovne stranice s lažnim podacima u `src/`)
 - [ ] Izraditi Supabase projekt i povezati ga sa Supabase CLI-jem
 - [ ] Shema baze i prve migracije (korisnici, partneri, kategorije, ponude, kuponi, recenzije, favoriti, pretplate)
 - [ ] RLS pravila za uloge student, partner i administrator
@@ -28,7 +28,7 @@ Kada zadatak završite, označite ga (`[x]`) i dodajte poveznicu na PR. Uz svako
 - [ ] Odabir uloge i dopuna podataka nakon prve prijave
 - [ ] Potvrda statusa studenta studentskom e-mail domenom (bez potvrde nema generiranja kupona)
 - [ ] Uređivanje profila i deaktivacija vlastitog računa
-- [ ] Zajednički layout i navigacija
+- [x] Zajednički layout i navigacija
 - [ ] Postavljanje na Vercel i `.env.example` s popisom varijabli okruženja (bez stvarnih ključeva)
 - [ ] CI: zamijeniti `echo` u `.github/workflows/ci.yml` stvarnim lintom, buildom i testovima
 - [ ] Ažurirati README (Brzi početak, Postavljanje) i [6. Postavljanje](6-Postavljanje-instalacija-i-konfiguracija.md)

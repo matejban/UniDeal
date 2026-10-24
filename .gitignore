@@ -83,3 +83,6 @@ out
 
 # pnpm
 .pnpm-store
+
+# Next.js generated types
+next-env.d.ts
