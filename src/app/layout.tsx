@@ -33,7 +33,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
               </Link>
             ))}
             {user ? (
-              <form action="/auth/signout" method="post" className="ml-auto flex items-center gap-3">
+              <form action="/odjava" method="post" className="ml-auto flex items-center gap-3">
                 <span className="text-sm text-gray-600">{user.email}</span>
                 <button className="rounded border border-gray-300 px-3 py-1.5 text-sm hover:border-blue-700">
                   Odjava

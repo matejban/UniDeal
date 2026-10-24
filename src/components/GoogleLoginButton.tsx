@@ -14,6 +14,7 @@ async function generateNonce() {
 
 // Googleov gumb (Google Identity Services) na samoj stranici, pa Google prikazuje adresu
 // aplikacije umjesto Supabaseove. Dobiveni ID token Supabase pretvara u sesiju.
+// `next` je već provjerena putanja unutar aplikacije (safeRedirectPath).
 export default function GoogleLoginButton({ next }: { next: string }) {
   const buttonRef = useRef<HTMLDivElement>(null);
   const [failed, setFailed] = useState(false);
@@ -36,9 +37,8 @@ export default function GoogleLoginButton({ next }: { next: string }) {
           setFailed(true);
           return;
         }
-        // Preusmjeravanje samo unutar aplikacije; puno učitavanje osvježava navigaciju.
-        const target = new URL(next, window.location.origin);
-        window.location.assign(target.origin === window.location.origin ? target : "/");
+        // Puno učitavanje da navigacija prikaže prijavljenog korisnika.
+        window.location.assign(next);
       },
     });
 
