@@ -2,6 +2,7 @@ import type { UserRole } from "@/domain/User";
 import { requireRole } from "@/lib/auth";
 import { userService } from "@/services";
 import { setUserActive } from "./actions";
+import EmailSearch from "./EmailSearch";
 import RoleSelect from "./RoleSelect";
 
 const roles: Record<UserRole, string> = { student: "Student", partner: "Partner", admin: "Administrator" };
@@ -27,16 +28,8 @@ export default async function AdminUsersPage({
       {greska && errors[greska] && <p className="mt-4 rounded bg-red-50 p-3 text-sm text-red-700">{errors[greska]}</p>}
 
       <form className="mt-6 flex flex-wrap gap-2">
-        <input
-          name="email"
-          type="search"
-          defaultValue={email}
-          placeholder="Pretraži po e-mailu"
-          aria-label="Pretraži po e-mailu"
-          className="min-w-0 flex-1 rounded border border-gray-300 px-3 py-2"
-        />
+        <EmailSearch defaultValue={email} />
         <RoleSelect roles={roles} defaultValue={role ?? ""} />
-        <button className="rounded bg-blue-700 px-4 py-2 text-white hover:bg-blue-800">Traži</button>
       </form>
 
       <div className="mt-6 overflow-x-auto rounded-lg border border-gray-200 bg-white">
