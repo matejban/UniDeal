@@ -16,7 +16,7 @@ UniDeal je web platforma na kojoj studenti na jednom mjestu pronalaze i koriste 
 
 Studentske ponude danas su razbacane po web-stranicama, društvenim mrežama i letcima, često su zastarjele, a partneri nemaju jednostavan način da dopru do studenata. UniDeal okuplja aktualne ponude na jednom mjestu: studenti ih besplatno pretražuju, vide na karti i koriste putem kupona s QR kodom, a partneri uz mjesečnu ili godišnju pretplatu objavljuju ponude i prate njihovu učinkovitost. Administrator odobrava partnere i moderira sadržaj platforme.
 
-Aplikacija je u izradi; sve funkcionalnosti u nastavku su **planirane**. Stanje izrade prati se u [popisu zadataka](docs/TODO.md).
+Aplikacija je u izradi; sve funkcionalnosti u nastavku su **planirane**. Stanje izrade prati se u [GitHub Issues](https://github.com/matejban/UniDeal/issues).
 
 **Ključne funkcionalnosti (planirano)**
 
@@ -94,7 +94,7 @@ Dogovoreni tehnološki skup (planirano; tablicu ažurirati prema stvarnom repozi
 | [Ime] | 6. Plaćanje i pretplate |
 | [Ime] | 7. Admin i izvještaji |
 
-Detaljan opis zadataka po području nalazi se u [popisu zadataka](docs/TODO.md).
+Zadaci po području vode se u [GitHub Issues](https://github.com/matejban/UniDeal/issues), s oznakom područja (npr. `podrucje-3-ponude`).
 
 Uloge se tijekom projekta mogu mijenjati. Repozitorij i dogovoreni alat za praćenje zadataka (engl. task tracker) služe kao dodatni dokazi timskog rada.
 
