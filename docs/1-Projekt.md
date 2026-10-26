@@ -51,7 +51,7 @@ Riječ je o dvjema različitim potrebama, a ne o dvjema izmišljenim biografijam
 **Cilj:** Jasno definirati granice sustava — što je obuhvaćeno odobrenim zadatkom, što je svjesno izostavljeno ili odgođeno te o kojim vanjskim uslugama sustav izravno ovisi.
 
 **Uključeno:** Prijava Google računom i odabir uloge (student, partner, administrator); potvrda statusa studenta studentskom e-mail adresom; profili partnera i ponude sa statusima nacrt, aktivna i istekla; pretraga, filtriranje i prikaz ponuda na karti; favoriti; kuponi s kodom i QR kodom te partnerska potvrda korištenja; ocjene i recenzije nakon iskorištenja; pretplata partnera; e-mail obavijesti; administratorski panel, statistika i izvoz izvještaja.  
-**Izvan opsega ili odgođeno:** [Tim treba dogovoriti, npr. plaćanje samih popusta kroz platformu ili mobilnu aplikaciju.] 
+**Izvan opsega ili odgođeno:** Prijava putem AAI@EduHr i pouzdano razlikovanje studenata od djelatnika ustanove (vidi [7.3 Budući rad](7-Zakljucak-i-buduci-rad.md#73-budući-rad)). [Tim treba dogovoriti ostale stavke, npr. plaćanje samih popusta kroz platformu ili mobilnu aplikaciju.] 
 **Vanjske ovisnosti:** Google OAuth 2.0 (prijava), Google Maps API (karta i geokodiranje), Stripe (naplata pretplate), servis za slanje e-maila (Resend), Supabase (baza, autentifikacija i pohrana datoteka) i Vercel (smještaj aplikacije).
 
 <details>
