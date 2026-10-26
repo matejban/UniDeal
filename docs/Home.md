@@ -10,7 +10,7 @@
 
 **Cilj:** Omogućiti čitatelju koji prvi put vidi projekt da u dvije ili tri rečenice prepozna aplikaciju, njezine ciljane korisnike i glavnu svrhu.
 
-UniDeal je web platforma za studentske pogodnosti i popuste. Studenti na jednom mjestu besplatno pretražuju ponude partnera, vide ih na karti i koriste ih putem kupona s QR kodom, a partneri uz pretplatu objavljuju ponude i prate koliko se koriste. Detaljan opis nalazi se u [1. Opseg projekta](1-Projekt.md), a otvoreni zadaci u [popisu zadataka](TODO.md).
+UniDeal je web platforma za studentske pogodnosti i popuste. Studenti na jednom mjestu besplatno pretražuju ponude partnera, vide ih na karti i koriste ih putem kupona s QR kodom, a partneri uz pretplatu objavljuju ponude i prate koliko se koriste. Detaljan opis nalazi se u [1. Opseg projekta](1-Projekt.md), a otvoreni zadaci u [GitHub Issues](https://github.com/matejban/UniDeal/issues).
 
 <details>
 <summary><strong>Sažet pregled projekta</strong></summary>
@@ -51,7 +51,7 @@ Dokumentacija se kontinuirano ažurira kako se aplikacija razvija.
 ## Organizacija projekta i razvojni proces
 
 **Način rada:** [Stvarni način rada i trajanje iteracije, ako je relevantno.]  
-**Praćenje trenutačnih zadataka i nedostataka:** [Popis zadataka](TODO.md)
+**Praćenje trenutačnih zadataka i nedostataka:** [GitHub Issues](https://github.com/matejban/UniDeal/issues)
 
 <details>
 <summary><strong>Opis načina rada tima</strong></summary>
