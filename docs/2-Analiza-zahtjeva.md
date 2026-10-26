@@ -144,7 +144,7 @@ Obrasci uporabe (poglavlje 3) i ispitni slučajevi (poglavlje 5) još nisu izra�
 | F-012 | *na čekanju* (poglavlje 3) | `Offer.isActive()`; automatski istek ponuda još nije ostvaren | *na čekanju* (poglavlje 5) |
 | F-016 | *na čekanju* (poglavlje 3) | `OfferService.search()`, stranica `/ponude`; trenutačno s lažnim podacima | *na čekanju* (poglavlje 5) |
 | F-018 | *na čekanju* (poglavlje 3) | Stranica `/karta`; Google Maps još nije povezan | *na čekanju* (poglavlje 5) |
-| NF-03 | — | `src/proxy.ts` traži prijavu za `/student`, `/partner` i `/admin`; provjera uloge i RLS pravila još nisu ostvareni | *na čekanju* (poglavlje 5) |
+| NF-03 | — | `src/proxy.ts` traži prijavu za `/student`, `/partner` i `/admin`; RLS na tablicama `profiles` (korisnik čita samo svoj profil, ulogu ne može mijenjati) i `allowed_student_domains`; provjera uloge na stranicama `/partner` i `/admin` još nije ostvarena | *na čekanju* (poglavlje 5) |
 
 ------------------------------------------------------------------------
 
