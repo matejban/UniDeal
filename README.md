@@ -20,7 +20,7 @@ Aplikacija je u izradi; sve funkcionalnosti u nastavku su **planirane**. Stanje 
 
 **Ključne funkcionalnosti (planirano)**
 
-- Prijava Google računom (OAuth 2.0) i potvrda statusa studenta studentskom e-mail adresom
+- Prijava studenata računom visokog učilišta (Microsoft), čime je potvrđen status studenta, a partnera Google računom ili e-mailom
 - Pretraga ponuda prema kategoriji, gradu, visini popusta i roku trajanja te prikaz partnera na interaktivnoj karti
 - Digitalni kupon s jedinstvenim kodom i QR kodom koji partner potvrđuje pri korištenju
 - Ocjene i recenzije koje može ostaviti samo student koji je ponudu stvarno iskoristio
@@ -60,7 +60,7 @@ npm run dev
 
 **Adresa:** http://localhost:3000
 
-**Konfiguracija:** Kopirajte `.env.example` u `.env.local` i upišite URL i javni (publishable) ključ Supabase projekta te Google Client ID; potrebni su za prijavu Google računom. Ponude i partneri još se čitaju iz lažnih podataka u `src/lib/mock-data.ts`.
+**Konfiguracija:** Kopirajte `.env.example` u `.env.local` i upišite URL i javni (publishable) ključ Supabase projekta te Google Client ID; potrebni su za prijavu. Prijava Microsoft računom i e-mailom podešava se samo u Supabaseu (Authentication → Sign In / Providers), bez varijabli okruženja. Ponude i partneri još se čitaju iz lažnih podataka u `src/lib/mock-data.ts`.
 
 [Dodajte kratak korak provjere, primjerice koja se stranica treba otvoriti ili koja naredba pokreće osnovnu provjeru.] Za detaljno postavljanje pogledajte [projektnu dokumentaciju](docs/Home.md).
 
@@ -72,7 +72,7 @@ Dogovoreni tehnološki skup (planirano; tablicu ažurirati prema stvarnom repozi
 | --- | --- | --- |
 | Next.js (TypeScript) + Tailwind CSS | Korisničko sučelje i poslužiteljska logika aplikacije | Klijentski i poslužiteljski dio u jednom projektu koji se izravno postavlja na Vercel |
 | Supabase Postgres | Pohrana korisnika, partnera, ponuda, kupona i recenzija | Promjene sheme vode se migracijama preko Supabase CLI-ja |
-| Supabase Auth (Google OAuth 2.0) | Registracija i prijava studenata i partnera | Status studenta potvrđuje se samo studentskom e-mail domenom |
+| Supabase Auth (Microsoft Entra ID, Google OAuth 2.0, e-mail i lozinka) | Prijava studenata (Microsoft) i partnera (Google ili e-mail) | Status studenta potvrđuje se domenom studentskog Microsoft računa (tablica `allowed_student_domains`) |
 | Row Level Security (RLS) | Ograničavanje pristupa podacima prema ulozi (student, partner, administrator) | Pravila se provode u bazi, pa ih treba ispitati za svaku ulogu |
 | Supabase Storage | Pohrana logotipa partnera i slika ponuda | — |
 | pg_cron ili Supabase Edge Function | Automatski istek ponuda | Istekle ponude moraju nestati iz pretrage bez ručne radnje |
