@@ -23,8 +23,8 @@ export async function signUpWithEmail(formData: FormData) {
   const { error } = await supabase.auth.signUp({
     email: String(formData.get("email")),
     password: String(formData.get("password")),
-    // Predložak e-maila za potvrdu vodi na {{ .RedirectTo }}/auth/confirm (vidi /auth/confirm).
-    options: { emailRedirectTo: origin },
+    // Poveznica iz e-maila za potvrdu vodi preko Supabasea na /auth/callback.
+    options: { emailRedirectTo: `${origin}/auth/callback?potvrda=1` },
   });
   if (error) {
     console.error("Registracija nije uspjela:", error.message);
