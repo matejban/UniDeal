@@ -2,6 +2,7 @@ import type { UserRole } from "@/domain/User";
 import { requireRole } from "@/lib/auth";
 import { userService } from "@/services";
 import { setUserActive } from "./actions";
+import RoleSelect from "./RoleSelect";
 
 const roles: Record<UserRole, string> = { student: "Student", partner: "Partner", admin: "Administrator" };
 
@@ -34,19 +35,7 @@ export default async function AdminUsersPage({
           aria-label="Pretraži po e-mailu"
           className="min-w-0 flex-1 rounded border border-gray-300 px-3 py-2"
         />
-        <select
-          name="uloga"
-          defaultValue={role ?? ""}
-          aria-label="Uloga"
-          className="rounded border border-gray-300 px-3 py-2"
-        >
-          <option value="">Sve uloge</option>
-          {Object.entries(roles).map(([value, label]) => (
-            <option key={value} value={value}>
-              {label}
-            </option>
-          ))}
-        </select>
+        <RoleSelect roles={roles} defaultValue={role ?? ""} />
         <button className="rounded bg-blue-700 px-4 py-2 text-white hover:bg-blue-800">Traži</button>
       </form>
 
