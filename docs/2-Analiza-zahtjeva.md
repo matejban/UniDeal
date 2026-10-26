@@ -139,7 +139,8 @@ Obrasci uporabe (poglavlje 3) i ispitni slučajevi (poglavlje 5) još nisu izra�
 
 | ID zahtjeva | Obrazac uporabe / modul | Arhitekturna realizacija | Ispitivanje ili provjera |
 |------------------|------------------|------------------|------------------|
-| F-001 | *na čekanju* (poglavlje 3) | `MicrosoftLoginButton`, `GoogleLoginButton` i obrazac za e-mail na stranici `/prijava`; `/auth/callback` (provjera domene, `src/lib/studentDomains.ts`), `/auth/confirm`; Supabase Auth; `src/lib/auth.ts` | *na čekanju* (poglavlje 5) |
+| F-001 | *na čekanju* (poglavlje 3) | `MicrosoftLoginButton`, `GoogleLoginButton` i obrazac za e-mail na stranici `/prijava`; `/auth/callback` (provjera domene), `/auth/confirm`; Supabase Auth; `src/lib/auth.ts` | *na čekanju* (poglavlje 5) |
+| F-002, F-003 | *na čekanju* (poglavlje 3) | Tablica `profiles` i okidač `handle_new_user` (uloga prema načinu prijave), SQL funkcija `student_institution` nad tablicom `allowed_student_domains` (`supabase/migrations/`); `User.isVerifiedStudent()`, stranica `/student` | Ručna provjera prijave računima `@fer.hr`; ispitni slučajevi *na čekanju* (poglavlje 5) |
 | F-012 | *na čekanju* (poglavlje 3) | `Offer.isActive()`; automatski istek ponuda još nije ostvaren | *na čekanju* (poglavlje 5) |
 | F-016 | *na čekanju* (poglavlje 3) | `OfferService.search()`, stranica `/ponude`; trenutačno s lažnim podacima | *na čekanju* (poglavlje 5) |
 | F-018 | *na čekanju* (poglavlje 3) | Stranica `/karta`; Google Maps još nije povezan | *na čekanju* (poglavlje 5) |
