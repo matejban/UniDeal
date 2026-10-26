@@ -2,6 +2,7 @@
 
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
+import { isDeactivated } from "@/lib/auth";
 import { safeRedirectPath } from "@/lib/redirect";
 import { createClient } from "@/lib/supabase/server";
 
@@ -9,11 +10,15 @@ import { createClient } from "@/lib/supabase/server";
 
 export async function signInWithEmail(formData: FormData) {
   const supabase = await createClient();
-  const { error } = await supabase.auth.signInWithPassword({
+  const { data, error } = await supabase.auth.signInWithPassword({
     email: String(formData.get("email")),
     password: String(formData.get("password")),
   });
   if (error) redirect("/prijava?greska=lozinka");
+  if (await isDeactivated(supabase, data.user.id)) {
+    await supabase.auth.signOut();
+    redirect("/prijava?greska=deaktiviran");
+  }
   redirect(safeRedirectPath(String(formData.get("next") ?? "/")));
 }
 

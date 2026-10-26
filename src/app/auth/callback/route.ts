@@ -1,4 +1,5 @@
 import { NextResponse, type NextRequest } from "next/server";
+import { isDeactivated } from "@/lib/auth";
 import { safeRedirectPath } from "@/lib/redirect";
 import { isAllowedStudentEmail } from "@/lib/studentDomains";
 import { createClient } from "@/lib/supabase/server";
@@ -30,6 +31,12 @@ export async function GET(request: NextRequest) {
   if (user.app_metadata.provider === "azure" && !(await isAllowedStudentEmail(user.email ?? ""))) {
     await supabase.auth.signOut();
     return NextResponse.redirect(new URL("/prijava?greska=domena", origin));
+  }
+
+  // Račun koji je administrator deaktivirao ne može se prijaviti (F-026).
+  if (await isDeactivated(supabase, user.id)) {
+    await supabase.auth.signOut();
+    return NextResponse.redirect(new URL("/prijava?greska=deaktiviran", origin));
   }
 
   return NextResponse.redirect(new URL(next, origin));
