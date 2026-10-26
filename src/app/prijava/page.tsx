@@ -7,6 +7,7 @@ import { signInWithEmail, signUpWithEmail } from "./actions";
 
 const errors: Record<string, string> = {
   "1": "Prijava nije uspjela. Pokušaj ponovno.",
+  deaktiviran: "Ovaj račun je deaktiviran. Za više informacija javi se administratoru.",
   domena: "Prijava Microsoft računom dostupna je samo studentima hrvatskih visokih učilišta.",
   lozinka: "Pogrešan e-mail ili lozinka, ili adresa još nije potvrđena.",
   registracija: "Registracija nije uspjela. Lozinka mora imati barem 6 znakova, a adresa ne smije već biti registrirana.",
