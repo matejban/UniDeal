@@ -23,6 +23,18 @@
 
 [Navedite mali broj opravdanih poboljšanja i ograničite se na nekoliko prioriteta. Razlikujte nedovršene funkcionalnosti potrebne za ispunjenje izvornog opsega od neobaveznih proširenja. Za svako ukratko objasnite korist i što bi trebalo promijeniti.]
 
+### Prijava putem AAI@EduHr
+
+Status studenta zasad se prepoznaje prema domeni e-mail adrese (pretpostavka AS-01 u [2.4](2-Analiza-zahtjeva.md#24-ograničenja-i-pretpostavke)). Domena ne razlikuje studenta od djelatnika iste ustanove, pa djelatnik može dobiti status studenta, a popis dopuštenih domena treba ručno održavati. Zasad to ublažavamo uvjetima korištenja (F-032): student pri korištenju kupona pokazuje partneru studentsku iskaznicu (X-icu), a partner smije odbiti popust ako je ne pokaže.
+
+AAI@EduHr, sustav elektroničkih identiteta u hrvatskom sustavu znanosti i visokog obrazovanja, uz identitet korisnika šalje i podatak o njegovoj vezi s ustanovom (npr. student ili djelatnik). Prijava putem AAI@EduHr omogućila bi pouzdano prepoznavanje studenata svih visokih učilišta na isti način, bez popisa domena. Za to bi trebalo:
+
+- registrirati aplikaciju kao resurs u AAI@EduHr, što je administrativni postupak kod matične ustanove ili Srca;
+- povezati prijavu putem protokola SAML 2.0, koji Supabase Auth podržava tek na plaćenom planu Pro;
+- dodjeljivati ulogu studenta prema podatku o vezi s ustanovom umjesto prema domeni e-mail adrese.
+
+Zbog administrativnog postupka i troška to nije u opsegu ovog projekta (vidi [1.3 Granice projekta](1-Projekt.md#13-granice-projekta)).
+
 ---
 
 >**Završna provjera:** Tvrdnje o dovršenim funkcionalnostima podudaraju se s postavljenom aplikacijom i rezultatima ispitivanja. Nedovršen rad jasno je naveden; planovi za budući rad ne prikazuju se kao dovršene funkcionalnosti. Utrošeno vrijeme i pojedinačni doprinosi dokumentirani su u dokumentu [A. Pregled aktivnosti grupe](A-Pregled-aktivnosti-grupe.md).
