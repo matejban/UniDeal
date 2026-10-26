@@ -25,7 +25,7 @@ Cilj projekta je web platforma UniDeal koja povezuje studente i partnere na jedn
 
 | Skupina korisnika ili dionika | Potreba ili interes relevantan za ovaj projekt |
 | --- | --- |
-| Student | Pronaći aktualne popuste prema kategoriji, gradu i blizini, spremiti favorite, generirati kupon i ocijeniti iskorištenu ponudu. Platformu koristi besplatno; kupone može generirati tek kada potvrdi status studenta studentskom e-mail adresom. |
+| Student | Pronaći aktualne popuste prema kategoriji, gradu i blizini, spremiti favorite, generirati kupon i ocijeniti iskorištenu ponudu. Platformu koristi besplatno; prijavljuje se računom svog visokog učilišta (Microsoft), čime je potvrđen status studenta potreban za generiranje kupona. |
 | Partner | Objaviti ponude, potvrditi korištenje kupona (kod ili QR) i pratiti broj pregleda, iskorištenja i prosječnu ocjenu. Plaća mjesečnu ili godišnju pretplatu; profil postaje javan nakon odobrenja administratora i aktivacije pretplate. |
 | Administrator | Odobravati partnere, upravljati korisnicima, kategorijama i sadržajem, uklanjati neprimjerene ponude i recenzije, određivati cijenu pretplate te pregledavati i izvoziti statistiku (CSV ili PDF). |
 
@@ -50,9 +50,9 @@ Riječ je o dvjema različitim potrebama, a ne o dvjema izmišljenim biografijam
 
 **Cilj:** Jasno definirati granice sustava — što je obuhvaćeno odobrenim zadatkom, što je svjesno izostavljeno ili odgođeno te o kojim vanjskim uslugama sustav izravno ovisi.
 
-**Uključeno:** Prijava Google računom i odabir uloge (student, partner, administrator); potvrda statusa studenta studentskom e-mail adresom; profili partnera i ponude sa statusima nacrt, aktivna i istekla; pretraga, filtriranje i prikaz ponuda na karti; favoriti; kuponi s kodom i QR kodom te partnerska potvrda korištenja; ocjene i recenzije nakon iskorištenja; pretplata partnera; e-mail obavijesti; administratorski panel, statistika i izvoz izvještaja.  
-**Izvan opsega ili odgođeno:** [Tim treba dogovoriti, npr. plaćanje samih popusta kroz platformu ili mobilnu aplikaciju.] 
-**Vanjske ovisnosti:** Google OAuth 2.0 (prijava), Google Maps API (karta i geokodiranje), Stripe (naplata pretplate), servis za slanje e-maila (Resend), Supabase (baza, autentifikacija i pohrana datoteka) i Vercel (smještaj aplikacije).
+**Uključeno:** Prijava studenata studentskim Microsoft računom, čime je potvrđen status studenta, a partnera Google računom ili e-mailom i lozinkom (administrator se dodjeljuje ručno); profili partnera i ponude sa statusima nacrt, aktivna i istekla; pretraga, filtriranje i prikaz ponuda na karti; favoriti; kuponi s kodom i QR kodom te partnerska potvrda korištenja; ocjene i recenzije nakon iskorištenja; pretplata partnera; e-mail obavijesti; administratorski panel, statistika i izvoz izvještaja.  
+**Izvan opsega ili odgođeno:** Prijava putem AAI@EduHr i pouzdano razlikovanje studenata od djelatnika ustanove (vidi [7.3 Budući rad](7-Zakljucak-i-buduci-rad.md#73-budući-rad)). [Tim treba dogovoriti ostale stavke, npr. plaćanje samih popusta kroz platformu ili mobilnu aplikaciju.] 
+**Vanjske ovisnosti:** Microsoft Entra ID (prijava studenata), Google OAuth 2.0 (prijava partnera), Google Maps API (karta i geokodiranje), Stripe (naplata pretplate), servis za slanje e-maila (Resend), Supabase (baza, autentifikacija i pohrana datoteka) i Vercel (smještaj aplikacije).
 
 <details>
 <summary><strong>Primjer početne granice projekta</strong></summary>
