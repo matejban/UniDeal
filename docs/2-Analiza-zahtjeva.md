@@ -15,6 +15,7 @@
 | F-003 | Student potvrđuje status studenta studentskom e-mail adresom. | Visok | Projektni zadatak, pogl. 2 | Na adresu s dopuštene domene (npr. fakulteta ili sveučilišta) stiže poveznica; nakon otvaranja poveznice status studenta je „potvrđen”. Adresa s domene koja nije na popisu se odbija uz poruku. |
 | F-004 | Student čiji status nije potvrđen može pregledavati ponude, ali ne može generirati kupone. | Visok | Projektni zadatak, pogl. 2 | Nepotvrđeni student vidi ponude; pokušaj generiranja kupona vraća poruku da je potrebna potvrda statusa i kupon se ne stvara. |
 | F-005 | Korisnik može uređivati svoj profil i deaktivirati vlastiti račun. | Srednji | Projektni zadatak, pogl. 2 | Izmijenjeni podaci vidljivi su nakon spremanja. Nakon deaktivacije korisnik se više ne može prijaviti, a njegove ponude ili recenzije nisu javno vidljive. |
+| F-032 | Sustav prikazuje uvjete korištenja platforme koje korisnik prihvaća pri prvoj prijavi. Uvjeti navode da student pri korištenju kupona pokazuje studentsku iskaznicu (X-icu) i da partner smije odbiti popust ako je ne pokaže. | Srednji | Odluka tima (ublažavanje ograničenja uz AS-01) | Uvjeti korištenja dostupni su na zasebnoj stranici i iz podnožja svake stranice. Korisnik ne može nastaviti nakon prve prijave dok ih ne prihvati. Kupon (F-020) i zaslon za potvrdu kupona (F-014) prikazuju napomenu o pokazivanju X-ice. |
 
 ### Partner i ponude
 
@@ -88,8 +89,8 @@
 | ID uloge ili aktera | Odnos prema sustavu | Relevantni zahtjevi |
 |------------------------|------------------------|------------------------|
 | A-01 Posjetitelj | Akter; bez prijave pretražuje ponude, pregledava kartu i profile partnera te može pokrenuti registraciju ili prijavu. Za kupone, favorite, recenzije i obavijesti mora se prijaviti. | F-001, F-016 – F-018 |
-| A-02 Student | Akter; uz mogućnosti posjetitelja sprema favorite, generira kupone, ostavlja recenzije i prima obavijesti. Dok status nije potvrđen, ne može generirati kupone. | F-002 – F-005, F-016 – F-024 |
-| A-03 Partner | Akter; upravlja profilom i ponudama, plaća pretplatu, potvrđuje kupone, prati statistiku. | F-002, F-005 – F-015 |
+| A-02 Student | Akter; uz mogućnosti posjetitelja sprema favorite, generira kupone, ostavlja recenzije i prima obavijesti. Dok status nije potvrđen, ne može generirati kupone. | F-002 – F-005, F-016 – F-024, F-032 |
+| A-03 Partner | Akter; upravlja profilom i ponudama, plaća pretplatu, potvrđuje kupone, prati statistiku. | F-002, F-005 – F-015, F-032 |
 | A-04 Administrator | Akter; odobrava partnere, upravlja korisnicima, kategorijama, sadržajem i cijenama, prati statistiku. | F-025 – F-031 |
 | A-05 Google OAuth | Vanjski sustav (akter); potvrđuje identitet korisnika. | F-001 |
 | A-06 Google Maps API | Vanjski sustav (akter); karta i geokodiranje adresa. | F-013, F-018 |
@@ -112,7 +113,7 @@
 | C-04 | Ograničenje | Obavijesti se šalju e-mailom putem servisa Resend. | Projektni zadatak, pogl. 6; odluka tima | Slanje se odvija izvan glavnog zahtjeva korisnika; neuspjelo slanje ne prekida radnju. |
 | C-05 | Ograničenje | Tehnološki stog: Next.js (TypeScript) i Tailwind CSS, Supabase (Postgres, Auth, Storage), postavljanje na Vercel. | Odluka tima | Klijentski i poslužiteljski dio nalaze se u jednom Next.js projektu; pristup podacima ograničava se RLS pravilima u bazi (NF-03). Detalji u poglavlju 4. |
 | C-06 | Ograničenje | Aplikacija mora biti javno dostupna na internetu; za Iteraciju 1 postavljena je inačica s prijavom i barem jednim funkcionalnim korisničkim tijekom. | Pravila kolegija | Postavljanje na Vercel od početka razvoja. Za Iteraciju 1 prioritet imaju F-001, F-002 i jedan cjeloviti tijek (npr. F-011, F-016, F-020). Provjera: otvaranje javnog URL-a s uređaja izvan razvojne okoline. |
-| AS-01 | Pretpostavka | Status studenta može se dovoljno pouzdano prepoznati prema domeni e-mail adrese. | Procjena tima | Popis dopuštenih domena vodi se u bazi. Ako se javi student s valjanom studentskom adresom izvan popisa, domena se dodaje ručno. Poznato ograničenje: domena ne razlikuje studenta od djelatnika iste ustanove (npr. i nastavnici FER-a imaju adresu `@fer.hr`), pa djelatnik može dobiti status studenta. Pouzdanije rješenje opisano je u [7.3 Budući rad](7-Zakljucak-i-buduci-rad.md#73-budući-rad). |
+| AS-01 | Pretpostavka | Status studenta može se dovoljno pouzdano prepoznati prema domeni e-mail adrese. | Procjena tima | Popis dopuštenih domena vodi se u bazi. Ako se javi student s valjanom studentskom adresom izvan popisa, domena se dodaje ručno. Poznato ograničenje: domena ne razlikuje studenta od djelatnika iste ustanove (npr. i nastavnici FER-a imaju adresu `@fer.hr`), pa djelatnik može dobiti status studenta. Ublažavanje: student pri korištenju kupona pokazuje partneru studentsku iskaznicu (X-icu), što je navedeno u uvjetima korištenja (F-032). Pouzdanije rješenje opisano je u [7.3 Budući rad](7-Zakljucak-i-buduci-rad.md#73-budući-rad). |
 | AS-02 | Pretpostavka | Partner pri potvrdi kupona ima uređaj s internetskom vezom i prijavljen je u aplikaciju. | Procjena tima | Potvrda kupona bez internetske veze nije u opsegu. Provjeriti s barem jednim partnerom pri ispitivanju F-014. |
 | AS-03 | Pretpostavka | Adrese partnera dovoljno su točne za geokodiranje. | Procjena tima | Ako geokodiranje ne uspije, partner ručno označava lokaciju (F-013). |
 | AS-04 | Pretpostavka | Student kupon predočuje partneru na zaslonu mobitela. | Procjena tima | Kupon i QR kod moraju biti čitljivi na mobilnom zaslonu (NF-08); ispis kupona nije potreban. |
@@ -125,7 +126,7 @@
 
 | Datum | ID zahtjeva | Promjena i razlog  | Dogovoreno s / dokaz |
 |-------|-------------|--------------------|----------------------|
-| —     | —           | Još nema promjena. | —                    |
+| 26. 10. 2026. | F-032, AS-01 | Dodani uvjeti korištenja s obvezom pokazivanja studentske iskaznice (X-ice) pri korištenju kupona. Razlog: prepoznavanje studenta po domeni e-mail adrese ne razlikuje studenta od djelatnika iste ustanove (AS-01), pa partner pri korištenju kupona provjerava status. | Odluka tima |
 
 ------------------------------------------------------------------------
 

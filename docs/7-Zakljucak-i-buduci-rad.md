@@ -25,7 +25,7 @@
 
 ### Prijava putem AAI@EduHr
 
-Status studenta zasad se prepoznaje prema domeni e-mail adrese (pretpostavka AS-01 u [2.4](2-Analiza-zahtjeva.md#24-ograničenja-i-pretpostavke)). Domena ne razlikuje studenta od djelatnika iste ustanove, pa djelatnik može dobiti status studenta, a popis dopuštenih domena treba ručno održavati.
+Status studenta zasad se prepoznaje prema domeni e-mail adrese (pretpostavka AS-01 u [2.4](2-Analiza-zahtjeva.md#24-ograničenja-i-pretpostavke)). Domena ne razlikuje studenta od djelatnika iste ustanove, pa djelatnik može dobiti status studenta, a popis dopuštenih domena treba ručno održavati. Zasad to ublažavamo uvjetima korištenja (F-032): student pri korištenju kupona pokazuje partneru studentsku iskaznicu (X-icu), a partner smije odbiti popust ako je ne pokaže.
 
 AAI@EduHr, sustav elektroničkih identiteta u hrvatskom sustavu znanosti i visokog obrazovanja, uz identitet korisnika šalje i podatak o njegovoj vezi s ustanovom (npr. student ili djelatnik). Prijava putem AAI@EduHr omogućila bi pouzdano prepoznavanje studenata svih visokih učilišta na isti način, bez popisa domena. Za to bi trebalo:
 
