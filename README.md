@@ -86,13 +86,13 @@ Dogovoreni tehnološki skup (planirano; tablicu ažurirati prema stvarnom repozi
 
 | Član | Glavna uloga ili doprinos |
 | --- | --- |
-| [Ime] | 1. Temelji i autentifikacija |
-| [Ime] | 2. Partneri i obavijesti |
-| [Ime] | 3. Ponude |
-| [Ime] | 4. Pretraga, karta i favoriti |
-| [Ime] | 5. Kuponi, QR i recenzije |
-| [Ime] | 6. Plaćanje i pretplate |
-| [Ime] | 7. Admin i izvještaji |
+| Matej Ban | 1. Temelji i autentifikacija |
+| Fran Lovrić | 2. Partneri i obavijesti |
+| Krešimir Daković | 3. Ponude |
+| Karlo Brkić | 4. Pretraga, karta i favoriti |
+| Elide Babić | 5. Kuponi, QR i recenzije |
+| Josip Čaljkušić | 6. Plaćanje i pretplate |
+| Fran Čeko | 7. Admin i izvještaji |
 
 Zadaci po području vode se u [GitHub Issues](https://github.com/matejban/UniDeal/issues), s oznakom područja (npr. `podrucje-3-ponude`).
 
