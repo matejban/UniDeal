@@ -3,6 +3,7 @@
 import { useRouter } from "next/navigation";
 import Script from "next/script";
 import { useRef, useState } from "react";
+import { welcomePath } from "@/lib/redirect";
 import { createClient } from "@/lib/supabase/client";
 
 // Nasumični nonce: Google dobiva njegov SHA-256 sažetak, Supabase izvornik.
@@ -48,7 +49,7 @@ export default function GoogleLoginButton({ next }: { next: string }) {
           return;
         }
         // Puno učitavanje da navigacija prikaže prijavljenog korisnika.
-        window.location.assign(next);
+        window.location.assign(welcomePath(next));
       },
     });
 
