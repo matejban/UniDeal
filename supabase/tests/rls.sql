@@ -150,6 +150,50 @@ set local request.jwt.claims = '{"sub":"00000000-0000-4000-8000-0000000000a4","r
 insert into rezultati select 'administrator vidi sve ponude', count(*) = 5 from public.offers;
 insert into rezultati select 'administrator vidi sve partnere', count(*) = 4 from public.partners;
 
+-- ---------------------------------------------------------------- vlastiti profil (F-005)
+set local request.jwt.claims = '{"sub":"00000000-0000-4000-8000-0000000000a1","role":"authenticated"}';
+
+do $$ declare n int; begin
+  update public.profiles set full_name = 'Novo Ime' where id = '00000000-0000-4000-8000-0000000000a1';
+  get diagnostics n = row_count;
+  insert into rezultati values ('korisnik mijenja svoje ime', n = 1);
+end $$;
+do $$ declare n int; begin
+  update public.profiles set full_name = 'Tuđe Ime' where id = '00000000-0000-4000-8000-0000000000a2';
+  get diagnostics n = row_count;
+  insert into rezultati values ('korisnik ne može mijenjati tuđi profil', n = 0);
+end $$;
+do $$ begin
+  update public.profiles set role = 'admin' where id = '00000000-0000-4000-8000-0000000000a1';
+  insert into rezultati values ('korisnik ne može sam promijeniti ulogu', false);
+exception when insufficient_privilege then
+  insert into rezultati values ('korisnik ne može sam promijeniti ulogu', true);
+end $$;
+
+set local role anon;
+set local request.jwt.claims = '{"role":"anon"}';
+insert into rezultati select 'anon vidi recenziju aktivnog studenta', count(*) = 1 from public.reviews;
+
+set local role authenticated;
+set local request.jwt.claims = '{"sub":"00000000-0000-4000-8000-0000000000a1","role":"authenticated"}';
+select public.deactivate_own_account();
+do $$ begin
+  update public.profiles set is_active = true where id = '00000000-0000-4000-8000-0000000000a1';
+  insert into rezultati values ('korisnik ne može sam ponovno aktivirati račun', false);
+exception when insufficient_privilege then
+  insert into rezultati values ('korisnik ne može sam ponovno aktivirati račun', true);
+end $$;
+
+set local role anon;
+set local request.jwt.claims = '{"role":"anon"}';
+insert into rezultati select 'recenzija deaktiviranog studenta nije javna', count(*) = 0 from public.reviews;
+do $$ begin
+  perform public.deactivate_own_account();
+  insert into rezultati values ('anon ne može pozvati deaktivaciju', false);
+exception when insufficient_privilege then
+  insert into rezultati values ('anon ne može pozvati deaktivaciju', true);
+end $$;
+
 -- ---------------------------------------------------------------- rezultat
 reset role;
 

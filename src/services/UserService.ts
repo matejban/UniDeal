@@ -8,12 +8,21 @@ export class UserService {
     return this.users.findAll(filter);
   }
 
-  // Deaktivirani korisnik se ne može prijaviti (F-026). Istu metodu može koristiti i deaktivacija vlastitog računa (F-005).
+  // Deaktivirani korisnik se ne može prijaviti (F-026).
   async deactivate(userId: string): Promise<void> {
     await this.users.setActive(userId, false);
   }
 
   async activate(userId: string): Promise<void> {
     await this.users.setActive(userId, true);
+  }
+
+  // Uređivanje i deaktivacija vlastitog računa (F-005). Ponovno ga može aktivirati samo administrator.
+  async updateName(userId: string, fullName: string): Promise<void> {
+    await this.users.updateName(userId, fullName);
+  }
+
+  async deactivateOwnAccount(): Promise<void> {
+    await this.users.deactivateSelf();
   }
 }
