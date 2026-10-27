@@ -27,4 +27,17 @@ export class SupabaseUserRepository implements UserRepository {
     const { error } = await supabase.rpc("set_user_active", { target_id: id, active });
     if (error) throw new Error(error.message);
   }
+
+  // RLS dopušta promjenu samo vlastitog profila, i to samo stupca full_name.
+  async updateName(id: string, fullName: string) {
+    const supabase = await createClient();
+    const { error } = await supabase.from("profiles").update({ full_name: fullName }).eq("id", id);
+    if (error) throw new Error(error.message);
+  }
+
+  async deactivateSelf() {
+    const supabase = await createClient();
+    const { error } = await supabase.rpc("deactivate_own_account");
+    if (error) throw new Error(error.message);
+  }
 }
