@@ -2,15 +2,14 @@
 
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
-import { getCurrentUser } from "@/lib/auth";
+import { requireUser } from "@/lib/auth";
 import { createClient } from "@/lib/supabase/server";
 import { userService } from "@/services";
 
 // Uređivanje i deaktivacija vlastitog računa (F-005). Baza dopušta promjenu samo vlastitog imena.
 
 export async function updateProfile(formData: FormData) {
-  const user = await getCurrentUser();
-  if (!user) redirect("/prijava");
+  const user = await requireUser();
 
   const fullName = String(formData.get("fullName") ?? "").trim();
   if (fullName.length < 1 || fullName.length > 100) redirect("/profil?greska=ime");
@@ -25,8 +24,7 @@ export async function updateProfile(formData: FormData) {
 }
 
 export async function deactivateAccount(formData: FormData) {
-  const user = await getCurrentUser();
-  if (!user) redirect("/prijava");
+  await requireUser();
 
   if (formData.get("potvrda") !== "da") redirect("/profil?greska=potvrda");
   try {

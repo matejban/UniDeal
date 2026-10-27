@@ -8,4 +8,6 @@ export interface UserRepository {
   updateName(id: string, fullName: string): Promise<void>;
   // Deaktivira račun prijavljenog korisnika.
   deactivateSelf(): Promise<void>;
+  // Bilježi da je prijavljeni korisnik prihvatio uvjete korištenja.
+  acceptTerms(): Promise<void>;
 }

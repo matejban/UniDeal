@@ -40,4 +40,11 @@ export class SupabaseUserRepository implements UserRepository {
     const { error } = await supabase.rpc("deactivate_own_account");
     if (error) throw new Error(error.message);
   }
+
+  // Vrijeme prihvaćanja postavlja baza (accept_terms).
+  async acceptTerms() {
+    const supabase = await createClient();
+    const { error } = await supabase.rpc("accept_terms");
+    if (error) throw new Error(error.message);
+  }
 }
