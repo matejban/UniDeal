@@ -83,9 +83,16 @@ Započnite crtanjem granice oko predloženog sustava. Unutar nje prepoznajte dij
 
 **Cilj:** Prikazati važne pohranjene entitete, njihove identifikatore i veze te dovoljno atributa za razumijevanje podataka aplikacije. ER dijagram odvojen je od reprezentativnog UML dijagrama razreda u nastavku.
 
-**ER dijagram:** [Ugradite čitljiv dijagram projekta.]  
-**Izvor dijagrama:** [Poveznica na njegov izvor.]  
-**Implementacija:** [Navedite gdje je odgovarajući model podataka definiran u projektu.]
+**ER dijagram:**
+
+![ER dijagram podataka sustava UniDeal](./assets/diagrams/4-2-unideal-data-ERD.svg)
+
+**Slika 4.2. ER dijagram podataka sustava UniDeal**
+
+Svaki korisnik ima jedan profil s ulogom; partner (poslovni subjekt) pripada najviše jednom profilu i ima najviše jednu pretplatu. Partner objavljuje više ponuda, a svaka ponuda i svaki partner imaju jednu kategoriju. Student za ponudu generira kupone; za iskorišteni kupon može napisati jednu recenziju, koja se veže i uz partnera da se prosječna ocjena računa bez pristupa kuponima. Favorit i pretplata na obavijesti odnose se na točno jednu ponudu, partnera ili kategoriju. Dopuštene studentske domene i cijene pretplate nisu povezane stranim ključem: status studenta određuje domena e-maila, a cijenu pretplate njezin plan. Javnu vidljivost partnera i ponuda (odobren partner, aktivna pretplata, aktivna i neistekla ponuda) baza izračunava iz tih podataka i ne pohranjuje je zasebno.
+
+**Izvor dijagrama:** [4-2-unideal-data-ERD.puml](./puml/4-2-unideal-data-ERD.puml)  
+**Implementacija:** SQL migracije u [`supabase/migrations`](../supabase/migrations) (glavnina u `…_inicijalna_shema.sql`), demo podaci u [`supabase/seed.sql`](../supabase/seed.sql), tipovi za TypeScript u [`src/lib/supabase/database.types.ts`](../src/lib/supabase/database.types.ts).
 
 <details>
 <summary><strong>Jedna prijava poplave i povezani podaci</strong></summary>
@@ -112,7 +119,7 @@ Započnite crtanjem granice oko predloženog sustava. Unutar nje prepoznajte dij
 
 **Slika 4.3. Dijagram razreda za ponude i partnere sustava UniDeal**
 
-`Offer` sam određuje je li ponuda aktivna (`isActive()`), pa servisi ne ponavljaju to pravilo. `OfferService` i `PartnerService` koordiniraju dohvat podataka za stranice, a sučelja `OfferRepository` i `PartnerRepository` opisuju potrebne operacije trajne pohrane. Trenutačno ih implementiraju lažni repozitoriji; kada se poveže Supabase, dodaju se nove implementacije istih sučelja bez promjene servisa i stranica.
+`Offer` sam određuje je li ponuda aktivna (`isActive()`), pa servisi ne ponavljaju to pravilo. `OfferService` i `PartnerService` koordiniraju dohvat podataka za stranice, a sučelja `OfferRepository` i `PartnerRepository` opisuju potrebne operacije trajne pohrane. Implementiraju ih `SupabaseOfferRepository` i `SupabasePartnerRepository`, koji su zamijenili nekadašnje lažne repozitorije bez promjene servisa i stranica. Javni popisi čitaju se iz pogleda `public_offers` i `public_partners`, pa pretraga i karta prikazuju isto bez obzira na to tko je prijavljen.
 
 **PlantUML izvor:** [4-3-unideal-domain-CD.puml](./puml/4-3-unideal-domain-CD.puml)  
 **Referenca na kod pri završnom pregledu:** [`src/domain`](../src/domain), [`src/services`](../src/services), [`src/repositories`](../src/repositories)
@@ -239,7 +246,7 @@ ADR pišite samo za odluku čije će obrazloženje ostati važno i nakon promjen
 
 | Aspekt | Mehanizam | Pravilo | Mjesto primjene |
 | --- | --- | --- | --- |
-| [Npr. Sigurnost] | [Npr. Autorizacija korisnika] | [Npr. Ovlasti se provjeravaju na poslužiteljskoj strani za svaki zaštićeni zahtjev; skrivanje elemenata korisničkog sučelja nije dovoljna zaštita.] | [Npr. Middleware za autorizaciju / zaštita API usmjernika.] |
+| Sigurnost | Autorizacija u bazi (Row Level Security) | Svaka tablica ima uključen RLS, a pravila po ulozi određuju tko što čita i mijenja (NF-03): posjetitelj vidi samo javne partnere i ponude, student svoje kupone, partner svoje ponude i kupone tih ponuda, administrator sve. Partner ne može sam promijeniti status odobrenja, a pretplatu upisuje samo poslužitelj secret ključem. Pravila vrijede i za zahtjeve mimo sučelja. | Migracija `supabase/migrations/…_inicijalna_shema.sql` i pomoćne funkcije u shemi `private`; provjera po ulogama u [`supabase/tests/rls.sql`](../supabase/tests/rls.sql). |
 | [Npr. Validacija podataka] | [Npr. Provjera ulaznih podataka] | [Npr. Geoprostorni podaci, uključujući koordinate, provjeravaju se prije pohrane.] | [Npr. Sloj za obradu zahtjeva / odgovarajuća usluga.] |
 | Upravljanje ovisnostima | Injektiranje ovisnosti | Servisi ne stvaraju sami konkretne repozitorije, nego ih primaju kroz konstruktor; stranice podatke dohvaćaju samo preko servisa. | `OfferService` i `PartnerService` primaju `OfferRepository` i `PartnerRepository`; implementacije se biraju na jednom mjestu, u `src/services/index.ts`. |
 

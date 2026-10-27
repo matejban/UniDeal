@@ -1,4 +1,5 @@
 export type OfferStatus = "nacrt" | "aktivna" | "istekla";
+export type DiscountType = "postotak" | "iznos";
 
 export const OFFER_CATEGORIES = ["Hrana", "Zdravlje i sport", "Obrazovanje", "Zabava"];
 
@@ -9,18 +10,20 @@ export class Offer {
     readonly title: string,
     readonly description: string,
     readonly category: string,
-    readonly discount: string,
+    readonly discountType: DiscountType,
+    readonly discountValue: number,
     readonly validUntil: string,
     readonly conditions: string,
     readonly status: OfferStatus,
   ) {}
 
-  // Studentima se prikazuju samo aktivne ponude; nacrti i istekle ponude ostaju skrivene.
+  // Studentima se prikazuju samo aktivne ponude kojima rok nije prošao (F-012).
   isActive() {
-    return this.status === "aktivna";
+    return this.status === "aktivna" && this.validUntil >= new Date().toISOString().slice(0, 10);
   }
 
   get discountLabel() {
-    return `−${this.discount}`;
+    const value = this.discountValue.toLocaleString("hr-HR");
+    return this.discountType === "postotak" ? `−${value} %` : `−${value} €`;
   }
 }
