@@ -1,6 +1,8 @@
+import { requireRole } from "@/lib/auth";
 import { offerService, partnerService } from "@/services";
 
 export default async function AdminPage() {
+  await requireRole("admin");
   const [partners, activeOffers] = await Promise.all([partnerService.getAll(), offerService.search()]);
   const stats = [
     { label: "Partneri", value: partners.length },
