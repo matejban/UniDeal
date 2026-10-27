@@ -2,6 +2,7 @@
 
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
+import { isDeactivated } from "@/lib/auth";
 import { safeRedirectPath } from "@/lib/redirect";
 import { createClient } from "@/lib/supabase/server";
 
@@ -22,7 +23,7 @@ export async function signInWithEmail(formData: FormData) {
   const email = String(formData.get("email"));
   const password = String(formData.get("password"));
   const supabase = await createClient();
-  const { error } = await supabase.auth.signInWithPassword({ email, password });
+  const { data, error } = await supabase.auth.signInWithPassword({ email, password });
   if (error?.code === "email_not_confirmed") redirect("/prijava?greska=nepotvrdeno");
   if (error) {
     // Supabase ne otkriva postoji li račun, pa se pokušava registracija s istim podacima.
@@ -34,6 +35,10 @@ export async function signInWithEmail(formData: FormData) {
     }
     if (!data.user?.identities?.length) redirect("/prijava?greska=lozinka");
     redirect("/prijava?poruka=novi");
+  }
+  if (await isDeactivated(supabase, data.user.id)) {
+    await supabase.auth.signOut();
+    redirect("/prijava?greska=deaktiviran");
   }
   redirect(safeRedirectPath(String(formData.get("next") ?? "/")));
 }

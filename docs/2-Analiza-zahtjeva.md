@@ -144,7 +144,8 @@ Obrasci uporabe (poglavlje 3) i ispitni slučajevi (poglavlje 5) još nisu izra�
 | F-012 | *na čekanju* (poglavlje 3) | `Offer.isActive()`; automatski istek ponuda još nije ostvaren | *na čekanju* (poglavlje 5) |
 | F-016 | *na čekanju* (poglavlje 3) | `OfferService.search()`, stranica `/ponude`; trenutačno s lažnim podacima | *na čekanju* (poglavlje 5) |
 | F-018 | *na čekanju* (poglavlje 3) | Stranica `/karta`; Google Maps još nije povezan | *na čekanju* (poglavlje 5) |
-| NF-03 | — | `src/proxy.ts` traži prijavu za `/student`, `/partner` i `/admin`; RLS na tablicama `profiles` (korisnik čita samo svoj profil, ulogu ne može mijenjati) i `allowed_student_domains`; provjera uloge na stranicama `/partner` i `/admin` još nije ostvarena | *na čekanju* (poglavlje 5) |
+| F-026 | *na čekanju* (poglavlje 3) | Stranica `/admin/korisnici` i Server Action `setUserActive`; `UserService`, `SupabaseUserRepository`; stupci `email` i `is_active` u tablici `profiles`, SQL funkcija `set_user_active` (samo administrator, ne vlastiti račun); deaktivirani korisnik odbija se u `/auth/callback` i pri prijavi e-mailom, a `getCurrentUser()` ga smatra neprijavljenim | Ručna provjera s administratorskim i studentskim računom; ispitni slučajevi *na čekanju* (poglavlje 5) |
+| NF-03 | — | `src/proxy.ts` traži prijavu za `/student`, `/partner` i `/admin`; `requireRole()` u `src/lib/auth.ts` provjerava ulogu u layoutu `/admin` i u administratorskim Server Actionima; RLS na tablicama `profiles` (korisnik čita samo svoj profil, administrator sve; ulogu i aktivnost ne može mijenjati sam) i `allowed_student_domains`; provjera uloge na stranici `/partner` još nije ostvarena | *na čekanju* (poglavlje 5) |
 
 ------------------------------------------------------------------------
 
