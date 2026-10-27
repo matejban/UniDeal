@@ -12,7 +12,7 @@
 ##          into SVG vector assets whenever PUML files are modified or when manually dispatched.
 ##          Build dependencies (Graphviz, PlantUML JAR) are restored from cache (since v2).
 ##          Diagrams are validated with strict error checking, the source folder structure is
-##          mirrored in the output, and updated SVGs are committed back to the main branch.
+##          mirrored in the output, and updated SVGs are committed back to the master branch.
 
 name: Generate PlantUML diagrams
 
@@ -24,7 +24,7 @@ name: Generate PlantUML diagrams
 on:
   push:
     branches:
-      - main
+      - master
     paths:
       - "docs/puml/**/*.puml"
       - ".github/workflows/generate-puml-diagrams.yaml"
@@ -54,8 +54,8 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 10
 
-    # Publish only from main, even when started manually via workflow_dispatch.
-    if: github.ref == 'refs/heads/main'
+    # Publish only from master, even when started manually via workflow_dispatch.
+    if: github.ref == 'refs/heads/master'
 
     env:
       PLANTUML_VERSION: "1.2025.4"
