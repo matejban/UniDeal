@@ -13,6 +13,10 @@ export class PartnerService {
     return this.partners.findAll();
   }
 
+  async getByOwner(ownerId: string): Promise<Partner | undefined> {
+    return this.partners.findByOwner(ownerId);
+  }
+
   async getCities(): Promise<string[]> {
     return [...new Set((await this.partners.findAll()).map((p) => p.city))];
   }

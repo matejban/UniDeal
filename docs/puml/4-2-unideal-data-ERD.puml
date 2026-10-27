@@ -1,0 +1,181 @@
+' ==============================================================================
+' 4-2-unideal-data-ERD.puml
+'
+' Svrha:    Prikazuje trajne entitete sustava UniDeal (profil korisnika,
+'           partner, kategorija, ponuda, kupon, recenzija, favorit, pretplata
+'           partnera i pretplata studenta na obavijesti), njihove ključeve,
+'           reprezentativne atribute i kardinalnosti.
+' Praćenje: Odgovara shemi u supabase/migrations; pri promjeni sheme ažurirati model.
+'
+' Diagram level: Logical data model
+' Diagram type:  Entity-Relationship Diagram (ERD), crow's foot
+' ==============================================================================
+
+@startuml
+!pragma layout smetana
+title Sustav UniDeal – logički podatkovni model
+left to right direction
+
+skinparam shadowing false
+skinparam defaultFontName Arial
+skinparam ArrowColor #212529
+
+skinparam entity {
+    BackgroundColor #E7F1FF
+    BorderColor #0D6EFD
+    FontColor #212529
+}
+
+' ==============================================================================
+' Korisnici
+' ==============================================================================
+
+entity "Profil korisnika" as Profile {
+    * id : uuid <<PK>> = auth.users.id
+    --
+    role : student | partner | admin
+    student_status : potvrden | nepotvrden
+    institution : text
+    email : text
+    is_active : boolean
+}
+
+entity "Dopuštena studentska domena" as Domain {
+    * domain : text <<PK>>
+    --
+    institution : text
+}
+
+' ==============================================================================
+' Partneri i ponude
+' ==============================================================================
+
+entity "Partner" as Partner {
+    * id : uuid <<PK>>
+    --
+    owner_id : uuid <<FK>> <<unique>>
+    * category_id : uuid <<FK>>
+    name : text
+    oib : text <<unique>>
+    address, city : text
+    lat, lng : decimal
+    approval_status : na_cekanju | odobren | odbijen
+}
+
+entity "Pretplata partnera" as Subscription {
+    * partner_id : uuid <<PK, FK>>
+    --
+    plan : mjesecna | godisnja
+    status : aktivna | istekla | otkazana
+    valid_until : datetime
+    stripe_subscription_id : text
+}
+
+entity "Cijena pretplate" as Price {
+    * plan : text <<PK>>
+    --
+    amount_eur : decimal
+    stripe_price_id : text
+}
+
+entity "Kategorija" as Category {
+    * id : uuid <<PK>>
+    --
+    name : text <<unique>>
+}
+
+entity "Ponuda" as Offer {
+    * id : uuid <<PK>>
+    --
+    * partner_id : uuid <<FK>>
+    * category_id : uuid <<FK>>
+    title : text
+    discount_type : postotak | iznos
+    discount_value : decimal
+    valid_until : date
+    status : nacrt | aktivna | istekla
+    usage_limit : jednom_po_studentu | neograniceno
+}
+
+entity "Pregled ponude" as View {
+    * id : bigint <<PK>>
+    --
+    * offer_id : uuid <<FK>>
+    viewed_at : datetime
+}
+
+' ==============================================================================
+' Kuponi i recenzije
+' ==============================================================================
+
+entity "Kupon" as Coupon {
+    * id : uuid <<PK>>
+    --
+    * offer_id : uuid <<FK>>
+    * student_id : uuid <<FK>>
+    code : text <<unique>>
+    status : izdan | iskoristen | istekao
+    issued_at, redeemed_at : datetime
+}
+
+entity "Recenzija" as Review {
+    * id : uuid <<PK>>
+    --
+    * coupon_id : uuid <<FK>> <<unique>>
+    * student_id : uuid <<FK>>
+    * partner_id : uuid <<FK>>
+    rating : 1–5
+    comment : text
+    is_removed : boolean
+}
+
+' ==============================================================================
+' Favoriti i obavijesti (točno jedan od dvaju stranih ključeva je zadan)
+' ==============================================================================
+
+entity "Favorit" as Favorite {
+    * id : uuid <<PK>>
+    --
+    * student_id : uuid <<FK>>
+    offer_id : uuid <<FK>>
+    partner_id : uuid <<FK>>
+}
+
+entity "Pretplata na obavijesti" as Notification {
+    * id : uuid <<PK>>
+    --
+    * student_id : uuid <<FK>>
+    category_id : uuid <<FK>>
+    partner_id : uuid <<FK>>
+}
+
+' ==============================================================================
+' Veze između entiteta
+' ==============================================================================
+
+' Isprekidane veze nisu strani ključevi: status studenta određuje domena e-maila,
+' a cijenu pretplate njezin plan.
+Domain ||..o{ Profile : potvrđuje studenta ►
+Price ||..o{ Subscription : određuje cijenu ►
+
+Profile |o--o| Partner : vodi ►
+Category ||--o{ Partner : djelatnost ►
+Partner ||--o| Subscription : plaća ►
+Partner ||--o{ Offer : objavljuje ►
+Category ||--o{ Offer : kategorizira ►
+Offer ||--o{ View : bilježi ►
+
+Offer ||--o{ Coupon : izdaje se za ►
+Profile ||--o{ Coupon : generira ►
+Coupon ||--o| Review : ocjenjuje se ►
+Profile ||--o{ Review : piše ►
+Partner ||--o{ Review : prima ►
+
+Profile ||--o{ Favorite : sprema ►
+Offer |o--o{ Favorite
+Partner |o--o{ Favorite
+
+Profile ||--o{ Notification : prati ►
+Category |o--o{ Notification
+Partner |o--o{ Notification
+@enduml
