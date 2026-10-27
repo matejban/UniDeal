@@ -32,6 +32,7 @@ package "Aplikacijski sloj" {
     }
     class PartnerService {
         +getAll(): Partner[]
+        +getByOwner(ownerId: String): Partner
         +getCities(): String[]
         +getProfile(id: String): Profile
     }
@@ -43,11 +44,16 @@ package "Domenski sloj" {
         aktivna
         istekla
     }
+    enum DiscountType {
+        postotak
+        iznos
+    }
     class Offer {
         +id: String
         +title: String
         +category: String
-        +discount: String
+        +discountType: DiscountType
+        +discountValue: Number
         +validUntil: String
         +conditions: String
         +status: OfferStatus
@@ -70,23 +76,25 @@ package "Domenski sloj" {
     interface PartnerRepository {
         +findAll(): Partner[]
         +findById(id: String): Partner
+        +findByOwner(ownerId: String): Partner
     }
 }
 
 package "Infrastruktura" {
-    class MockOfferRepository
-    class MockPartnerRepository
+    class SupabaseOfferRepository
+    class SupabasePartnerRepository
 }
 
 Partner "1" -- "0..*" Offer : objavljuje >
 Offer --> OfferStatus
+Offer --> DiscountType
 
 OfferService --> OfferRepository
 OfferService --> PartnerRepository
 PartnerService --> PartnerRepository
 PartnerService --> OfferRepository
 
-MockOfferRepository ..|> OfferRepository
-MockPartnerRepository ..|> PartnerRepository
+SupabaseOfferRepository ..|> OfferRepository
+SupabasePartnerRepository ..|> PartnerRepository
 
 @enduml

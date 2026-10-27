@@ -60,7 +60,7 @@ npm run dev
 
 **Adresa:** http://localhost:3000
 
-**Konfiguracija:** Kopirajte `.env.example` u `.env.local` i upišite URL i javni (publishable) ključ Supabase projekta te Google Client ID; potrebni su za prijavu. Prijava Microsoft računom i e-mailom podešava se samo u Supabaseu (Authentication → Sign In / Providers), bez varijabli okruženja. Ponude i partneri još se čitaju iz lažnih podataka u `src/lib/mock-data.ts`.
+**Konfiguracija:** Kopirajte `.env.example` u `.env.local` i upišite URL i javni (publishable) ključ Supabase projekta te Google Client ID; potrebni su za prijavu. Prijava Microsoft računom i e-mailom podešava se samo u Supabaseu (Authentication → Sign In / Providers), bez varijabli okruženja. Ponude i partneri čitaju se iz baze; shema je u `supabase/migrations/`, a demo podaci u `supabase/seed.sql`.
 
 [Dodajte kratak korak provjere, primjerice koja se stranica treba otvoriti ili koja naredba pokreće osnovnu provjeru.] Za detaljno postavljanje pogledajte [projektnu dokumentaciju](docs/Home.md).
 

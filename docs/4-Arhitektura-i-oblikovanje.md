@@ -119,7 +119,7 @@ Svaki korisnik ima jedan profil s ulogom; partner (poslovni subjekt) pripada naj
 
 **Slika 4.3. Dijagram razreda za ponude i partnere sustava UniDeal**
 
-`Offer` sam određuje je li ponuda aktivna (`isActive()`), pa servisi ne ponavljaju to pravilo. `OfferService` i `PartnerService` koordiniraju dohvat podataka za stranice, a sučelja `OfferRepository` i `PartnerRepository` opisuju potrebne operacije trajne pohrane. Trenutačno ih implementiraju lažni repozitoriji; kada se poveže Supabase, dodaju se nove implementacije istih sučelja bez promjene servisa i stranica.
+`Offer` sam određuje je li ponuda aktivna (`isActive()`), pa servisi ne ponavljaju to pravilo. `OfferService` i `PartnerService` koordiniraju dohvat podataka za stranice, a sučelja `OfferRepository` i `PartnerRepository` opisuju potrebne operacije trajne pohrane. Implementiraju ih `SupabaseOfferRepository` i `SupabasePartnerRepository`, koji su zamijenili nekadašnje lažne repozitorije bez promjene servisa i stranica. Javni popisi čitaju se iz pogleda `public_offers` i `public_partners`, pa pretraga i karta prikazuju isto bez obzira na to tko je prijavljen.
 
 **PlantUML izvor:** [4-3-unideal-domain-CD.puml](./puml/4-3-unideal-domain-CD.puml)  
 **Referenca na kod pri završnom pregledu:** [`src/domain`](../src/domain), [`src/services`](../src/services), [`src/repositories`](../src/repositories)
