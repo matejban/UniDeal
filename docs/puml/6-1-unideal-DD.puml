@@ -60,7 +60,7 @@ cloud "Vercel (www.unideal.site)" as Vercel {
   node "Vercel Edge Network (CDN)" as Edge <<executionEnvironment>> {
     artifact "Statičke datoteke\n(.next/static, icon.svg)" as Static <<artifact>>
   }
-  node "Vercel Functions\nNode.js 24, regija iad1" as Functions <<executionEnvironment>> {
+  node "Vercel Functions\nNode.js 24, regija dub1 (Dublin)" as Functions <<executionEnvironment>> {
     artifact "Next.js aplikacija\n(stranice, Server Actions,\n/auth/callback, proxy.ts)" as App <<artifact>>
   }
 }
