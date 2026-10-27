@@ -1,15 +1,14 @@
-import { getCurrentUser } from "@/lib/auth";
+import { requireRole } from "@/lib/auth";
 
 export default async function StudentPage() {
-  // /student je dostupan samo prijavljenima (src/proxy.ts).
-  const user = await getCurrentUser();
+  const user = await requireRole("student");
 
-  if (!user?.isVerifiedStudent()) {
+  if (!user.isVerifiedStudent()) {
     return (
       <div>
         <h1 className="text-2xl font-bold">Moj profil</h1>
         <p className="mt-2 text-gray-600">
-          Ova stranica je za studente. Prijavi se računom svog fakulteta ili veleučilišta (Microsoft).
+          Status studenta nije potvrđen: domena tvoje adrese nije na popisu hrvatskih visokih učilišta.
         </p>
       </div>
     );

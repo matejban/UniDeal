@@ -1,10 +1,9 @@
-import { getCurrentUser } from "@/lib/auth";
+import { requireRole } from "@/lib/auth";
 import { offerService, partnerService } from "@/services";
 
 export default async function PartnerDashboardPage() {
-  // /partner je dostupan samo prijavljenima (src/proxy.ts).
-  const user = await getCurrentUser();
-  const partner = user && (await partnerService.getByOwner(user.id));
+  const user = await requireRole("partner");
+  const partner = await partnerService.getByOwner(user.id);
 
   if (!partner) {
     return (

@@ -1,6 +1,7 @@
 import { Analytics } from "@vercel/analytics/next";
 import type { Metadata } from "next";
 import Link from "next/link";
+import type { UserRole } from "@/domain/User";
 import { getCurrentUser } from "@/lib/auth";
 import "./globals.css";
 
@@ -9,12 +10,13 @@ export const metadata: Metadata = {
   description: "Platforma za studentske pogodnosti i popuste",
 };
 
-const links = [
+// Poveznice s ulogom vidi samo korisnik te uloge; stranice ulogu provjeravaju i same (requireRole).
+const links: { href: string; label: string; role?: UserRole }[] = [
   { href: "/ponude", label: "Ponude" },
   { href: "/karta", label: "Karta" },
-  { href: "/student", label: "Student" },
-  { href: "/partner", label: "Partner" },
-  { href: "/admin", label: "Admin" },
+  { href: "/student", label: "Student", role: "student" },
+  { href: "/partner", label: "Partner", role: "partner" },
+  { href: "/admin", label: "Admin", role: "admin" },
 ];
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
@@ -28,7 +30,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
             <Link href="/" className="text-lg font-bold text-blue-700">
               UniDeal
             </Link>
-            {links.map((l) => (
+            {links.filter((l) => !l.role || l.role === user?.role).map((l) => (
               <Link key={l.href} href={l.href} className="text-sm hover:text-blue-700">
                 {l.label}
               </Link>
