@@ -3,7 +3,7 @@ import { NextResponse, type NextRequest } from "next/server";
 import { supabaseKey, supabaseUrl } from "@/lib/supabase/config";
 
 // Stranice koje zahtijevaju prijavu.
-const protectedPaths = ["/student", "/partner", "/admin"];
+const protectedPaths = ["/student", "/partner", "/admin", "/profil"];
 
 export async function proxy(request: NextRequest) {
   let response = NextResponse.next({ request });

@@ -1,5 +1,6 @@
 "use client";
 
+import { useRouter } from "next/navigation";
 import Script from "next/script";
 import { useRef, useState } from "react";
 import { createClient } from "@/lib/supabase/client";
@@ -16,6 +17,7 @@ async function generateNonce() {
 // aplikacije umjesto Supabaseove. Dobiveni ID token Supabase pretvara u sesiju.
 // `next` je već provjerena putanja unutar aplikacije (safeRedirectPath).
 export default function GoogleLoginButton({ next }: { next: string }) {
+  const router = useRouter();
   const buttonRef = useRef<HTMLDivElement>(null);
   const [failed, setFailed] = useState(false);
 
@@ -27,7 +29,8 @@ export default function GoogleLoginButton({ next }: { next: string }) {
       nonce: hashedNonce,
       use_fedcm_for_button: true,
       callback: async ({ credential }) => {
-        const { error } = await createClient().auth.signInWithIdToken({
+        const supabase = createClient();
+        const { data, error } = await supabase.auth.signInWithIdToken({
           provider: "google",
           token: credential,
           nonce,
@@ -35,6 +38,13 @@ export default function GoogleLoginButton({ next }: { next: string }) {
         if (error) {
           console.error("Prijava nije uspjela:", error.message);
           setFailed(true);
+          return;
+        }
+        // Račun koji je deaktiviran (F-005, F-026) ne može se prijaviti, kao ni kod prijave e-mailom i Microsoftom.
+        const { data: profile } = await supabase.from("profiles").select("is_active").eq("id", data.user.id).maybeSingle();
+        if (profile?.is_active === false) {
+          await supabase.auth.signOut();
+          router.replace("/prijava?greska=deaktiviran");
           return;
         }
         // Puno učitavanje da navigacija prikaže prijavljenog korisnika.
