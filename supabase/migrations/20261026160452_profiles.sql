@@ -1,4 +1,4 @@
--- Profil prijavljenog korisnika: uloga i status studenta (F-002, F-003).
+-- Profil prijavljenog korisnika: uloga i status studenta (F-002).
 -- Uloga se određuje načinom prijave: Microsoft → student, Google ili e-mail → partner.
 -- Administrator se dodjeljuje ručno: update public.profiles set role = 'admin' where id = '…';
 
