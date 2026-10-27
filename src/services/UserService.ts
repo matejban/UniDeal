@@ -25,4 +25,9 @@ export class UserService {
   async deactivateOwnAccount(): Promise<void> {
     await this.users.deactivateSelf();
   }
+
+  // Uvjeti korištenja prihvaćaju se pri prvoj prijavi (F-032).
+  async acceptTerms(): Promise<void> {
+    await this.users.acceptTerms();
+  }
 }

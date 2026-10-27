@@ -56,6 +56,14 @@ export default async function RootLayout({ children }: { children: React.ReactNo
           </nav>
         </header>
         <main className="mx-auto max-w-5xl px-4 py-8">{children}</main>
+        <footer className="border-t border-gray-200">
+          <div className="mx-auto flex max-w-5xl gap-6 px-4 py-6 text-sm text-gray-500">
+            <span>© 2026 UniDeal</span>
+            <Link href="/uvjeti" className="hover:text-blue-700">
+              Uvjeti korištenja
+            </Link>
+          </div>
+        </footer>
         <Analytics />
         <SpeedInsights />
       </body>

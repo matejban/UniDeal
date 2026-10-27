@@ -170,8 +170,25 @@ exception when insufficient_privilege then
   insert into rezultati values ('korisnik ne može sam promijeniti ulogu', true);
 end $$;
 
+-- ---------------------------------------------------------------- uvjeti korištenja (F-032)
+do $$ begin
+  update public.profiles set terms_accepted_at = now() where id = '00000000-0000-4000-8000-0000000000a1';
+  insert into rezultati values ('korisnik ne može sam upisati vrijeme prihvaćanja', false);
+exception when insufficient_privilege then
+  insert into rezultati values ('korisnik ne može sam upisati vrijeme prihvaćanja', true);
+end $$;
+select public.accept_terms();
+insert into rezultati select 'korisnik prihvaća uvjete', terms_accepted_at is not null
+  from public.profiles where id = '00000000-0000-4000-8000-0000000000a1';
+
 set local role anon;
 set local request.jwt.claims = '{"role":"anon"}';
+do $$ begin
+  perform public.accept_terms();
+  insert into rezultati values ('anon ne može prihvatiti uvjete', false);
+exception when insufficient_privilege then
+  insert into rezultati values ('anon ne može prihvatiti uvjete', true);
+end $$;
 insert into rezultati select 'anon vidi recenziju aktivnog studenta', count(*) = 1 from public.reviews;
 
 set local role authenticated;
@@ -196,6 +213,11 @@ end $$;
 
 -- ---------------------------------------------------------------- rezultat
 reset role;
+
+-- Provjera bez RLS-a: prihvaćanje uvjeta nije promijenilo profile drugih probnih korisnika.
+insert into rezultati select 'prihvaćanje ne mijenja tuđi profil', count(*) = 0 from public.profiles
+  where terms_accepted_at is not null and id in ('00000000-0000-4000-8000-0000000000a2',
+    '00000000-0000-4000-8000-0000000000a3', '00000000-0000-4000-8000-0000000000a4');
 
 do $$ begin
   if exists (select 1 from rezultati where not ok) then
