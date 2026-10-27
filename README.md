@@ -36,11 +36,11 @@ Za Iteraciju 1 i Završni pregled navedite konkretne podatke. Provjerite vodi li
 
 **Javno dostupna aplikacija:** <https://www.unideal.site>
 
-**Isprobajte:** [Jedna ili dvije kratke radnje koje pokazuju funkcionalan korisnički tijek.]
+**Isprobajte:** otvorite [Ponude](https://www.unideal.site/ponude), odaberite kategoriju ili grad i kliknite *Filtriraj*; otvorite ponudu, a s nje profil partnera s njegovim aktivnim ponudama.
 
-**Demonstracija:** [Objasnite kako dobiti potreban ograničeni pristup ako je prijava obavezna; u suprotnom napišite „Korisnički račun nije potreban.” Ovdje ne objavljujte lozinke ni pristupne tokene.]
+**Demonstracija:** za pregled ponuda, partnera i karte korisnički račun nije potreban. Studentski dio (`/student`) otvara se prijavom studentskim Microsoft računom hrvatskog visokog učilišta (npr. `@fer.hr`), a partnerski (`/partner`) registracijom e-mailom i lozinkom ili Google računom. Administratorsku ulogu demonstratoru na zahtjev dodjeljuje tim u bazi, nakon njegove prve prijave; lozinke se ne dijele.
 
-**Ograničenja:** [Kratko navedite ograničenja postavljene inačice ili postavite poveznicu na jedinstveno mjerodavno mjesto u dokumentaciji s poznatim problemima.]
+**Ograničenja:** partneri i ponude su izmišljeni demo podaci. Registracija partnera s podacima tvrtke, izrada ponuda, kuponi s QR kodom, recenzije, karta, pretplata (Stripe) i odobravanje partnera još nisu implementirani; stanje po zadacima vidi se u [GitHub Issues](https://github.com/matejban/UniDeal/issues). Status studenta prepoznaje se po domeni Microsoft računa, pa se student ne razlikuje od djelatnika istog učilišta (AS-01 u [analizi zahtjeva](docs/2-Analiza-zahtjeva.md)).
 
 [Vodič za postavljanje i pokretanje](docs/6-Postavljanje-instalacija-i-konfiguracija.md) opisuje smještaj aplikacije (engl. hosting) koji tim stvarno koristi. Tim može koristiti Render ili drugu platformu koju ste dogovorili s asistentom/demonstratorom.
 
@@ -54,7 +54,8 @@ Za Iteraciju 1 i Završni pregled navedite konkretne podatke. Provjerite vodi li
 ```bash
 git clone https://github.com/matejban/UniDeal.git
 cd UniDeal
-npm install
+npm ci
+cp .env.example .env.local   # upišite vrijednosti (vidi Konfiguracija)
 npm run dev
 ```
 
@@ -62,7 +63,7 @@ npm run dev
 
 **Konfiguracija:** Kopirajte `.env.example` u `.env.local` i upišite URL i javni (publishable) ključ Supabase projekta te Google Client ID; potrebni su za prijavu. Prijava Microsoft računom i e-mailom podešava se samo u Supabaseu (Authentication → Sign In / Providers), bez varijabli okruženja. Ponude i partneri čitaju se iz baze; shema je u `supabase/migrations/`, a demo podaci u `supabase/seed.sql`.
 
-[Dodajte kratak korak provjere, primjerice koja se stranica treba otvoriti ili koja naredba pokreće osnovnu provjeru.] Za detaljno postavljanje pogledajte [projektnu dokumentaciju](docs/Home.md).
+**Provjera:** otvorite <http://localhost:3000/ponude>; trebaju se prikazati tri demo ponude iz baze (npr. „Kava + kroasan”). Za detaljno postavljanje pogledajte [poglavlje 6](docs/6-Postavljanje-instalacija-i-konfiguracija.md).
 
 ## Tehnologije
 
@@ -71,15 +72,15 @@ Dogovoreni tehnološki skup (planirano; tablicu ažurirati prema stvarnom repozi
 | Tehnologija ili alat | Uloga u ovom projektu | Razlog uporabe ili važno ograničenje |
 | --- | --- | --- |
 | Next.js (TypeScript) + Tailwind CSS | Korisničko sučelje i poslužiteljska logika aplikacije | Klijentski i poslužiteljski dio u jednom projektu koji se izravno postavlja na Vercel |
-| Supabase Postgres | Pohrana korisnika, partnera, ponuda, kupona i recenzija | Promjene sheme vode se migracijama preko Supabase CLI-ja |
+| Supabase Postgres | Pohrana korisnika, partnera, ponuda, kupona i recenzija | Promjene sheme vode se SQL migracijama u `supabase/migrations` |
 | Supabase Auth (Microsoft Entra ID, Google OAuth 2.0, e-mail i lozinka) | Prijava studenata (Microsoft) i partnera (Google ili e-mail) | Status studenta potvrđuje se domenom studentskog Microsoft računa (tablica `allowed_student_domains`) |
 | Row Level Security (RLS) | Ograničavanje pristupa podacima prema ulozi (student, partner, administrator) | Pravila se provode u bazi, pa ih treba ispitati za svaku ulogu |
 | Supabase Storage | Pohrana logotipa partnera i slika ponuda | — |
 | pg_cron ili Supabase Edge Function | Automatski istek ponuda | Istekle ponude moraju nestati iz pretrage bez ručne radnje |
 | Stripe (test mode) | Naplata mjesečne i godišnje pretplate partnera | Status pretplate ažurira se putem webhooka; bez aktivne pretplate ponude nisu javne |
 | Google Maps JavaScript API | Karta partnera i ponuda, geokodiranje adrese, ponude u blizini | Vanjska usluga s API ključem i ograničenjem korištenja |
-| Resend | Slanje e-mail obavijesti | Obavijesti o odobrenju partnera, novim ponudama i ponudama koje uskoro istječu |
-| Vercel | Javno postavljanje aplikacije | — |
+| Resend | Slanje e-maila (SMTP za Supabase Auth, kasnije obavijesti) | Pošiljatelj `noreply@unideal.site`; domena je potvrđena DNS zapisima |
+| Vercel | Javno postavljanje aplikacije i domena `unideal.site` | Push na `master` automatski se postavlja u produkciju |
 
 <a id="team-members"></a>
 ## Članovi tima
