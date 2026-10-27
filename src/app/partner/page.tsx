@@ -1,10 +1,21 @@
-import { offerService } from "@/services";
-
-// Dok nema prijave, prikazuju se ponude jednog lažnog partnera.
-const partnerId = "kafic-kampus";
+import { getCurrentUser } from "@/lib/auth";
+import { offerService, partnerService } from "@/services";
 
 export default async function PartnerDashboardPage() {
-  const myOffers = await offerService.getPartnerOffers(partnerId);
+  // /partner je dostupan samo prijavljenima (src/proxy.ts).
+  const user = await getCurrentUser();
+  const partner = user && (await partnerService.getByOwner(user.id));
+
+  if (!partner) {
+    return (
+      <div>
+        <h1 className="text-2xl font-bold">Partnerska ploča</h1>
+        <p className="mt-2 text-gray-600">Još nemaš profil partnera.</p>
+      </div>
+    );
+  }
+
+  const myOffers = await offerService.getPartnerOffers(partner.id);
 
   return (
     <div>
