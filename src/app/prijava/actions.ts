@@ -3,7 +3,7 @@
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { isDeactivated } from "@/lib/auth";
-import { safeRedirectPath } from "@/lib/redirect";
+import { safeRedirectPath, welcomePath } from "@/lib/redirect";
 import { createClient } from "@/lib/supabase/server";
 
 // Prijava i registracija partnera e-mailom i lozinkom.
@@ -40,7 +40,7 @@ export async function signInWithEmail(formData: FormData) {
     await supabase.auth.signOut();
     redirect("/prijava?greska=deaktiviran");
   }
-  redirect(safeRedirectPath(String(formData.get("next") ?? "/")));
+  redirect(welcomePath(safeRedirectPath(String(formData.get("next") ?? "/"))));
 }
 
 export async function signUpWithEmail(formData: FormData) {

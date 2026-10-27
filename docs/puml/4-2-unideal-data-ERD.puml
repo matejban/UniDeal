@@ -37,7 +37,9 @@ entity "Profil korisnika" as Profile {
     student_status : potvrden | nepotvrden
     institution : text
     email : text
+    full_name : text
     is_active : boolean
+    terms_accepted_at : timestamptz
 }
 
 entity "Dopuštena studentska domena" as Domain {

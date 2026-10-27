@@ -1,5 +1,4 @@
-import { redirect } from "next/navigation";
-import { getCurrentUser } from "@/lib/auth";
+import { requireUser } from "@/lib/auth";
 import { deactivateAccount, updateProfile } from "./actions";
 
 const roles = { student: "Student", partner: "Partner", admin: "Administrator" };
@@ -15,8 +14,7 @@ export default async function ProfilePage({
 }: {
   searchParams: Promise<{ greska?: string; poruka?: string }>;
 }) {
-  const user = await getCurrentUser();
-  if (!user) redirect("/prijava?next=/profil");
+  const user = await requireUser();
   const { greska, poruka } = await searchParams;
 
   return (
