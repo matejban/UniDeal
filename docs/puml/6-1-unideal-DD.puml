@@ -1,0 +1,102 @@
+' ==============================================================================
+' 6-1-unideal-DD.puml
+'
+' Svrha:    Prikazuje produkcijski razmještaj sustava UniDeal: Next.js aplikaciju
+'           na Vercelu, Supabase (Auth, REST API, Postgres) i vanjske pružatelje
+'           identiteta i e-pošte te komunikacijske putove među njima.
+' Praćenje: Regije, protokoli i varijable trebaju odgovarati stvarnoj konfiguraciji
+'           Vercela i Supabasea; pri promjeni produkcijske topologije ažurirati model.
+'
+' Diagram level: Physical Deployment Architecture
+' Diagram type:  Deployment Diagram
+' ==============================================================================
+
+@startuml
+!pragma layout smetana
+left to right direction
+title Sustav UniDeal – produkcijski razmještaj\n\n\n
+
+skinparam shadowing false
+skinparam defaultFontName Arial
+skinparam ArrowColor #212529
+
+skinparam node {
+    BackgroundColor #FFFFFF
+    BorderColor #212529
+}
+
+skinparam cloud {
+    BackgroundColor #F8F9FA
+    BorderColor #212529
+}
+
+skinparam artifact {
+    BackgroundColor #E7F1FF
+    BorderColor #0D6EFD
+}
+
+skinparam database {
+    BackgroundColor #FFF3CD
+    BorderColor #212529
+}
+
+skinparam note {
+    BackgroundColor #F8F9FA
+    BorderColor #212529
+    FontColor #212529
+}
+
+' ==============================================================================
+' Čvorovi, okruženja i razmješteni artefakti
+' ==============================================================================
+
+node "Korisnički uređaj" as Device <<device>> {
+  node "Web-preglednik" as Browser <<executionEnvironment>> {
+    artifact "Klijentski dio Next.js\n(React, gumbi za prijavu)" as Client <<artifact>>
+  }
+}
+
+cloud "Vercel (www.unideal.site)" as Vercel {
+  node "Vercel Edge Network (CDN)" as Edge <<executionEnvironment>> {
+    artifact "Statičke datoteke\n(.next/static, icon.svg)" as Static <<artifact>>
+  }
+  node "Vercel Functions\nNode.js 24, regija iad1" as Functions <<executionEnvironment>> {
+    artifact "Next.js aplikacija\n(stranice, Server Actions,\n/auth/callback, proxy.ts)" as App <<artifact>>
+  }
+}
+
+note bottom of App
+  Varijable okruženja (javne):
+  NEXT_PUBLIC_SUPABASE_URL
+  NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY
+  NEXT_PUBLIC_GOOGLE_CLIENT_ID
+end note
+
+cloud "Supabase (eu-west-1)" as Supabase {
+  node "Supabase Auth" as Auth <<server>>
+  node "PostgREST (REST API)" as Rest <<server>>
+  database "Postgres\n(sheme public i private, RLS)" as DB <<database>>
+}
+
+cloud "Vanjski pružatelji" as External {
+  node "Microsoft Entra ID" as Entra <<server>>
+  node "Google Identity Services" as Google <<server>>
+  node "Resend (SMTP)" as Resend <<server>>
+}
+
+' ==============================================================================
+' Komunikacijski putovi
+' ==============================================================================
+
+Browser --> Edge : <<HTTPS : 443>>\nstatičke datoteke
+Browser --> Functions : <<HTTPS : 443>>\nstranice, Server Actions
+Functions --> Rest : <<HTTPS : 443>>\nupiti s kolačićem sesije korisnika
+Functions --> Auth : <<HTTPS : 443>>\nzamjena koda, prijava lozinkom
+Browser --> Entra : <<HTTPS : 443>>\nprijava studenta
+Browser --> Auth : <<HTTPS : 443>>\nOAuth preusmjeravanje, Google ID token
+Browser --> Google : <<HTTPS : 443>>\nprijava partnera
+Auth --> Entra : <<HTTPS : 443>>\nOAuth 2.0 (organizations)
+Auth --> DB : <<TCP : 5432>>\ninterna veza
+Rest --> DB : <<TCP : 5432>>\ninterna veza, RLS po JWT-u
+Auth --> Resend : <<SMTPS : 465>>\ne-mail za potvrdu adrese
+@enduml

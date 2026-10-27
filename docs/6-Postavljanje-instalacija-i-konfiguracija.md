@@ -10,9 +10,19 @@ Zamijenite oglednu topologiju, naredbe i postavke onima koje vaš tim stvarno ko
 
 **Cilj:** Prikazati okruženja izvođenja, raspodijeljene dijelove programa, spremište podataka i relevantne vanjske usluge. Njihovu komunikaciju i mrežne protokole prikažite jednim UML dijagramom razmještaja. Dok dijagram komponenata iz Poglavlja 4 prikazuje logičke odgovornosti, dijagram razmještaja pokazuje gdje se izvršni artefakti fizički ili virtualno izvode.
 
-**Dijagram razmještaja:** [Ugradite čitljivu sliku UML dijagrama razmještaja.]  
-**PlantUML izvor:** [Poveznica na odgovarajuću `.puml` datoteku.]  
-**Javno dostupna aplikacija:** [Poveznica na javnu adresu navedenu u README-u ili na njegov odjeljak o postavljanju.]
+**Dijagram razmještaja:**
+
+![UML dijagram razmještaja sustava UniDeal](./assets/diagrams/6-1-unideal-DD.svg)
+
+**Slika 6.1. UML dijagram razmještaja sustava UniDeal**
+
+**PlantUML izvor:** [6-1-unideal-DD.puml](./puml/6-1-unideal-DD.puml)  
+**Javno dostupna aplikacija:** <https://www.unideal.site> (vidi [README](../README.md#deployment))
+
+* **Korisnički uređaj:** preglednik prima HTML i statičke datoteke s Vercela. Prijava se dijelom odvija u pregledniku: Google gumb dobiva ID token od Google Identity Servicesa i šalje ga Supabase Authu, a Microsoft prijava preusmjerava preglednik preko Supabase Autha na Microsoft Entra ID.
+* **Vercel:** jedna Next.js aplikacija; statičke datoteke poslužuje CDN, a stranice, Server Actions, `/auth/callback` i `src/proxy.ts` izvode se kao Vercel Functions (Node.js 24, regija `iad1`). Aplikacija nema zasebni API poslužitelj.
+* **Supabase:** aplikacija razgovara s Supabaseom samo preko HTTPS-a (Auth i REST API) i samo javnim ključem; što tko smije čitati i mijenjati određuju RLS pravila u bazi (vidi 4.6). Postgres nije izravno dostupan aplikaciji.
+* **Vanjske usluge:** Microsoft Entra ID (prijava studenata), Google Identity Services (prijava partnera) i Resend, preko kojega Supabase Auth šalje e-mail za potvrdu adrese.
 
 *Pravila izrade prikaza:*
 * Označite stvarne čvorove na kojima se program izvodi (korisnički uređaj, poslužitelj, baza podataka) i protokole među njima.
@@ -44,22 +54,37 @@ Predloženi klijentski dio gradi se kao statičko web-mjesto. Poslužiteljska we
 
 **Cilj:** Omogućiti novom članu tima ili ocjenjivaču da iz čiste radne kopije repozitorija instalira i lokalno pokrene cijeli programski sustav, uključujući bazu podataka i početne podatke.
 
-1. **Preduvjeti i preuzimanje izvornog koda:**
-   * Navedite podržane verzije izvršnog okruženja, upravitelja paketa, baze podataka i CLI alata.
-   * Navedite točne naredbe za kloniranje repozitorija i radni direktorij; naznačite koje se naredbe pokreću iz korijena repozitorija, a koje iz poddirektorija.
-2. **Ovisnosti i konfiguracijske varijable:**
-   * Navedite točne naredbe za instalaciju ovisnosti za klijentski i poslužiteljski dio.
-   * Povežite predložak `.env.example`, opišite ulogu svake varijable, koje vrijednosti smiju biti javne i kako ovlašteni korisnik dobiva tajne vrijednosti.
-   * *Upozorenje:* Nikada ne objavljujte stvarne pristupne podatke i tajne ključeve.
-3. **Inicijalizacija baze podataka i migracije:**
-   * Navedite redoslijed naredbi za stvaranje lokalne baze, dodjelu korisničkih prava i izvođenje migracija sheme; navedite izvode li se migracije ručno ili pri pokretanju te stvarne putanje verzioniranih skripti.
-   * Objasnite kako se učitavaju nužni početni podaci (samo oni nužni) i kako spriječiti višestruko izvođenje početnih skripti.
-4. **Pokretanje i verifikacija:**
-   * Prikažite točan redoslijed pokretanja procesa i lokalne mrežne adrese na kojima su dostupni.
-   * Navedite točan korak provjere (npr. slanje probnog zahtjeva ili pregled u pregledniku) koji dokazuje da klijentski dio uspješno komunicira s poslužiteljskim API-jem i bazom te da se važni podaci trajno pohranjuju.
-   * Navedite gdje čitatelj može provjeriti pogreške ako neki korak ne uspije.
+Lokalno se pokreće samo Next.js aplikacija. Lokalne baze nema: aplikacija se spaja na zajednički Supabase projekt u oblaku, isti koji koristi i javna inačica.
 
-Uključite samo korake koje aplikacija stvarno zahtijeva. Ako README već sadrži potpun i ponovljiv postupak, povežite ga i ovdje dodajte samo ono što nedostaje umjesto održavanja dviju potpunih kopija istih uputa.
+1. **Preduvjeti i preuzimanje izvornog koda:** Node.js 20.9 ili noviji (zahtjev Next.js 16) i npm. Sve naredbe pokreću se iz korijena repozitorija.
+
+   ```bash
+   git clone https://github.com/matejban/UniDeal.git
+   cd UniDeal
+   npm ci
+   ```
+
+2. **Konfiguracijske varijable:** kopirajte [`.env.example`](../.env.example) u `.env.local` (Git ga ne prati) i upišite vrijednosti:
+
+   | Varijabla | Uloga | Odakle |
+   | --- | --- | --- |
+   | `NEXT_PUBLIC_SUPABASE_URL` | adresa Supabase projekta | Supabase → Project Settings → API |
+   | `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` | javni (publishable) ključ za Supabase Auth i REST API | Supabase → Project Settings → API Keys |
+   | `NEXT_PUBLIC_GOOGLE_CLIENT_ID` | Client ID za gumb „Prijava Googleom” | Google Cloud → Google Auth Platform → Clients → UniDeal |
+
+   Sve tri vrijednosti su javne (vidljive pregledniku), pa ih član tima može dobiti iz Vercela (Project → Settings → Environment Variables) ili od voditelja. Za lokalno pokretanje nisu potrebne tajne vrijednosti. Tajni ključevi (Microsoft client secret, SMTP lozinka) upisani su samo u Supabaseu i nikad se ne stavljaju u repozitorij ni u `.env` datoteke.
+
+3. **Baza podataka i migracije:** shema je u verzioniranim SQL migracijama u [`supabase/migrations`](../supabase/migrations), a izvode se redom po vremenskoj oznaci u nazivu. Na zajedničkom projektu su već primijenjene, pa ih pri lokalnom pokretanju ne treba ponovno izvoditi. Promjena sheme uvijek je nova migracija (nova datoteka), nikad izmjena postojeće; primjenjuje se ručno u Supabase SQL Editoru prije spajanja koda koji je treba. Demo partneri i ponude u [`supabase/seed.sql`](../supabase/seed.sql) učitani su jednom; skripta koristi `on conflict do nothing`, pa ponovno izvođenje ne stvara duplikate. RLS pravila provjerava [`supabase/tests/rls.sql`](../supabase/tests/rls.sql): skripta se izvodi u SQL Editoru, sve poništava na kraju i javlja grešku s nazivima testova koji ne prolaze.
+
+4. **Pokretanje i provjera:**
+
+   ```bash
+   npm run dev
+   ```
+
+   Aplikacija je dostupna na <http://localhost:3000>. Otvorite <http://localhost:3000/ponude>: prikazuju se tri demo ponude („Kava + kroasan”, „Mjesečna članarina”, „Popust na udžbenike”) s partnerima i kategorijama, čime je potvrđeno da aplikacija čita bazu preko Supabasea. Ako se umjesto toga pojavi greška, poruka „Učitavanje ponuda nije uspjelo” u terminalu znači da su `NEXT_PUBLIC_SUPABASE_*` vrijednosti pogrešne ili da Supabase nije dostupan.
+
+   Za prijavu na lokalnoj adresi `http://localhost:3000` mora biti dopuštena u Supabaseu (Authentication → URL Configuration → Redirect URLs), a za Google i među *Authorized JavaScript origins* klijenta u Google Cloudu. Greške prijave vide se u Supabaseu (Logs → Auth).
 
 <details>
 <summary><strong>Primjer: Instalacija programa s lokalnom PostgreSQL bazom (CrisisMap)</strong></summary>
@@ -121,26 +146,30 @@ Ako se adresa poslužiteljskog dijela razlikuje od `http://localhost:8080`, kori
 
 | **Postavljeni podsustav** | **Infrastruktura i izvor koda** | **Naredbe izgradnje i pokretanja** | **Konfiguracija i varijable okruženja** |
 | --- | --- | --- | --- |
-| **Klijentski dio** | [Usluga smještaja, grana i putanja mape] | [Naredba izgradnje i izlazni direktorij] | [Javne varijable vidljive pregledniku] |
-| **Poslužiteljski dio** | [Usluga smještaja, grana i putanja mape] | [Naredba izgradnje i naredba pokretanja] | [Port, veza s bazom podataka, tajni ključevi] |
-| **Baza podataka** | [Upravljana baza podataka i regija smještaja] | [Mehanizam izvođenja migracija sheme i trenutak uspostavljanja sheme] | [Zaštićeni pristupni podaci baze] |
+| **Klijentski i poslužiteljski dio** (Next.js) | Vercel, projekt `unideal`; repozitorij `matejban/UniDeal`, korijenski direktorij. Grana `master` ide u produkciju, ostale grane dobivaju preview. | Vercel prepoznaje Next.js i sam izvodi `npm install` i `next build`; stranice se izvode kao Vercel Functions (Node.js 24, regija `iad1`), a statičke datoteke s CDN-a. | `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`, `NEXT_PUBLIC_GOOGLE_CLIENT_ID`: javne, postavljene za Production, Preview i Development. Tajnih varijabli aplikacija zasad nema. |
+| **Baza podataka i autentifikacija** | Supabase (upravljani Postgres i Auth), regija `eu-west-1` | Migracije iz `supabase/migrations` primjenjuju se ručno u SQL Editoru prije spajanja koda koji ih treba; postavljanje aplikacije ne mijenja shemu. | Pristupni podaci baze ostaju u Supabaseu. Aplikacija koristi samo javni ključ, a pristup podacima ograničava RLS. |
+| **E-pošta** | Resend, domena pošiljatelja `unideal.site` (DKIM i SPF zapisi u Vercel DNS-u) | — | SMTP podaci (`smtp.resend.com`, port 465, korisnik `resend`, lozinka je Resend API ključ) upisani su samo u Supabase → Authentication → Emails → SMTP Settings. |
+| **Domena** | `unideal.site`, registrirana i s DNS-om na Vercelu; `www.unideal.site` je glavna adresa, a `unideal.site` preusmjerava na nju (308). | — | — |
+| **Pružatelji identiteta** | Microsoft Entra ID (registracija aplikacije za račune organizacija), Google Cloud (OAuth klijent) | — | Microsoft client secret upisan je samo u Supabase → Authentication → Sign In / Providers → Azure. |
 
 **CI i CD:** Kontinuirana integracija (engl. *continuous integration*, CI) automatizira izgradnju i provjere pri integriranju promjena. Kratica CD može označavati dva različita postupka. **Kontinuirana isporuka** (engl. *continuous delivery*) održava provjerenu inačicu spremnom za postavljanje, ali postavljanje u produkciju može zahtijevati ručnu odluku. **Kontinuirano postavljanje** (engl. *continuous deployment*) automatski postavlja uspješno provjerenu promjenu u produkciju. Navedite postupak koji projekt stvarno koristi; nemojte koristiti oznaku CI/CD samo zato što alat podržava automatizaciju.
 U tablici i opisu navedite **nazive i svrhu** varijabli, gdje ovlašteni održavatelj dobiva njihove vrijednosti i kojoj se usluzi svaka postavlja. Razlikujte konfiguraciju vidljivu pregledniku od tajnih podataka poslužiteljskog dijela.
 
+**CI i CD u ovom projektu:** Vercel automatski postavlja svaki push: grana `master` ide u produkciju, a ostale grane na preview adrese (zaštićene Vercel prijavom). Automatiziranih provjera prije postavljanja zasad nema (lint, build i testovi u GitHub Actionsu su zadatak #8), pa to nije kontinuirano postavljanje u smislu gornje definicije, nego automatsko postavljanje nakon pregleda pull requesta.
+
 ### Postupak postavljanja
 
-1. **Infrastruktura baze podataka:** [Postupak kreiranja instance baze i primjene migracija.]
-2. **Postavljanje poslužiteljskog dijela:** [Povezivanje repozitorija, postavljanje tajnih varijabli i pokretanje.]
-3. **Izgradnja i objava klijentskog dijela:** [Postavljanje javnog URL-a poslužitelja i generiranje statičkih datoteka.]
-4. **Završno povezivanje:** [Postavljanje dozvoljenih ishodišta (CORS) i verifikacija javne domene.]
+1. **Supabase:** stvoriti projekt u regiji `eu-west-1` i redom primijeniti sve migracije iz `supabase/migrations` u SQL Editoru, zatim jednom izvesti `supabase/seed.sql`. U Authentication → Sign In / Providers uključiti Azure (Azure Tenant URL `https://login.microsoftonline.com/organizations`), Google i Email s potvrdom adrese. U Authentication → URL Configuration postaviti Site URL na `https://www.unideal.site` i dodati dopuštene adrese preusmjeravanja za produkciju, preview (`https://*-acme-5901.vercel.app/**`) i, po potrebi, `http://localhost:3000/**`.
+2. **Pružatelji identiteta:** u Microsoft Entra ID registrirati aplikaciju za račune bilo koje organizacije s Redirect URI `https://<project-ref>.supabase.co/auth/v1/callback` i opcionalnom tvrdnjom `email`; Application ID i client secret upisati u Supabase. U Google Cloudu napraviti OAuth klijent (Web) s produkcijskom domenom među *Authorized JavaScript origins*; Client ID upisati u Supabase i u varijablu `NEXT_PUBLIC_GOOGLE_CLIENT_ID`.
+3. **Vercel:** uvesti repozitorij (Next.js se prepoznaje sam), postaviti tri `NEXT_PUBLIC_*` varijable za sva okruženja i produkcijsku granu `master`. Dodati domene `unideal.site` i `www.unideal.site`.
+4. **E-pošta:** u Resendu dodati domenu `unideal.site` i dopustiti mu da DNS zapise upiše u Vercel; nakon potvrde domene u Supabaseu uključiti custom SMTP s podacima iz tablice, uz pošiljatelja `noreply@unideal.site`.
+5. **Provjera:** otvoriti <https://www.unideal.site/ponude> i provjeriti da se prikazuju demo ponude; prijaviti se studentskim Microsoft računom i na `/student` provjeriti status „potvrđen” i naziv učilišta; registrirati partnera e-mailom i provjeriti da stiže e-mail za potvrdu.
 
 ### Pristup i administracija
 
-- **Nadzor rada i zapisi pogrešaka:** [Objasnite gdje i kako ovlašteni članovi tima pristupaju zapisima poslužitelja (engl. *logs*) te kako pregledati pogreške aplikacije.]
-- **Upravljanje administratorskim ovlastima:** [Ako aplikacija ima administratorsku ili moderatorsku ulogu, navedite putanju do sučelja i proceduru dodjele uloge bez javnog otkrivanja pristupnih podataka. Ako nema administratorskog sučelja, to kratko navedite.]
-- **Postupak ažuriranja:** [Opišite kako izmjena iz glavne grane dolazi do postavljene aplikacije. Navedite izvodi li se postavljanje ručno, kontinuiranom isporukom ili kontinuiranim postavljanjem te koje provjere prethode postavljanju.]
-- **Sigurnosne kopije i oporavak:** [Dokumentirajte samo ako ga je tim stvarno konfigurirao i koristio.]
+- **Nadzor rada i zapisi pogrešaka:** greške izgradnje vide se u Vercel → Deployments, a greške pri izvođenju u Vercel → Logs. Prijave i e-mailovi vide se u Supabase → Logs (Auth), upiti u Supabase → Logs (API i Postgres), a isporuka e-maila u Resend → Emails. Pristup imaju članovi tima dodani u Vercel, Supabase i Resend.
+- **Upravljanje administratorskim ovlastima:** administrator ima sučelje na `/admin` i `/admin/korisnici` (pregled i deaktivacija računa). Ulogu nije moguće dobiti prijavom; član tima s pristupom Supabaseu dodjeljuje je u SQL Editoru naredbom `update public.profiles set role = 'admin' where email = '<adresa>';`, nakon što se korisnik barem jednom prijavio.
+- **Postupak ažuriranja:** svaki član radi na svojoj grani (`ime/broj-područje`) i otvara pull request prema `master`; spajanjem Vercel postavlja novu inačicu u produkciju. Migraciju koju novi kod treba potrebno je primijeniti u Supabaseu prije spajanja. Prethodna inačica može se vratiti iz Vercel → Deployments (Instant Rollback); vraćanje ne poništava migracije.
 
 Opisujte samo okruženja i automatizirane postupke koji stvarno postoje. Okruženje za pripremu, kontinuirana integracija (CI), kontinuirana isporuka ili kontinuirano postavljanje (CD), krajnja točka za provjeru stanja, sigurnosne kopije i druge operativne mogućnosti navode se samo ako ih tim stvarno koristi.
 <details>
