@@ -8,7 +8,8 @@ import { signInWithEmail, signUpWithEmail } from "./actions";
 const errors: Record<string, string> = {
   "1": "Prijava nije uspjela. Pokušaj ponovno.",
   domena: "Prijava Microsoft računom dostupna je samo studentima hrvatskih visokih učilišta.",
-  lozinka: "Pogrešan e-mail ili lozinka, ili adresa još nije potvrđena.",
+  lozinka: "Pogrešna lozinka. Ako si se registrirao Googleom, prijavi se gumbom za Google.",
+  nepotvrdeno: "Adresa još nije potvrđena. Klikni poveznicu iz e-maila koji smo ti poslali.",
   registracija: "Registracija nije uspjela. Lozinka mora imati barem 6 znakova, a adresa ne smije već biti registrirana.",
 };
 
@@ -29,6 +30,12 @@ export default async function LoginPage({
       {greska && errors[greska] && <p className="rounded bg-red-50 p-3 text-sm text-red-700">{errors[greska]}</p>}
       {poruka === "potvrdeno" && (
         <p className="rounded bg-green-50 p-3 text-sm text-green-800">Adresa je potvrđena. Sada se možeš prijaviti.</p>
+      )}
+      {poruka === "novi" && (
+        <p className="rounded bg-green-50 p-3 text-sm text-green-800">
+          Nismo pronašli račun s tom adresom pa smo ga napravili. Poslali smo ti e-mail s poveznicom za potvrdu adrese.
+          Nakon potvrde se možeš prijaviti.
+        </p>
       )}
       {poruka === "potvrda" && (
         <p className="rounded bg-green-50 p-3 text-sm text-green-800">
