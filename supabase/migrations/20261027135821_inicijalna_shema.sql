@@ -140,7 +140,7 @@ create schema private;
 grant usage on schema private to anon, authenticated;
 
 -- Partner je javan kad ga je administrator odobrio, ima aktivnu pretplatu
--- i račun vlasnika nije deaktiviran (F-005, F-007, F-009).
+-- i račun vlasnika nije deaktiviran (F-005, F-007).
 create function private.partner_is_public(pid uuid)
 returns boolean
 language sql
