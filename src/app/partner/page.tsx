@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { requireRole } from "@/lib/auth";
 import { offerService, partnerService } from "@/services";
 
@@ -10,6 +11,25 @@ export default async function PartnerDashboardPage() {
       <div>
         <h1 className="text-2xl font-bold">Partnerska ploča</h1>
         <p className="mt-2 text-gray-600">Još nemaš profil partnera.</p>
+        <Link
+          href="/partner/registracija"
+          className="mt-4 inline-block rounded bg-blue-700 px-4 py-2 text-white hover:bg-blue-800"
+        >
+          Registriraj poslovni subjekt
+        </Link>
+      </div>
+    );
+  }
+
+  if (partner.approvalStatus !== "odobren") {
+    return (
+      <div>
+        <h1 className="text-2xl font-bold">Partnerska ploča</h1>
+        {partner.isPending() ? (
+          <p className="mt-4 rounded bg-yellow-50 p-3 text-sm text-yellow-800">Profil čeka odobrenje administratora.</p>
+        ) : (
+          <p className="mt-4 rounded bg-red-50 p-3 text-sm text-red-700">Administrator je odbio profil partnera.</p>
+        )}
       </div>
     );
   }

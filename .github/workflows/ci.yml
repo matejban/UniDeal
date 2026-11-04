@@ -18,6 +18,8 @@ jobs:
       - run: npm ci
       - name: Lint
         run: npm run lint
+      - name: Unit testovi
+        run: npm test
       # Build uključuje i provjeru tipova (TypeScript). Supabase mu nije potreban.
       - name: Build
         run: npm run build
