@@ -1,12 +1,29 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { getCurrentUser } from "@/lib/auth";
 import { offerService } from "@/services";
+import { issueCoupon } from "./actions";
 
-export default async function OfferPage({ params }: { params: Promise<{ id: string }> }) {
+// poruke za ?greska=... u adresi
+const errors: Record<string, string> = {
+  "1": "Generiranje kupona nije uspjelo. Pokušaj ponovno.",
+  nepotvrden: "Kupon može generirati samo student s potvrđenim statusom.",
+  ponuda: "Ponuda je istekla ili više nije dostupna.",
+};
+
+export default async function OfferPage({
+  params,
+  searchParams,
+}: {
+  params: Promise<{ id: string }>;
+  searchParams: Promise<{ greska?: string }>;
+}) {
   const { id } = await params;
+  const { greska } = await searchParams;
   const listing = await offerService.getActiveOffer(id);
   if (!listing) notFound();
   const { offer, partner } = listing;
+  const user = await getCurrentUser();
 
   return (
     <div className="max-w-2xl rounded-lg border border-gray-200 bg-white p-6">
@@ -25,9 +42,27 @@ export default async function OfferPage({ params }: { params: Promise<{ id: stri
           </dd>
         </div>
       </dl>
-      <button disabled className="mt-6 rounded bg-blue-700 px-4 py-2 text-white opacity-50">
-        Generiraj kupon (uskoro)
-      </button>
+
+      {greska && errors[greska] && (
+        <p className="mt-6 rounded bg-red-50 p-3 text-sm text-red-700">{errors[greska]}</p>
+      )}
+
+      {/* neprijavljeni vidi prijavu, student gumb, ostali ništa */}
+      {!user && (
+        <Link
+          href={`/prijava?next=/ponude/${offer.id}`}
+          className="mt-6 inline-block rounded bg-blue-700 px-4 py-2 text-white hover:bg-blue-800"
+        >
+          Prijavi se za kupon
+        </Link>
+      )}
+      {user && user.role === "student" && (
+        <form action={issueCoupon.bind(null, offer.id)}>
+          <button className="mt-6 rounded bg-blue-700 px-4 py-2 text-white hover:bg-blue-800">
+            Generiraj kupon
+          </button>
+        </form>
+      )}
     </div>
   );
 }
