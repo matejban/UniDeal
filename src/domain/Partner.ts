@@ -1,4 +1,5 @@
-export type ApprovalDecision = "odobren" | "odbijen";
+export type ApprovalStatus = "na_cekanju" | "odobren" | "odbijen";
+export type ApprovalDecision = Exclude<ApprovalStatus, "na_cekanju">;
 
 export class Partner {
   constructor(
@@ -10,6 +11,7 @@ export class Partner {
     readonly phone: string,
     readonly hours: string,
     readonly description: string,
+    readonly approvalStatus: ApprovalStatus,
   ) {}
 }
 

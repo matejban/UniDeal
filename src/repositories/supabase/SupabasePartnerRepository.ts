@@ -1,17 +1,30 @@
-import { type ApprovalDecision, Partner, PendingPartner } from "@/domain/Partner";
+import { type ApprovalDecision, type ApprovalStatus, Partner, PendingPartner } from "@/domain/Partner";
 import type { Tables } from "@/lib/supabase/database.types";
 import { createClient } from "@/lib/supabase/server";
 import type { PartnerRepository } from "@/repositories/PartnerRepository";
 
-const COLUMNS = "id, name, city, address, phone, hours, description, categories(name)";
+const COLUMNS = "id, name, city, address, phone, hours, description, approval_status, categories(name)";
 
 // Ugrađena kategorija je objekt, iako je netipizirani klijent vidi kao niz (vidi SupabaseOfferRepository).
-type PartnerRow = Pick<Tables<"partners">, "id" | "name" | "city" | "address" | "phone" | "hours" | "description"> & {
+type PartnerRow = Pick<
+  Tables<"partners">,
+  "id" | "name" | "city" | "address" | "phone" | "hours" | "description" | "approval_status"
+> & {
   categories: { name: string } | null;
 };
 
 function toPartner(r: PartnerRow) {
-  return new Partner(r.id, r.name, r.categories?.name ?? "", r.city, r.address, r.phone, r.hours ?? "", r.description ?? "");
+  return new Partner(
+    r.id,
+    r.name,
+    r.categories?.name ?? "",
+    r.city,
+    r.address,
+    r.phone,
+    r.hours ?? "",
+    r.description ?? "",
+    r.approval_status as ApprovalStatus,
+  );
 }
 
 // Vlasnik se dohvaća preko imenovanog stranog ključa jer partners i profiles povezuju i druge tablice (npr. favorites).
