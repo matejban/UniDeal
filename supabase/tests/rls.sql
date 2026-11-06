@@ -96,6 +96,12 @@ exception when insufficient_privilege then
   insert into rezultati values ('partner ne može sam odobriti profil', true);
 end $$;
 do $$ begin
+  perform public.set_partner_approval('a1000000-0000-4000-8000-0000000000f1', 'odobren');
+  insert into rezultati values ('partner ne može odobriti profil funkcijom', false);
+exception when insufficient_privilege then
+  insert into rezultati values ('partner ne može odobriti profil funkcijom', true);
+end $$;
+do $$ begin
   insert into public.offers (partner_id, category_id, title, description, discount_type, discount_value, valid_until)
     select 'a1000000-0000-4000-8000-000000000001', id, 'Tuđa', 'Tuđa', 'postotak', 10, '2027-01-01'
     from public.categories limit 1;
@@ -149,6 +155,28 @@ set local request.jwt.claims = '{"sub":"00000000-0000-4000-8000-0000000000a4","r
 
 insert into rezultati select 'administrator vidi sve ponude', count(*) = 5 from public.offers;
 insert into rezultati select 'administrator vidi sve partnere', count(*) = 4 from public.partners;
+
+-- Odobravanje partnera (F-025, #37).
+insert into rezultati select 'administrator vidi partnera na čekanju', count(*) = 1
+  from public.partners where approval_status = 'na_cekanju';
+select public.set_partner_approval('a1000000-0000-4000-8000-0000000000f1', 'odobren');
+insert into rezultati select 'administrator odobrava partnera', approval_status = 'odobren'
+  from public.partners where id = 'a1000000-0000-4000-8000-0000000000f1';
+select public.set_partner_approval('a1000000-0000-4000-8000-0000000000f1', 'odbijen');
+insert into rezultati select 'administrator mijenja odluku u odbijen', approval_status = 'odbijen'
+  from public.partners where id = 'a1000000-0000-4000-8000-0000000000f1';
+do $$ begin
+  perform public.set_partner_approval('a1000000-0000-4000-8000-0000000000f1', 'na_cekanju');
+  insert into rezultati values ('neispravan status odobrenja se odbija', false);
+exception when invalid_parameter_value then
+  insert into rezultati values ('neispravan status odobrenja se odbija', true);
+end $$;
+do $$ begin
+  perform public.set_partner_approval('a1000000-0000-4000-8000-00000000dead', 'odobren');
+  insert into rezultati values ('odobravanje nepostojećeg partnera se odbija', false);
+exception when no_data_found then
+  insert into rezultati values ('odobravanje nepostojećeg partnera se odbija', true);
+end $$;
 
 -- ---------------------------------------------------------------- vlastiti profil (F-005)
 set local request.jwt.claims = '{"sub":"00000000-0000-4000-8000-0000000000a1","role":"authenticated"}';
@@ -209,6 +237,12 @@ do $$ begin
   insert into rezultati values ('anon ne može pozvati deaktivaciju', false);
 exception when insufficient_privilege then
   insert into rezultati values ('anon ne može pozvati deaktivaciju', true);
+end $$;
+do $$ begin
+  perform public.set_partner_approval('a1000000-0000-4000-8000-0000000000f1', 'odobren');
+  insert into rezultati values ('anon ne može odobriti partnera', false);
+exception when insufficient_privilege then
+  insert into rezultati values ('anon ne može odobriti partnera', true);
 end $$;
 
 -- ---------------------------------------------------------------- rezultat
