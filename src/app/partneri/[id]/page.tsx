@@ -37,6 +37,7 @@ export default async function PartnerProfilePage({ params }: { params: Promise<{
         <div><dt className="inline font-semibold">Radno vrijeme: </dt><dd className="inline">{partner.hours}</dd></div>
       </dl>
       <h2 className="mb-4 mt-8 text-xl font-semibold">Aktivne ponude</h2>
+      {listings.length === 0 && <p className="text-gray-600">Još nema aktivnih ponuda.</p>}
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {listings.map((l) => (
           <OfferCard key={l.offer.id} listing={l} />
