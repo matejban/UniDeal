@@ -1,15 +1,33 @@
 import { notFound } from "next/navigation";
 import OfferCard from "@/components/OfferCard";
+import { getCurrentUser } from "@/lib/auth";
 import { partnerService } from "@/services";
 
 export default async function PartnerProfilePage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
-  const profile = await partnerService.getProfile(id);
-  if (!profile) notFound();
+  let profile = await partnerService.getProfile(id);
+
+  // Profil koji nije javan vidi samo njegov vlasnik, kao pregled (F-010). Svi ostali dobivaju 404.
+  let isPreview = false;
+  if (!profile) {
+    const user = await getCurrentUser();
+    if (user && user.role === "partner") {
+      profile = await partnerService.getOwnerPreview(id, user.id);
+      isPreview = true;
+    }
+  }
+  if (!profile) {
+    notFound();
+  }
   const { partner, listings } = profile;
 
   return (
     <div>
+      {isPreview && (
+        <p className="mb-6 rounded bg-yellow-100 p-3 text-sm text-yellow-800">
+          Ovo je pregled tvog profila. Javno je vidljiv tek kad ga administrator odobri i dok imaš aktivnu pretplatu.
+        </p>
+      )}
       <h1 className="text-2xl font-bold">{partner.name}</h1>
       <p className="mt-1 text-gray-600">{partner.category}</p>
       <p className="mt-4 max-w-2xl">{partner.description}</p>

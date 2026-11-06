@@ -57,6 +57,17 @@ export class PartnerService {
     return { partner, listings: offers.map((offer) => ({ offer, partner })) };
   }
 
+  // Pregled vlastitog profila koji još nije javan (F-010): vlasnik vidi kako će profil izgledati.
+  // Vraća undefined ako korisnik nije vlasnik tog profila, pa ostali i dalje dobivaju 404.
+  async getOwnerPreview(id: string, ownerId: string): Promise<{ partner: Partner; listings: OfferListing[] } | undefined> {
+    const partner = await this.partners.findByOwner(ownerId);
+    if (!partner || partner.id !== id) {
+      return undefined;
+    }
+    const offers = (await this.offers.findByPartner(id)).filter((o) => o.isActive());
+    return { partner, listings: offers.map((offer) => ({ offer, partner })) };
+  }
+
   // Registracija partnera (F-006). Vraća greške po poljima; prazan objekt znači da je profil spremljen
   // i da čeka odobrenje administratora.
   async register(ownerId: string, data: PartnerRegistration): Promise<RegistrationErrors> {
