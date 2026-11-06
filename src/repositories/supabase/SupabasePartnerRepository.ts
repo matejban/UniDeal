@@ -1,14 +1,15 @@
 import { type ApprovalDecision, type ApprovalStatus, Partner, PendingPartner } from "@/domain/Partner";
 import type { Tables } from "@/lib/supabase/database.types";
 import { createClient } from "@/lib/supabase/server";
-import type { PartnerRepository } from "@/repositories/PartnerRepository";
+import { DuplicatePartnerError, type NewPartner, type PartnerRepository } from "@/repositories/PartnerRepository";
 
-const COLUMNS = "id, name, city, address, phone, hours, description, approval_status, categories(name)";
+const COLUMNS =
+  "id, name, city, address, phone, hours, description, approval_status, oib, owner_id, categories(name)";
 
 // Ugrađena kategorija je objekt, iako je netipizirani klijent vidi kao niz (vidi SupabaseOfferRepository).
 type PartnerRow = Pick<
   Tables<"partners">,
-  "id" | "name" | "city" | "address" | "phone" | "hours" | "description" | "approval_status"
+  "id" | "name" | "city" | "address" | "phone" | "hours" | "description" | "approval_status" | "oib" | "owner_id"
 > & {
   categories: { name: string } | null;
 };
@@ -24,6 +25,8 @@ function toPartner(r: PartnerRow) {
     r.hours ?? "",
     r.description ?? "",
     r.approval_status as ApprovalStatus,
+    r.oib,
+    r.owner_id,
   );
 }
 
@@ -60,6 +63,28 @@ export class SupabasePartnerRepository implements PartnerRepository {
     const { data, error } = await supabase.from("partners").select(COLUMNS).eq("owner_id", ownerId).maybeSingle();
     if (error) throw new Error(`Učitavanje profila partnera nije uspjelo: ${error.message}`);
     return data ? toPartner(data as unknown as PartnerRow) : undefined;
+  }
+
+  // RLS dopušta unos samo korisniku s ulogom partner, za sebe i sa statusom na_cekanju (zadana vrijednost).
+  async create(p: NewPartner) {
+    const supabase = await createClient();
+    const { data, error } = await supabase
+      .from("partners")
+      .insert({
+        owner_id: p.ownerId,
+        name: p.name,
+        oib: p.oib,
+        category_id: p.categoryId,
+        address: p.address,
+        city: p.city,
+        phone: p.phone,
+      })
+      .select(COLUMNS)
+      .single();
+    // 23505: jedinstveni OIB ili vlasnik već postoje.
+    if (error?.code === "23505") throw new DuplicatePartnerError(error.message.includes("oib") ? "oib" : "owner");
+    if (error) throw new Error(`Spremanje profila partnera nije uspjelo: ${error.message}`);
+    return toPartner(data as unknown as PartnerRow);
   }
 
   // Čita tablicu partners, a ne pogled public_partners, koji ne vraća neodobrene partnere.
