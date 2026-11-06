@@ -38,26 +38,66 @@ export class PartnerService {
     return { partner, listings: offers.map((offer) => ({ offer, partner })) };
   }
 
-  // Registracija partnera (F-006). Bez grešaka vraća prazan objekt, a profil čeka odobrenje administratora.
+  // Registracija partnera (F-006). Vraća greške po poljima; prazan objekt znači da je profil spremljen
+  // i da čeka odobrenje administratora.
   async register(ownerId: string, data: PartnerRegistration): Promise<RegistrationErrors> {
     const errors: RegistrationErrors = {};
-    if (!data.name) errors.name = "Upiši naziv poslovnog subjekta.";
-    if (!data.oib) errors.oib = "Upiši OIB.";
-    else if (!Partner.isValidOib(data.oib)) errors.oib = "OIB mora imati 11 znamenki i ispravnu kontrolnu znamenku.";
-    if (!data.address) errors.address = "Upiši adresu.";
-    if (!data.city) errors.city = "Upiši grad.";
-    if (!data.phone) errors.phone = "Upiši kontakt telefon.";
+
+    if (data.name === "") {
+      errors.name = "Upiši naziv poslovnog subjekta.";
+    }
+    if (data.oib === "") {
+      errors.oib = "Upiši OIB.";
+    } else if (!Partner.isValidOib(data.oib)) {
+      errors.oib = "OIB mora imati 11 znamenki i ispravnu kontrolnu znamenku.";
+    }
+    if (data.address === "") {
+      errors.address = "Upiši adresu.";
+    }
+    if (data.city === "") {
+      errors.city = "Upiši grad.";
+    }
+    if (data.phone === "") {
+      errors.phone = "Upiši kontakt telefon.";
+    }
+
+    // Kategorija mora postojati u bazi.
     const categories = await this.categories.findAll();
-    if (!categories.some((c) => c.id === data.categoryId)) errors.categoryId = "Odaberi kategoriju djelatnosti.";
-    if (Object.keys(errors).length > 0) return errors;
+    let categoryExists = false;
+    for (const category of categories) {
+      if (category.id === data.categoryId) {
+        categoryExists = true;
+      }
+    }
+    if (!categoryExists) {
+      errors.categoryId = "Odaberi kategoriju djelatnosti.";
+    }
+
+    if (Object.keys(errors).length > 0) {
+      return errors;
+    }
 
     try {
-      await this.partners.create({ ownerId, ...data });
+      await this.partners.create({
+        ownerId: ownerId,
+        name: data.name,
+        oib: data.oib,
+        categoryId: data.categoryId,
+        address: data.address,
+        city: data.city,
+        phone: data.phone,
+      });
     } catch (e) {
-      if (!(e instanceof DuplicatePartnerError)) throw e;
-      if (e.field === "oib") return { oib: "Partner s tim OIB-om već je registriran." };
-      return { form: "Već imaš profil partnera." };
+      // Baza javlja da OIB ili vlasnik već postoje; ostale greške idu dalje.
+      if (e instanceof DuplicatePartnerError) {
+        if (e.field === "oib") {
+          return { oib: "Partner s tim OIB-om već je registriran." };
+        }
+        return { form: "Već imaš profil partnera." };
+      }
+      throw e;
     }
+
     return {};
   }
 }
