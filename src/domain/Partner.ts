@@ -1,4 +1,5 @@
 export type ApprovalStatus = "na_cekanju" | "odobren" | "odbijen";
+export type ApprovalDecision = Exclude<ApprovalStatus, "na_cekanju">;
 
 export class Partner {
   constructor(
@@ -10,8 +11,8 @@ export class Partner {
     readonly phone: string,
     readonly hours: string,
     readonly description: string,
-    readonly oib: string,
     readonly approvalStatus: ApprovalStatus,
+    readonly oib: string,
     // Prazno samo za demonstracijske partnere bez korisničkog računa.
     readonly ownerId: string | null,
   ) {}
@@ -37,9 +38,20 @@ export class Partner {
     }
     return kontrolna === Number(oib[10]);
   }
+}
 
-  // Novi profil čeka da ga administrator odobri (F-006, #37).
-  isPending(): boolean {
-    return this.approvalStatus === "na_cekanju";
-  }
+// Profil partnera koji čeka odluku administratora (F-025). OIB i e-mail vlasnika
+// vidi samo administrator; e-mail je prazan za demonstracijske partnere bez računa.
+export class PendingPartner {
+  constructor(
+    readonly id: string,
+    readonly name: string,
+    readonly oib: string,
+    readonly category: string,
+    readonly city: string,
+    readonly address: string,
+    readonly phone: string,
+    readonly ownerEmail: string | null,
+    readonly createdAt: Date,
+  ) {}
 }

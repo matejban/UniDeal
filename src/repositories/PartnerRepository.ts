@@ -1,4 +1,4 @@
-import type { Partner } from "@/domain/Partner";
+import type { ApprovalDecision, Partner, PendingPartner } from "@/domain/Partner";
 
 // Podaci koje partner unosi pri registraciji (F-006).
 export type NewPartner = {
@@ -26,4 +26,7 @@ export interface PartnerRepository {
   findByOwner(ownerId: string): Promise<Partner | undefined>;
   // Sprema profil sa statusom na čekanju. Baci DuplicatePartnerError ako su OIB ili vlasnik zauzeti.
   create(partner: NewPartner): Promise<Partner>;
+  // Profili na čekanju odobrenja, najstariji prvi; vidi ih samo administrator (F-025).
+  findPending(): Promise<PendingPartner[]>;
+  setApproval(id: string, decision: ApprovalDecision): Promise<void>;
 }

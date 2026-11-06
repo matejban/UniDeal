@@ -1,6 +1,23 @@
 import Link from "next/link";
+import type { ApprovalStatus } from "@/domain/Partner";
 import { requireRole } from "@/lib/auth";
 import { offerService, partnerService } from "@/services";
+
+// Status odobrenja profila (F-025). Dok se ne uvedu e-mail obavijesti, partner odluku vidi samo ovdje.
+const approval: Record<ApprovalStatus, { text: string; className: string }> = {
+  na_cekanju: {
+    text: "Profil čeka odobrenje administratora. Do odobrenja profil i ponude nisu javno vidljivi.",
+    className: "bg-yellow-100 text-yellow-800",
+  },
+  odobren: {
+    text: "Profil je odobren. Javno je vidljiv dok imaš aktivnu pretplatu.",
+    className: "bg-green-100 text-green-800",
+  },
+  odbijen: {
+    text: "Profil je odbijen i nije javno vidljiv. Za više informacija javi se administratoru.",
+    className: "bg-red-100 text-red-700",
+  },
+};
 
 export default async function PartnerDashboardPage() {
   const user = await requireRole("partner");
@@ -21,24 +38,14 @@ export default async function PartnerDashboardPage() {
     );
   }
 
-  if (partner.approvalStatus !== "odobren") {
-    return (
-      <div>
-        <h1 className="text-2xl font-bold">Partnerska ploča</h1>
-        {partner.isPending() ? (
-          <p className="mt-4 rounded bg-yellow-50 p-3 text-sm text-yellow-800">Profil čeka odobrenje administratora.</p>
-        ) : (
-          <p className="mt-4 rounded bg-red-50 p-3 text-sm text-red-700">Administrator je odbio profil partnera.</p>
-        )}
-      </div>
-    );
-  }
-
   const myOffers = await offerService.getPartnerOffers(partner.id);
 
   return (
     <div>
       <h1 className="text-2xl font-bold">Partnerska ploča</h1>
+      <p className={`mt-4 rounded p-3 text-sm ${approval[partner.approvalStatus].className}`}>
+        {approval[partner.approvalStatus].text}
+      </p>
       <p className="mt-2 text-gray-600">Pretplata: nije aktivna</p>
 
       <section className="mt-6 rounded-lg border border-gray-200 bg-white p-4">

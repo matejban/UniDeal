@@ -1,4 +1,4 @@
-import { Partner } from "@/domain/Partner";
+import { Partner, type PendingPartner } from "@/domain/Partner";
 import type { Category, CategoryRepository } from "@/repositories/CategoryRepository";
 import type { OfferRepository } from "@/repositories/OfferRepository";
 import { DuplicatePartnerError, type NewPartner, type PartnerRepository } from "@/repositories/PartnerRepository";
@@ -25,6 +25,19 @@ export class PartnerService {
 
   async getCategories(): Promise<Category[]> {
     return this.categories.findAll();
+  }
+
+  // Odobravanje i odbijanje profila partnera (F-025).
+  async getPending(): Promise<PendingPartner[]> {
+    return this.partners.findPending();
+  }
+
+  async approve(partnerId: string): Promise<void> {
+    await this.partners.setApproval(partnerId, "odobren");
+  }
+
+  async reject(partnerId: string): Promise<void> {
+    await this.partners.setApproval(partnerId, "odbijen");
   }
 
   async getCities(): Promise<string[]> {

@@ -6,6 +6,8 @@ import { SupabaseUserRepository } from "@/repositories/supabase/SupabaseUserRepo
 import { OfferService } from "@/services/OfferService";
 import { PartnerService } from "@/services/PartnerService";
 import { UserService } from "@/services/UserService";
+import { SupabaseCouponRepository } from "@/repositories/supabase/SupabaseCouponRepository";
+import { CouponService } from "@/services/CouponService";
 
 const offerRepository = new SupabaseOfferRepository();
 const partnerRepository = new SupabasePartnerRepository();
@@ -14,3 +16,5 @@ export const offerService = new OfferService(offerRepository, partnerRepository)
 export const partnerService = new PartnerService(partnerRepository, offerRepository, new SupabaseCategoryRepository());
 
 export const userService = new UserService(new SupabaseUserRepository());
+
+export const couponService = new CouponService(new SupabaseCouponRepository(), offerRepository);
