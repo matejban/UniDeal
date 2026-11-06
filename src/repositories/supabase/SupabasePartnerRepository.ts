@@ -1,7 +1,12 @@
 import { type ApprovalDecision, type ApprovalStatus, Partner, PendingPartner } from "@/domain/Partner";
 import type { Tables } from "@/lib/supabase/database.types";
 import { createClient } from "@/lib/supabase/server";
-import { DuplicatePartnerError, type NewPartner, type PartnerRepository } from "@/repositories/PartnerRepository";
+import {
+  DuplicatePartnerError,
+  type NewPartner,
+  type PartnerProfile,
+  type PartnerRepository,
+} from "@/repositories/PartnerRepository";
 
 const COLUMNS =
   "id, name, city, address, phone, hours, description, approval_status, oib, owner_id, categories(name)";
@@ -85,6 +90,32 @@ export class SupabasePartnerRepository implements PartnerRepository {
     if (error?.code === "23505") throw new DuplicatePartnerError(error.message.includes("oib") ? "oib" : "owner");
     if (error) throw new Error(`Spremanje profila partnera nije uspjelo: ${error.message}`);
     return toPartner(data as unknown as PartnerRow);
+  }
+
+  // Uvjet owner_id je dodatna provjera uz RLS, koji ionako dopušta izmjenu samo vlasniku.
+  // Koordinate se ovdje ne mijenjaju; nakon promjene adrese računa ih geokodiranje (#24).
+  async update(id: string, ownerId: string, profile: PartnerProfile) {
+    const supabase = await createClient();
+    const { data, error } = await supabase
+      .from("partners")
+      .update({
+        name: profile.name,
+        address: profile.address,
+        city: profile.city,
+        phone: profile.phone,
+        hours: profile.hours,
+        description: profile.description,
+      })
+      .eq("id", id)
+      .eq("owner_id", ownerId)
+      .select("id");
+    if (error) {
+      throw new Error(`Spremanje profila partnera nije uspjelo: ${error.message}`);
+    }
+    // Nijedan redak nije promijenjen: partner ne postoji ili nije njegov.
+    if (data.length === 0) {
+      throw new Error("Profil partnera nije pronađen.");
+    }
   }
 
   // Čita tablicu partners, a ne pogled public_partners, koji ne vraća neodobrene partnere.

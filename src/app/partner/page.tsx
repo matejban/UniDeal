@@ -46,6 +46,12 @@ export default async function PartnerDashboardPage() {
       <p className={`mt-4 rounded p-3 text-sm ${approval[partner.approvalStatus].className}`}>
         {approval[partner.approvalStatus].text}
       </p>
+      <Link
+        href="/partner/profil"
+        className="mt-4 inline-block rounded border border-gray-300 bg-white px-4 py-2 text-sm hover:border-blue-700"
+      >
+        Uredi profil
+      </Link>
       <p className="mt-2 text-gray-600">Pretplata: nije aktivna</p>
 
       <section className="mt-6 rounded-lg border border-gray-200 bg-white p-4">

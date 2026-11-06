@@ -1,12 +1,18 @@
 import { Partner, type PendingPartner } from "@/domain/Partner";
 import type { Category, CategoryRepository } from "@/repositories/CategoryRepository";
 import type { OfferRepository } from "@/repositories/OfferRepository";
-import { DuplicatePartnerError, type NewPartner, type PartnerRepository } from "@/repositories/PartnerRepository";
+import {
+  DuplicatePartnerError,
+  type NewPartner,
+  type PartnerProfile,
+  type PartnerRepository,
+} from "@/repositories/PartnerRepository";
 import type { OfferListing } from "@/services/OfferService";
 
 export type PartnerRegistration = Omit<NewPartner, "ownerId">;
 // Poruka uz svako neispravno polje; "form" je greška koja ne pripada nijednom polju.
 export type RegistrationErrors = Partial<Record<keyof PartnerRegistration | "form", string>>;
+export type ProfileErrors = Partial<Record<keyof PartnerProfile | "form", string>>;
 
 export class PartnerService {
   constructor(
@@ -111,6 +117,35 @@ export class PartnerService {
       throw e;
     }
 
+    return {};
+  }
+
+  // Uređivanje javnog profila (F-010). Vraća greške po poljima; prazan objekt znači da je profil spremljen.
+  async updateProfile(partnerId: string, ownerId: string, data: PartnerProfile): Promise<ProfileErrors> {
+    const errors: ProfileErrors = {};
+
+    if (data.name === "") {
+      errors.name = "Upiši naziv poslovnog subjekta.";
+    }
+    if (data.address === "") {
+      errors.address = "Upiši adresu.";
+    }
+    if (data.city === "") {
+      errors.city = "Upiši grad.";
+    }
+    if (data.phone === "") {
+      errors.phone = "Upiši kontakt telefon.";
+    }
+    // Radno vrijeme i opis nisu obavezni, ali opis ne smije biti predug.
+    if (data.description.length > 1000) {
+      errors.description = "Opis može imati najviše 1000 znakova.";
+    }
+
+    if (Object.keys(errors).length > 0) {
+      return errors;
+    }
+
+    await this.partners.update(partnerId, ownerId, data);
     return {};
   }
 }
