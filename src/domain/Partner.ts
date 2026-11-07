@@ -15,6 +15,8 @@ export class Partner {
     readonly oib: string,
     // Prazno samo za demonstracijske partnere bez korisničkog računa.
     readonly ownerId: string | null,
+    // Javni URL loga u Supabase Storageu (#13); prazno dok ga partner ne učita.
+    readonly logoUrl: string | null,
   ) {}
 
   // Provjera OIB-a (F-006): 11 znamenki, a zadnja je kontrolna po ISO 7064 MOD 11,10.

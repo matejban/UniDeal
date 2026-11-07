@@ -2,7 +2,7 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { requireRole } from "@/lib/auth";
 import { partnerService } from "@/services";
-import ProfileForm from "./ProfileForm";
+import ProfileForm, { LogoForm } from "./ProfileForm";
 
 // Partner uređuje svoj javni profil (F-010).
 export default async function PartnerProfileEditPage() {
@@ -32,6 +32,7 @@ export default async function PartnerProfileEditPage() {
           Pogledaj javni profil
         </Link>
       </div>
+      <LogoForm logoUrl={partner.logoUrl} />
       <ProfileForm profile={profile} />
     </div>
   );

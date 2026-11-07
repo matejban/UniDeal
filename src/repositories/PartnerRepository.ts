@@ -38,6 +38,8 @@ export interface PartnerRepository {
   create(partner: NewPartner): Promise<Partner>;
   // Mijenja profil partnera, ali samo ako ga posjeduje ownerId (F-010).
   update(id: string, ownerId: string, profile: PartnerProfile): Promise<void>;
+  // Sprema URL loga, isto samo za vlasnika profila (#13).
+  setLogo(id: string, ownerId: string, logoUrl: string): Promise<void>;
   // Profili na čekanju odobrenja, najstariji prvi; vidi ih samo administrator (F-025).
   findPending(): Promise<PendingPartner[]>;
   setApproval(id: string, decision: ApprovalDecision): Promise<void>;
