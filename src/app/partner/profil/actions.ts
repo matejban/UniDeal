@@ -1,0 +1,55 @@
+"use server";
+
+import { revalidatePath } from "next/cache";
+import { requireRole } from "@/lib/auth";
+import type { PartnerProfile } from "@/repositories/PartnerRepository";
+import { partnerService } from "@/services";
+import type { ProfileErrors } from "@/services/PartnerService";
+
+export type ProfileState = { errors: ProfileErrors; values: PartnerProfile; saved: boolean };
+
+// Vrijednost polja iz obrasca bez razmaka na početku i kraju.
+function readField(formData: FormData, name: string): string {
+  const value = formData.get(name);
+  if (typeof value !== "string") {
+    return "";
+  }
+  return value.trim();
+}
+
+// Spremanje javnog profila partnera (F-010).
+export async function updateProfile(_prev: ProfileState, formData: FormData): Promise<ProfileState> {
+  const user = await requireRole("partner");
+
+  const values: PartnerProfile = {
+    name: readField(formData, "name"),
+    address: readField(formData, "address"),
+    city: readField(formData, "city"),
+    phone: readField(formData, "phone"),
+    hours: readField(formData, "hours"),
+    description: readField(formData, "description"),
+  };
+
+  // Profil se traži po prijavljenom korisniku, a ne po ID-u iz obrasca, pa partner ne može urediti tuđi profil.
+  const partner = await partnerService.getByOwner(user.id);
+  if (!partner) {
+    return { errors: { form: "Još nemaš profil partnera." }, values, saved: false };
+  }
+
+  let errors: ProfileErrors;
+  try {
+    errors = await partnerService.updateProfile(partner.id, user.id, values);
+  } catch (e) {
+    console.error("Spremanje profila partnera nije uspjelo:", e);
+    errors = { form: "Spremanje nije uspjelo. Pokušaj ponovno." };
+  }
+
+  if (Object.keys(errors).length > 0) {
+    return { errors, values, saved: false };
+  }
+
+  // Promjena se odmah vidi na javnom profilu i na partnerskoj ploči.
+  revalidatePath(`/partneri/${partner.id}`);
+  revalidatePath("/partner");
+  return { errors: {}, values, saved: true };
+}

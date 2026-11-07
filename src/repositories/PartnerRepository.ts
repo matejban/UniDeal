@@ -11,6 +11,16 @@ export type NewPartner = {
   phone: string;
 };
 
+// Podaci javnog profila koje partner smije mijenjati (F-010).
+export type PartnerProfile = {
+  name: string;
+  address: string;
+  city: string;
+  phone: string;
+  hours: string;
+  description: string;
+};
+
 // Baza već ima partnera s istim OIB-om ili korisnik već ima profil partnera.
 export class DuplicatePartnerError extends Error {
   constructor(readonly field: "oib" | "owner") {
@@ -26,6 +36,8 @@ export interface PartnerRepository {
   findByOwner(ownerId: string): Promise<Partner | undefined>;
   // Sprema profil sa statusom na čekanju. Baci DuplicatePartnerError ako su OIB ili vlasnik zauzeti.
   create(partner: NewPartner): Promise<Partner>;
+  // Mijenja profil partnera, ali samo ako ga posjeduje ownerId (F-010).
+  update(id: string, ownerId: string, profile: PartnerProfile): Promise<void>;
   // Profili na čekanju odobrenja, najstariji prvi; vidi ih samo administrator (F-025).
   findPending(): Promise<PendingPartner[]>;
   setApproval(id: string, decision: ApprovalDecision): Promise<void>;

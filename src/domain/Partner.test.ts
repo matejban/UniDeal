@@ -6,7 +6,7 @@ describe("Partner.isValidOib", () => {
     expect(Partner.isValidOib("69435151530")).toBe(true);
     expect(Partner.isValidOib("94577403194")).toBe(true);
     // Kontrolna znamenka je 0 kad je 11 - a = 10.
-    expect(Partner.isValidOib("00000000001")).toBe(true);
+    expect(Partner.isValidOib("00000000010")).toBe(true);
   });
 
   it("OIB koji nema točno 11 znamenki se odbija", () => {
