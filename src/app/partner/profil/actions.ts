@@ -53,3 +53,35 @@ export async function updateProfile(_prev: ProfileState, formData: FormData): Pr
   revalidatePath("/partner");
   return { errors: {}, values, saved: true };
 }
+
+export type LogoState = { error: string; saved: boolean };
+
+// Učitavanje loga partnera (#13).
+export async function updateLogo(_prev: LogoState, formData: FormData): Promise<LogoState> {
+  const user = await requireRole("partner");
+
+  const file = formData.get("logo");
+  if (!(file instanceof File)) {
+    return { error: "Odaberi sliku.", saved: false };
+  }
+
+  const partner = await partnerService.getByOwner(user.id);
+  if (!partner) {
+    return { error: "Još nemaš profil partnera.", saved: false };
+  }
+
+  let error: string;
+  try {
+    error = await partnerService.updateLogo(partner.id, user.id, file);
+  } catch (e) {
+    console.error("Učitavanje loga nije uspjelo:", e);
+    error = "Učitavanje nije uspjelo. Pokušaj ponovno.";
+  }
+  if (error !== "") {
+    return { error, saved: false };
+  }
+
+  revalidatePath(`/partneri/${partner.id}`);
+  revalidatePath("/partner/profil");
+  return { error: "", saved: true };
+}

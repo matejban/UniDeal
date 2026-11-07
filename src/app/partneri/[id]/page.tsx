@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { notFound } from "next/navigation";
 import OfferCard from "@/components/OfferCard";
 import { getCurrentUser } from "@/lib/auth";
@@ -28,8 +29,21 @@ export default async function PartnerProfilePage({ params }: { params: Promise<{
           Ovo je pregled tvog profila. Javno je vidljiv tek kad ga administrator odobri i dok imaš aktivnu pretplatu.
         </p>
       )}
-      <h1 className="text-2xl font-bold">{partner.name}</h1>
-      <p className="mt-1 text-gray-600">{partner.category}</p>
+      <div className="flex items-center gap-4">
+        {partner.logoUrl && (
+          <Image
+            src={partner.logoUrl}
+            alt={`Logo: ${partner.name}`}
+            width={80}
+            height={80}
+            className="h-20 w-20 rounded border border-gray-200 bg-white object-contain"
+          />
+        )}
+        <div>
+          <h1 className="text-2xl font-bold">{partner.name}</h1>
+          <p className="mt-1 text-gray-600">{partner.category}</p>
+        </div>
+      </div>
       <p className="mt-4 max-w-2xl">{partner.description}</p>
       <dl className="mt-4 space-y-1 text-sm">
         <div><dt className="inline font-semibold">Adresa: </dt><dd className="inline">{partner.address}</dd></div>
