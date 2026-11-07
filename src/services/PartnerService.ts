@@ -1,4 +1,5 @@
-import { Partner, type PendingPartner } from "@/domain/Partner";
+import { after } from "next/server";
+import { type ApprovalDecision, Partner, type PendingPartner } from "@/domain/Partner";
 import type { Category, CategoryRepository } from "@/repositories/CategoryRepository";
 import type { OfferRepository } from "@/repositories/OfferRepository";
 import {
@@ -7,6 +8,7 @@ import {
   type PartnerProfile,
   type PartnerRepository,
 } from "@/repositories/PartnerRepository";
+import type { NotificationService } from "@/services/NotificationService";
 import type { OfferListing } from "@/services/OfferService";
 
 export type PartnerRegistration = Omit<NewPartner, "ownerId">;
@@ -19,6 +21,7 @@ export class PartnerService {
     private readonly partners: PartnerRepository,
     private readonly offers: OfferRepository,
     private readonly categories: CategoryRepository,
+    private readonly notifications: NotificationService,
   ) {}
 
   async getAll(): Promise<Partner[]> {
@@ -39,11 +42,35 @@ export class PartnerService {
   }
 
   async approve(partnerId: string): Promise<void> {
-    await this.partners.setApproval(partnerId, "odobren");
+    await this.decide(partnerId, "odobren");
   }
 
   async reject(partnerId: string): Promise<void> {
-    await this.partners.setApproval(partnerId, "odbijen");
+    await this.decide(partnerId, "odbijen");
+  }
+
+  // Spremi odluku i partneru pošalji e-mail o njoj (F-025, #14).
+  private async decide(partnerId: string, decision: ApprovalDecision): Promise<void> {
+    // Ime i e-mail vlasnika uzimamo s popisa na čekanju prije nego se status promijeni.
+    const pending = await this.partners.findPending();
+    let partner: PendingPartner | undefined;
+    for (const p of pending) {
+      if (p.id === partnerId) {
+        partner = p;
+      }
+    }
+
+    await this.partners.setApproval(partnerId, decision);
+
+    // Demonstracijski partneri nemaju vlasnika, pa ni e-mail.
+    if (partner && partner.ownerEmail) {
+      const email = partner.ownerEmail;
+      const name = partner.name;
+      // after() šalje e-mail nakon odgovora korisniku, pa admin ne čeka slanje (C-04).
+      after(async () => {
+        await this.notifications.sendPartnerDecision(email, name, decision);
+      });
+    }
   }
 
   async getCities(): Promise<string[]> {
