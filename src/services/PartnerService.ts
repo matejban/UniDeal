@@ -1,5 +1,7 @@
 import { after } from "next/server";
+import { checkImage } from "@/domain/Image";
 import { type ApprovalDecision, Partner, type PendingPartner } from "@/domain/Partner";
+import { uploadImage } from "@/lib/storage";
 import type { Category, CategoryRepository } from "@/repositories/CategoryRepository";
 import type { OfferRepository } from "@/repositories/OfferRepository";
 import {
@@ -185,5 +187,16 @@ export class PartnerService {
 
     await this.partners.update(partnerId, ownerId, data);
     return {};
+  }
+
+  // Novi logo partnera (#13). Vraća poruku o grešci ili prazan tekst ako je logo spremljen.
+  async updateLogo(partnerId: string, ownerId: string, file: File): Promise<string> {
+    const error = checkImage(file);
+    if (error !== "") {
+      return error;
+    }
+    const logoUrl = await uploadImage("partner-logos", partnerId, file);
+    await this.partners.setLogo(partnerId, ownerId, logoUrl);
+    return "";
   }
 }

@@ -9,12 +9,22 @@ import {
 } from "@/repositories/PartnerRepository";
 
 const COLUMNS =
-  "id, name, city, address, phone, hours, description, approval_status, oib, owner_id, categories(name)";
+  "id, name, city, address, phone, hours, description, approval_status, oib, owner_id, logo_url, categories(name)";
 
 // Ugrađena kategorija je objekt, iako je netipizirani klijent vidi kao niz (vidi SupabaseOfferRepository).
 type PartnerRow = Pick<
   Tables<"partners">,
-  "id" | "name" | "city" | "address" | "phone" | "hours" | "description" | "approval_status" | "oib" | "owner_id"
+  | "id"
+  | "name"
+  | "city"
+  | "address"
+  | "phone"
+  | "hours"
+  | "description"
+  | "approval_status"
+  | "oib"
+  | "owner_id"
+  | "logo_url"
 > & {
   categories: { name: string } | null;
 };
@@ -32,6 +42,7 @@ function toPartner(r: PartnerRow) {
     r.approval_status as ApprovalStatus,
     r.oib,
     r.owner_id,
+    r.logo_url,
   );
 }
 
@@ -113,6 +124,23 @@ export class SupabasePartnerRepository implements PartnerRepository {
       throw new Error(`Spremanje profila partnera nije uspjelo: ${error.message}`);
     }
     // Nijedan redak nije promijenjen: partner ne postoji ili nije njegov.
+    if (data.length === 0) {
+      throw new Error("Profil partnera nije pronađen.");
+    }
+  }
+
+  // Sprema URL novog loga (#13). Kao i update, mijenja samo profil kojemu je ownerId vlasnik.
+  async setLogo(id: string, ownerId: string, logoUrl: string) {
+    const supabase = await createClient();
+    const { data, error } = await supabase
+      .from("partners")
+      .update({ logo_url: logoUrl })
+      .eq("id", id)
+      .eq("owner_id", ownerId)
+      .select("id");
+    if (error) {
+      throw new Error(`Spremanje loga nije uspjelo: ${error.message}`);
+    }
     if (data.length === 0) {
       throw new Error("Profil partnera nije pronađen.");
     }

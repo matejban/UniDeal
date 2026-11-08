@@ -1,8 +1,9 @@
 "use client";
 
+import Image from "next/image";
 import { useActionState } from "react";
 import type { PartnerProfile } from "@/repositories/PartnerRepository";
-import { updateProfile, type ProfileState } from "./actions";
+import { updateLogo, updateProfile, type LogoState, type ProfileState } from "./actions";
 
 const inputClass = "w-full rounded border border-gray-300 px-3 py-2";
 const errorClass = "text-sm text-red-700";
@@ -74,6 +75,43 @@ export default function ProfileForm({ profile }: { profile: PartnerProfile }) {
         className="w-full rounded bg-blue-700 px-4 py-2 text-white hover:bg-blue-800 disabled:opacity-50"
       >
         {pending ? "Spremanje…" : "Spremi profil"}
+      </button>
+    </form>
+  );
+}
+
+// Zaseban obrazac za logo (#13), jer se slika šalje odvojeno od ostalih podataka.
+export function LogoForm({ logoUrl }: { logoUrl: string | null }) {
+  const [state, action, pending] = useActionState(updateLogo, { error: "", saved: false } as LogoState);
+
+  return (
+    <form action={action} className="space-y-3 rounded-lg border border-gray-200 bg-white p-6">
+      <p className="text-sm font-semibold">Logo</p>
+      {logoUrl ? (
+        <Image
+          src={logoUrl}
+          alt="Trenutačni logo"
+          width={96}
+          height={96}
+          className="h-24 w-24 rounded border border-gray-200 object-contain"
+        />
+      ) : (
+        <p className="text-sm text-gray-600">Još nemaš logo.</p>
+      )}
+      {state.saved && <p className="rounded bg-green-50 p-3 text-sm text-green-800">Logo je spremljen.</p>}
+      <input
+        name="logo"
+        type="file"
+        accept="image/jpeg,image/png,image/webp"
+        className="block w-full text-sm"
+      />
+      <p className="text-xs text-gray-500">JPG, PNG ili WebP, najviše 2 MB.</p>
+      {state.error && <p className={errorClass}>{state.error}</p>}
+      <button
+        disabled={pending}
+        className="rounded border border-gray-300 px-4 py-2 text-sm hover:border-blue-700 disabled:opacity-50"
+      >
+        {pending ? "Učitavanje…" : "Učitaj logo"}
       </button>
     </form>
   );
