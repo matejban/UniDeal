@@ -1,15 +1,16 @@
-import { Offer, type DiscountType, type OfferStatus } from "@/domain/Offer";
+import { Offer, type DiscountType, type OfferStatus, type UsageLimit } from "@/domain/Offer";
 import type { Tables } from "@/lib/supabase/database.types";
 import { createClient } from "@/lib/supabase/server";
 import type { OfferRepository } from "@/repositories/OfferRepository";
 
-const COLUMNS = "id, partner_id, title, description, discount_type, discount_value, valid_until, conditions, status, categories(name)";
+
+const COLUMNS = "id, partner_id, title, description, discount_type, discount_value, valid_until, conditions, status, usage_limit, categories(name)";
 
 // Netipizirani klijent ugrađenu kategoriju (veza više-prema-jedan) vidi kao niz, a PostgREST vraća objekt,
 // pa se redovi pretvaraju u ovaj tip.
 type OfferRow = Pick<
   Tables<"offers">,
-  "id" | "partner_id" | "title" | "description" | "discount_type" | "discount_value" | "valid_until" | "conditions" | "status"
+  "id" | "partner_id" | "title" | "description" | "discount_type" | "discount_value" | "valid_until" | "conditions" | "status" | "usage_limit"
 > & { categories: { name: string } | null };
 
 function toOffer(r: OfferRow) {
@@ -24,6 +25,7 @@ function toOffer(r: OfferRow) {
     r.valid_until,
     r.conditions ?? "",
     r.status as OfferStatus,
+    r.usage_limit as UsageLimit,
   );
 }
 

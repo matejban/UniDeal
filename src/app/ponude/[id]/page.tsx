@@ -9,6 +9,7 @@ const errors: Record<string, string> = {
   "1": "Generiranje kupona nije uspjelo. Pokušaj ponovno.",
   nepotvrden: "Kupon može generirati samo student s potvrđenim statusom.",
   ponuda: "Ponuda je istekla ili više nije dostupna.",
+  iskoristen: "Ovu ponudu možeš iskoristiti samo jednom, a već je iskorištena.",
 };
 
 export default async function OfferPage({

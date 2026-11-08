@@ -54,4 +54,14 @@ export class SupabaseCouponRepository implements CouponRepository {
     if (!data) return undefined;
     return toCoupon(data as unknown as CouponRow);
   }
+
+  async findByStudentAndOffer(studentId: string, offerId: string): Promise<Coupon[]> {
+    const supabase = await createClient();
+    const { data, error } = await supabase.from("coupons").select(COLUMNS).eq("student_id", studentId).eq("offer_id", offerId);
+
+    if (error) throw new Error(`Učitavanje kupona nije uspjelo: ${error.message}`);
+    const rows = data as unknown as CouponRow[];
+    return rows.map(toCoupon);
+    
+  }
 }
