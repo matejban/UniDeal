@@ -54,7 +54,15 @@ Lokalno se pokreće samo Next.js aplikacija. Lokalne baze nema: aplikacija se sp
    | `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` | javni (publishable) ključ za Supabase Auth i REST API | Supabase → Project Settings → API Keys |
    | `NEXT_PUBLIC_GOOGLE_CLIENT_ID` | Client ID za gumb „Prijava Googleom” | Google Cloud → Google Auth Platform → Clients → UniDeal |
 
-   Sve tri vrijednosti su javne (vidljive pregledniku), pa ih član tima može dobiti iz Vercela (Project → Settings → Environment Variables) ili od voditelja. Za lokalno pokretanje nisu potrebne tajne vrijednosti. Tajni ključevi (Microsoft client secret, SMTP lozinka) upisani su samo u Supabaseu i nikad se ne stavljaju u repozitorij ni u `.env` datoteke.
+   Sve tri vrijednosti su javne (vidljive pregledniku), pa ih član tima može dobiti iz Vercela (Project → Settings → Environment Variables) ili od voditelja. Za pregled ponuda i prijavu nisu potrebne tajne vrijednosti. Tajni ključevi Microsofta i SMTP-a (Microsoft client secret, SMTP lozinka) upisani su samo u Supabaseu. Tajne varijable aplikacije stavljaju se samo u `.env.local` i Vercel, nikad u repozitorij, i nemaju prefiks `NEXT_PUBLIC_`; bez njih odgovarajuća funkcija ne radi, a ostatak aplikacije radi:
+
+   | Varijabla | Uloga | Odakle |
+   | --- | --- | --- |
+   | `RESEND_API_KEY` | slanje e-mail obavijesti (#14); bez ključa se e-mail ispisuje u konzolu | Resend → API Keys |
+   | `STRIPE_SECRET_KEY` | Stripe klijent za naplatu pretplate (#32); testni ključ `sk_test_…` | Stripe → Developers → API keys |
+   | `STRIPE_WEBHOOK_SECRET` | provjera potpisa Stripeovih webhook poziva (#34); `whsec_…` | lokalno ispis naredbe `stripe listen`, u produkciji endpoint u Stripe dashboardu |
+
+   Cijene pretplate (mjesečna i godišnja) nisu varijable okruženja, nego redovi u tablici `subscription_prices`, uključujući ID Stripeove cijene (`stripe_price_id`).
 
 3. **Baza podataka i migracije:** shema je u verzioniranim SQL migracijama u [`supabase/migrations`](../supabase/migrations), a izvode se redom po vremenskoj oznaci u nazivu. Na zajedničkom projektu su već primijenjene, pa ih pri lokalnom pokretanju ne treba ponovno izvoditi. Promjena sheme uvijek je nova migracija (nova datoteka), nikad izmjena postojeće; primjenjuje se ručno u Supabase SQL Editoru prije spajanja koda koji je treba. Demo partneri i ponude u [`supabase/seed.sql`](../supabase/seed.sql) učitani su jednom; skripta koristi `on conflict do nothing`, pa ponovno izvođenje ne stvara duplikate. RLS pravila provjerava [`supabase/tests/rls.sql`](../supabase/tests/rls.sql): skripta se izvodi u SQL Editoru, sve poništava na kraju i javlja grešku s nazivima testova koji ne prolaze.
 
@@ -128,7 +136,7 @@ Ako se adresa poslužiteljskog dijela razlikuje od `http://localhost:8080`, kori
 
 | **Postavljeni podsustav** | **Infrastruktura i izvor koda** | **Naredbe izgradnje i pokretanja** | **Konfiguracija i varijable okruženja** |
 | --- | --- | --- | --- |
-| **Klijentski i poslužiteljski dio** (Next.js) | Vercel, projekt `unideal`; repozitorij `matejban/UniDeal`, korijenski direktorij. Grana `master` ide u produkciju, ostale grane dobivaju preview. | Vercel prepoznaje Next.js i sam izvodi `npm install` i `next build`; stranice se izvode kao Vercel Functions (Node.js 24, regija `dub1` iz `vercel.json`), a statičke datoteke s CDN-a. | `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`, `NEXT_PUBLIC_GOOGLE_CLIENT_ID`: javne, postavljene za Production, Preview i Development. Tajnih varijabli aplikacija zasad nema. |
+| **Klijentski i poslužiteljski dio** (Next.js) | Vercel, projekt `unideal`; repozitorij `matejban/UniDeal`, korijenski direktorij. Grana `master` ide u produkciju, ostale grane dobivaju preview. | Vercel prepoznaje Next.js i sam izvodi `npm install` i `next build`; stranice se izvode kao Vercel Functions (Node.js 24, regija `dub1` iz `vercel.json`), a statičke datoteke s CDN-a. | `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`, `NEXT_PUBLIC_GOOGLE_CLIENT_ID`: javne, postavljene za Production, Preview i Development. Tajne (oznaka Sensitive, Production i Preview): `RESEND_API_KEY`, `STRIPE_SECRET_KEY`, `STRIPE_WEBHOOK_SECRET`; opis je u poglavlju 6.2. |
 | **Baza podataka i autentifikacija** | Supabase (upravljani Postgres i Auth), regija `eu-west-1` | Migracije iz `supabase/migrations` primjenjuju se ručno u SQL Editoru prije spajanja koda koji ih treba; postavljanje aplikacije ne mijenja shemu. | Pristupni podaci baze ostaju u Supabaseu. Aplikacija koristi samo javni ključ, a pristup podacima ograničava RLS. |
 | **E-pošta** | Resend, domena pošiljatelja `unideal.site` (DKIM i SPF zapisi u Vercel DNS-u) | — | SMTP podaci (`smtp.resend.com`, port 465, korisnik `resend`, lozinka je Resend API ključ) upisani su samo u Supabase → Authentication → Emails → SMTP Settings. |
 | **Domena** | `unideal.site`, registrirana i s DNS-om na Vercelu; `www.unideal.site` je glavna adresa, a `unideal.site` preusmjerava na nju (308). | — | — |
