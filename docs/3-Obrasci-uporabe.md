@@ -23,16 +23,15 @@ Dijagram prikazuje **ogledni scenarij** s građaninom, posjetiteljem i koordinat
 
 **Odabir aktera i ciljeva:** Granica pokazuje što aplikacija nudi, akteri imaju različite ciljeve, a nijedan akter ni obrazac uporabe ne tvrdi da ova studentska aplikacija angažira hitne službe. Dijagram usporedite s odobrenim funkcijskim zahtjevima i akterima.
 
-
 **Pet pitanja za odabir sadržaja dijagrama** (ne pet dijagrama za predaju):
 
-| Fokus | Pitanje |
-| --- | --- |
-| Cijeli sustav | Koji korisnički ciljevi najbolje objašnjavaju čemu ova aplikacija služi? |
-| Ključne funkcionalnosti | Koje ciljeve treba detaljnije opisati ili, ako je potrebno, prikazati zasebnim usmjerenim dijagramom? |
-| Korisničke uloge | Koji akteri mogu sudjelovati u pojedinom cilju i kako se njihove ovlasti razlikuju? |
-| Ključni procesi | Koji cilj ima važne alternative koje treba opisati u obrascu uporabe? |
-| Vanjske integracije | Sudjeluje li drugi sustav u obrascu uporabe kao **sekundarni akter**, primjerice odobreni pružatelj identiteta pri prijavi? |
+| Fokus                   | Pitanje                                                                                                                     |
+| ----------------------- | --------------------------------------------------------------------------------------------------------------------------- |
+| Cijeli sustav           | Koji korisnički ciljevi najbolje objašnjavaju čemu ova aplikacija služi?                                                    |
+| Ključne funkcionalnosti | Koje ciljeve treba detaljnije opisati ili, ako je potrebno, prikazati zasebnim usmjerenim dijagramom?                       |
+| Korisničke uloge        | Koji akteri mogu sudjelovati u pojedinom cilju i kako se njihove ovlasti razlikuju?                                         |
+| Ključni procesi         | Koji cilj ima važne alternative koje treba opisati u obrascu uporabe?                                                       |
+| Vanjske integracije     | Sudjeluje li drugi sustav u obrascu uporabe kao **sekundarni akter**, primjerice odobreni pružatelj identiteta pri prijavi? |
 
 Vanjski sustav može biti sekundarni akter obrasca uporabe kada sudjeluje u ostvarenju korisničkog cilja; tehničke veze opisuju se u arhitekturi. Nemojte stvarati dodatni obavezni dijagram obrazaca uporabe samo radi popisa integracija. Prenatrpan dijagram podijelite prema povezanim akterima ili ciljevima samo kada time postaje čitljiviji.
 
@@ -46,14 +45,14 @@ Vanjski sustav može biti sekundarni akter obrasca uporabe kada sudjeluje u ostv
 
 ### UC-[ID]: [Naziv usmjeren na cilj]
 
-| Element specifikacije | Opis |
-| :--- | :--- |
-| **Primarni akter** | [Uloga definirana u analizi zahtjeva] |
-| **Povezani zahtjevi** | [Identifikatori funkcijskih zahtjeva, npr. F-001, F-004] |
-| **Preduvjeti** | [Stanje sustava koje mora biti zadovoljeno prije početka izvođenja] |
-| **Glavni uspješni tok** | 1. Akter pokreće akciju.<br>2. Program obrađuje unos i vraća povratnu informaciju.<br>3. [Koračni prikaz interakcije do ostvarenja cilja] |
-| **Alternativni tokovi / Iznimke** | **[Korak]a — [Naziv iznimke]:** [Uvjet nastanka, reakcija programa i nastavak toka] |
-| **Posljedice (ishod)** | [Promjena stanja podataka ili potvrda nakon uspješnog završetka] |
+| Element specifikacije             | Opis                                                                                                                                      |
+| :-------------------------------- | :---------------------------------------------------------------------------------------------------------------------------------------- |
+| **Primarni akter**                | [Uloga definirana u analizi zahtjeva]                                                                                                     |
+| **Povezani zahtjevi**             | [Identifikatori funkcijskih zahtjeva, npr. F-001, F-004]                                                                                  |
+| **Preduvjeti**                    | [Stanje sustava koje mora biti zadovoljeno prije početka izvođenja]                                                                       |
+| **Glavni uspješni tok**           | 1. Akter pokreće akciju.<br>2. Program obrađuje unos i vraća povratnu informaciju.<br>3. [Koračni prikaz interakcije do ostvarenja cilja] |
+| **Alternativni tokovi / Iznimke** | **[Korak]a — [Naziv iznimke]:** [Uvjet nastanka, reakcija programa i nastavak toka]                                                       |
+| **Posljedice (ishod)**            | [Promjena stanja podataka ili potvrda nakon uspješnog završetka]                                                                          |
 
 <details>
 <summary><strong>Primjeri specifikacija: Registracija i prijava kriznog događaja</strong></summary>
@@ -62,52 +61,97 @@ Vanjski sustav može biti sekundarni akter obrasca uporabe kada sudjeluje u ostv
 
 **UC-001: Registracija računa.** Ovaj kratki primjer odnosi se na projekt čiji odobreni zadatak uključuje račune s adresom e-pošte i lozinkom.
 
-| Polje | Opis |
-| --- | --- |
-| Primarni akter | Građanin (A-02 u primjeru) |
-| ID zahtjeva | F-001 |
-| Preduvjeti, ako postoje | Nema. |
-| Glavni tijek | Građanin unosi adresu e-pošte; aplikacija šalje poveznicu za potvrdu; građanin potvrđuje račun. |
-| Alternativni ili neuspješni tijekovi, ako postoje | Adresa e-pošte već postoji → aplikacija objašnjava zašto se registracija ne može nastaviti. |
-| Rezultat | Račun je aktivan nakon potvrde. |
+| Polje                                             | Opis                                                                                            |
+| ------------------------------------------------- | ----------------------------------------------------------------------------------------------- |
+| Primarni akter                                    | Građanin (A-02 u primjeru)                                                                      |
+| ID zahtjeva                                       | F-001                                                                                           |
+| Preduvjeti, ako postoje                           | Nema.                                                                                           |
+| Glavni tijek                                      | Građanin unosi adresu e-pošte; aplikacija šalje poveznicu za potvrdu; građanin potvrđuje račun. |
+| Alternativni ili neuspješni tijekovi, ako postoje | Adresa e-pošte već postoji → aplikacija objašnjava zašto se registracija ne može nastaviti.     |
+| Rezultat                                          | Račun je aktivan nakon potvrde.                                                                 |
 
 Ako odobreni zadatak umjesto toga koristi isključivo OAuth prijavu, zamijenite ovaj primjer odgovarajućim ponašanjem prijave; nemojte dodavati registraciju lokalnom lozinkom samo radi podudaranja s primjerom.
 
 **UC-002: Podnošenje prijave kriznog događaja.** Ista polja mogu opisati dulji tijek u kojem odabir lokacije, provjera valjanosti i pohrana mogu ne uspjeti.
 
-| Polje | Opis |
-| --- | --- |
-| Primarni akter | Građanin |
-| ID zahtjeva | F-004 |
-| Preduvjeti, ako postoje | Obrazac za prijavu dostupan je. Ako odobreni zadatak zahtijeva prijavu u sustav, građanin je prijavljen. |
-| Glavni tijek | 1. Građanin otvara obrazac za prijavu; aplikacija prikazuje polja za vrstu kriznog događaja, razinu ozbiljnosti, opis i lokaciju.<br>2. Građanin unosi podatke i odabire lokaciju na karti ili drugim podržanim načinom.<br>3. Građanin podnosi obrazac; aplikacija provjerava obavezna polja i lokaciju.<br>4. Aplikacija pohranjuje prijavu i prikazuje potvrdu s referencom na nju. |
+| Polje                                             | Opis                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 |
+| ------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Primarni akter                                    | Građanin                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
+| ID zahtjeva                                       | F-004                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                |
+| Preduvjeti, ako postoje                           | Obrazac za prijavu dostupan je. Ako odobreni zadatak zahtijeva prijavu u sustav, građanin je prijavljen.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
+| Glavni tijek                                      | 1. Građanin otvara obrazac za prijavu; aplikacija prikazuje polja za vrstu kriznog događaja, razinu ozbiljnosti, opis i lokaciju.<br>2. Građanin unosi podatke i odabire lokaciju na karti ili drugim podržanim načinom.<br>3. Građanin podnosi obrazac; aplikacija provjerava obavezna polja i lokaciju.<br>4. Aplikacija pohranjuje prijavu i prikazuje potvrdu s referencom na nju.                                                                                                                                                                                                                                                                                                               |
 | Alternativni ili neuspješni tijekovi, ako postoje | **1a — Prijava u sustav nije uspjela:** Ako je prijava obavezna, a pružatelj identiteta je ne dovrši, prijava kriznog događaja ostaje nepodnesena i aplikacija objašnjava kako pokušati ponovno.<br>**2a — Odbijen pristup lokaciji:** Ako aplikacija nudi geolokaciju, ali je korisnik odbije, građanin ručno odabire lokaciju ako ta mogućnost postoji; tijek se nastavlja u koraku 3.<br>**3a — Nevaljana ili nedostajuća lokacija:** Aplikacija objašnjava problem, po mogućnosti zadržava unesene podatke i ne pohranjuje prijavu; građanin ispravlja lokaciju i ponavlja korak 3.<br>**3b — Pohrana nije uspjela:** Aplikacija prijavljuje neuspjeh i ne prikazuje lažnu potvrdu o podnošenju. |
-| Rezultat | Aplikacija pohranjuje prijavu kriznog događaja i potvrđuje njezino podnošenje. |
+| Rezultat                                          | Aplikacija pohranjuje prijavu kriznog događaja i potvrđuje njezino podnošenje.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
 
 **Odabir razine detalja:** Oba primjera koriste ista polja. UC-001 je kratak jer je glavna iznimka jasna; UC-002 zahtijeva numerirane korake i alternative jer oni mijenjaju ishod i mogu usmjeravati ispitivanje.Pri prilagodbi primjera koristite ID-ove zahtjeva i ponašanje vlastite aplikacije.
 
 **UC-005: Moderiranje prijave kriznog događaja.** Ovaj primjer vrijedi samo za projekt u kojem odobreni opseg uključuje moderatorski pregled prijava.
 
-| Polje | Opis |
-| --- | --- |
-| Primarni akter | Moderator (A-05 u primjeru) |
-| ID zahtjeva | F-008 |
-| Preduvjeti, ako postoje | Moderator je prijavljen i ima moderatorske ovlasti; postoji prijava koja čeka pregled. |
-| Glavni tijek | 1. Moderator otvara prijavu koja čeka pregled.<br>2. Aplikacija prikazuje podatke prijave i dostupne moderatorske radnje.<br>3. Moderator odabire odobravanje ili odbijanje.<br>4. Aplikacija provjerava ovlasti, mijenja status prijave i prikazuje novi status. |
-| Alternativni ili neuspješni tijekovi, ako postoje | **3a — Radnja nije potvrđena:** Moderator odustaje od promjene i prijava ostaje nepromijenjena.<br>**4a — Ovlasti nisu valjane:** Aplikacija odbija promjenu i status prijave ostaje nepromijenjen. |
-| Rezultat | Prijava ima novi status ako je moderatorska radnja uspješno provedena; inače ostaje nepromijenjena. |
+| Polje                                             | Opis                                                                                                                                                                                                                                                              |
+| ------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Primarni akter                                    | Moderator (A-05 u primjeru)                                                                                                                                                                                                                                       |
+| ID zahtjeva                                       | F-008                                                                                                                                                                                                                                                             |
+| Preduvjeti, ako postoje                           | Moderator je prijavljen i ima moderatorske ovlasti; postoji prijava koja čeka pregled.                                                                                                                                                                            |
+| Glavni tijek                                      | 1. Moderator otvara prijavu koja čeka pregled.<br>2. Aplikacija prikazuje podatke prijave i dostupne moderatorske radnje.<br>3. Moderator odabire odobravanje ili odbijanje.<br>4. Aplikacija provjerava ovlasti, mijenja status prijave i prikazuje novi status. |
+| Alternativni ili neuspješni tijekovi, ako postoje | **3a — Radnja nije potvrđena:** Moderator odustaje od promjene i prijava ostaje nepromijenjena.<br>**4a — Ovlasti nisu valjane:** Aplikacija odbija promjenu i status prijave ostaje nepromijenjen.                                                               |
+| Rezultat                                          | Prijava ima novi status ako je moderatorska radnja uspješno provedena; inače ostaje nepromijenjena.                                                                                                                                                               |
+
 </details>
 
 ---
+
+### UC-5.1: Generiranje kupona za ponudu
+
+| Element specifikacije             | Opis                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
+| :-------------------------------- | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Primarni akter**                | A-02 Student                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
+| **Povezani zahtjevi**             | F-020, F-021, F-004, F-032, NF-07, NF-08                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 |
+| **Preduvjeti**                    | Student je prijavljen i ima potvrđen status studenta. Ponuda je aktivna i rok joj nije prošao.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
+| **Glavni uspješni tok**           | 1. Student otvara stranicu ponude.<br>2. Student odabire „Generiraj kupon”.<br>3. Sustav provjerava da je student potvrđen i da je ponuda aktivna.<br>4. Sustav generira jedinstveni kod od 10 znakova koji nije moguće pogoditi i sprema kupon sa statusom „izdan”.<br>5. Sustav prikazuje stranicu kupona s kodom, QR kodom, nazivom ponude i partnera, rokom važenja i napomenom da uz kupon treba pokazati studentsku iskaznicu (X-icu).                                                                                                                                                                                                                                                                                                                                                                                             |
+| **Alternativni tokovi / Iznimke** | **1a — Korisnik nije prijavljen:** umjesto gumba prikazuje se poveznica „Prijavi se za kupon”; nakon prijave student se vraća na istu ponudu.<br>**3a — Status studenta nije potvrđen:** sustav prikazuje poruku da kupon može generirati samo student s potvrđenim statusom; kupon se ne stvara (F-004).<br>**3b — Ponuda je istekla ili nije dostupna:** sustav prikazuje poruku i kupon se ne stvara.<br>**3c — Ponuda „jednom po studentu” je već iskorištena:** sustav prikazuje poruku o razlogu i kupon se ne stvara (F-021).<br>**3d — Ponuda „jednom po studentu”, student već ima važeći neiskorišten kupon:** sustav ne stvara novi kupon, nego prikazuje postojeći (F-021).<br>**4a — Generirani kod već postoji:** sustav generira novi kod, najviše tri puta; ako ne uspije, prikazuje poruku da generiranje nije uspjelo. |
+| **Posljedice (ishod)**            | U bazi postoji kupon sa statusom „izdan” vezan uz studenta i ponudu. Student ga pokazuje partneru na zaslonu mobitela do isteka ponude.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  |
+
+### UC-5.2: Potvrda korištenja kupona
+
+| Element specifikacije             | Opis                                                                                                                                                                                                                                                                                                                                                           |
+| :-------------------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Primarni akter**                | A-03 Partner                                                                                                                                                                                                                                                                                                                                                   |
+| **Povezani zahtjevi**             | F-014, F-032, NF-03                                                                                                                                                                                                                                                                                                                                            |
+| **Preduvjeti**                    | Partner je prijavljen i njegov profil je odobren. Student mu pokazuje kupon na mobitelu.                                                                                                                                                                                                                                                                       |
+| **Glavni uspješni tok**           | 1. Partner otvara zaslon za potvrdu kupona.<br>2. Partner upisuje kod s kupona ili skenira QR kod.<br>3. Sustav pronalazi kupon i prikazuje ponudu, status i napomenu da student treba pokazati studentsku iskaznicu (X-icu).<br>4. Partner potvrđuje korištenje.<br>5. Sustav kuponu postavlja status „iskorišten” i vrijeme korištenja te prikazuje potvrdu. |
+| **Alternativni tokovi / Iznimke** | **3a — Kod ne postoji:** sustav prikazuje poruku da kupon nije pronađen.<br>**3b — Kupon je za ponudu drugog partnera:** sustav odbija potvrdu.<br>**3c — Kupon je već iskorišten ili je istekao:** sustav prikazuje status kupona i ne dopušta potvrdu.<br>**4a — Student ne pokaže X-icu:** partner odustaje od potvrde; kupon ostaje „izdan”.               |
+| **Posljedice (ishod)**            | Kupon ima status „iskorišten” s vremenom korištenja; student za njega može ostaviti recenziju (UC-5.4).                                                                                                                                                                                                                                                        |
+
+### UC-5.3: Pregled povijesti kupona
+
+| Element specifikacije             | Opis                                                                                                                                                                                                                       |
+| :-------------------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Primarni akter**                | A-02 Student                                                                                                                                                                                                               |
+| **Povezani zahtjevi**             | F-022                                                                                                                                                                                                                      |
+| **Preduvjeti**                    | Student je prijavljen.                                                                                                                                                                                                     |
+| **Glavni uspješni tok**           | 1. Student otvara svoj profil.<br>2. Sustav prikazuje popis svih studentovih kupona s ponudom, partnerom, datumom i statusom (izdan, iskorišten, istekao).<br>3. Student odabire kupon i sustav prikazuje stranicu kupona. |
+| **Alternativni tokovi / Iznimke** | **2a — Student nema kupona:** sustav prikazuje poruku da još nema generiranih kupona.                                                                                                                                      |
+| **Posljedice (ishod)**            | Nema promjene podataka.                                                                                                                                                                                                    |
+
+### UC-5.4: Ocjenjivanje partnera
+
+| Element specifikacije             | Opis                                                                                                                                                                                                     |
+| :-------------------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Primarni akter**                | A-02 Student                                                                                                                                                                                             |
+| **Povezani zahtjevi**             | F-023                                                                                                                                                                                                    |
+| **Preduvjeti**                    | Student je prijavljen i ima iskorišten kupon za ponudu tog partnera.                                                                                                                                     |
+| **Glavni uspješni tok**           | 1. Student u povijesti kupona odabire iskorišteni kupon i „Ocijeni”.<br>2. Student odabire ocjenu od 1 do 5 i po želji piše komentar.<br>3. Sustav sprema recenziju i ažurira prosječnu ocjenu partnera. |
+| **Alternativni tokovi / Iznimke** | **1a — Kupon nije iskorišten:** mogućnost ocjenjivanja se ne prikazuje; pokušaj mimo sučelja baza odbija.<br>**3a — Kupon je već ocijenjen:** sustav odbija drugu recenziju za isti kupon.               |
+| **Posljedice (ishod)**            | Recenzija je javno vidljiva na profilu partnera; administrator je može ukloniti.                                                                                                                         |
 
 ## 3.3 Provjera dosljednosti obrazaca uporabe
 
 **Cilj:** Provjeriti međusobnu usklađenost obrazaca uporabe, aktera, zahtjeva i ispitnih slučajeva. Cjelovito mapiranje održava se isključivo u **[matrici sljedivosti zahtjeva](2-Analiza-zahtjeva.md#26-sljedivost-zahtjeva)**.
 
-| Provjera | Pitanje za tim |
-| --- | --- |
-| Zahtjev | Je li svaki važan obrazac uporabe povezan s postojećim zahtjevom? |
-| Akter | Odgovara li akter naveden ovdje prethodno utvrđenoj ulozi i dopuštenoj interakciji? |
+| Provjera   | Pitanje za tim                                                                                                              |
+| ---------- | --------------------------------------------------------------------------------------------------------------------------- |
+| Zahtjev    | Je li svaki važan obrazac uporabe povezan s postojećim zahtjevom?                                                           |
+| Akter      | Odgovara li akter naveden ovdje prethodno utvrđenoj ulozi i dopuštenoj interakciji?                                         |
 | Aplikacija | Može li tim demonstrirati opisani glavni rezultat i važnu alternativu ili je opis jasno označen kao trenutačno oblikovanje? |
 
 ---
@@ -119,12 +163,12 @@ Povezivanje zahtjev → obrazac uporabe → ispitivanje održavajte **samo jedno
 
 **Primjer — CrisisMap:** Tablica pokrivenosti obrazaca uporabe koju treba analizirati:
 
-| Broj obrasca uporabe | Naziv obrasca uporabe | Obuhvaćeni funkcijski zahtjevi |
-| --- | --- | --- |
-| UC-001 | Registracija računa | F-001: Registracija računa putem e-pošte |
-| UC-002 | Prijava kriznog događaja | F-022: Prijava i provjera kriznog događaja |
-| UC-003 | Sustav upozorenja | F-045: Slanje upozorenja korisnicima i timovima |
-| UC-004 | Koordinacija spašavanja | F-067: Koordinacija s hitnim službama |
+| Broj obrasca uporabe | Naziv obrasca uporabe    | Obuhvaćeni funkcijski zahtjevi                  |
+| -------------------- | ------------------------ | ----------------------------------------------- |
+| UC-001               | Registracija računa      | F-001: Registracija računa putem e-pošte        |
+| UC-002               | Prijava kriznog događaja | F-022: Prijava i provjera kriznog događaja      |
+| UC-003               | Sustav upozorenja        | F-045: Slanje upozorenja korisnicima i timovima |
+| UC-004               | Koordinacija spašavanja  | F-067: Koordinacija s hitnim službama           |
 
 ---
 
