@@ -1,5 +1,6 @@
 export type OfferStatus = "nacrt" | "aktivna" | "istekla";
 export type DiscountType = "postotak" | "iznos";
+export type UsageLimit = "jednom_po_studentu" | "neograniceno";
 
 export const OFFER_CATEGORIES = ["Hrana", "Zdravlje i sport", "Obrazovanje", "Zabava"];
 
@@ -15,11 +16,16 @@ export class Offer {
     readonly validUntil: string,
     readonly conditions: string,
     readonly status: OfferStatus,
+    readonly usageLimit: UsageLimit,
   ) {}
 
   // Studentima se prikazuju samo aktivne ponude kojima rok nije prošao (F-012).
   isActive() {
     return this.status === "aktivna" && this.validUntil >= new Date().toISOString().slice(0, 10);
+  }
+  // ponuda se smije iskoristiti samo jednom po studentu (F-021)
+  isOncePerStudent(): boolean {
+    return this.usageLimit === "jednom_po_studentu";
   }
 
   get discountLabel() {
