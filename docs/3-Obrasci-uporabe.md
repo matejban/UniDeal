@@ -100,6 +100,50 @@ Ako odobreni zadatak umjesto toga koristi isključivo OAuth prijavu, zamijenite 
 
 ---
 
+### UC-1.1: Prijava studenta Microsoft računom
+
+| Element specifikacije             | Opis |
+| :-------------------------------- | :--- |
+| **Primarni akter**                | A-02 Student (uz A-05 Microsoft Entra ID) |
+| **Povezani zahtjevi**             | F-001, F-002, F-032 |
+| **Preduvjeti**                    | Korisnik nije prijavljen i ima studentski Microsoft račun. |
+| **Glavni uspješni tok**           | 1. Student otvara stranicu `/prijava` (ili na stranici ponude odabire „Prijavi se za kupon”).<br>2. Student odabire „Prijava Microsoft računom”.<br>3. Microsoft Entra ID potvrđuje identitet i vraća studenta u aplikaciju (`/auth/callback`).<br>4. Sustav provjerava da je domena e-mail adrese na popisu hrvatskih visokih učilišta.<br>5. Pri prvoj prijavi sustav stvara profil s ulogom „student”, statusom „potvrđen” i nazivom učilišta.<br>6. Sustav vodi studenta na `/dobrodoslica` (UC-1.3), a zatim na stranicu s koje je krenuo. |
+| **Alternativni tokovi / Iznimke** | **3a — Student odustane ili prijava kod Microsofta ne uspije:** sustav vraća studenta na `/prijava` s porukom „Prijava nije uspjela. Pokušaj ponovno.”<br>**4a — Domena nije na popisu:** sustav odjavljuje korisnika i prikazuje poruku da je prijava Microsoft računom dostupna samo studentima hrvatskih visokih učilišta.<br>**5a — Račun je deaktiviran (F-026, UC-1.4):** sustav odjavljuje korisnika i prikazuje poruku da je račun deaktiviran.<br>**6a — Uvjeti su već prihvaćeni:** `/dobrodoslica` odmah šalje studenta dalje.<br>**6b — Odredišna adresa je vanjska:** sustav umjesto nje vodi na naslovnicu. |
+| **Posljedice (ishod)**            | Student je prijavljen, a profil ima potvrđen status studenta i naziv učilišta; student smije generirati kupone (UC-5.1). |
+
+### UC-1.2: Prijava partnera Google računom ili e-mailom
+
+| Element specifikacije             | Opis |
+| :-------------------------------- | :--- |
+| **Primarni akter**                | A-03 Partner (uz A-05 Google i A-08 Resend) |
+| **Povezani zahtjevi**             | F-001, F-002, F-032 |
+| **Preduvjeti**                    | Korisnik nije prijavljen. |
+| **Glavni uspješni tok**           | 1. Partner otvara stranicu `/prijava`.<br>2. Partner odabire prijavu Google računom, a Google potvrđuje identitet.<br>3. Pri prvoj prijavi sustav stvara profil s ulogom „partner”.<br>4. Sustav vodi partnera na `/dobrodoslica` (UC-1.3), a zatim na odredišnu stranicu; na partnerskoj ploči `/partner` partner zatim registrira poslovni subjekt (F-006). |
+| **Alternativni tokovi / Iznimke** | **2a — Prijava e-mailom i lozinkom, račun ne postoji:** sustav stvara račun, šalje e-mail s poveznicom za potvrdu adrese i prikazuje poruku o tome; partner se prijavljuje nakon potvrde.<br>**2b — Adresa još nije potvrđena:** sustav prikazuje poruku da treba kliknuti poveznicu iz e-maila.<br>**2c — Pogrešna lozinka za postojeći račun:** sustav prikazuje poruku o pogrešnoj lozinci i upućuje na prijavu Googleom ako je račun stvoren tako.<br>**2d — Poveznica za potvrdu otvorena u drugom pregledniku:** adresa je potvrđena, a sustav prikazuje poruku da se partner sada može prijaviti.<br>**2e — Lozinka kraća od 6 znakova pri registraciji:** sustav prikazuje poruku da registracija nije uspjela.<br>**3a — Račun je deaktiviran:** sustav odjavljuje korisnika i prikazuje poruku da je račun deaktiviran. |
+| **Posljedice (ishod)**            | Partner je prijavljen s ulogom „partner”; ne može generirati kupone (F-004). |
+
+### UC-1.3: Prihvaćanje uvjeta korištenja pri prvoj prijavi
+
+| Element specifikacije             | Opis |
+| :-------------------------------- | :--- |
+| **Primarni akter**                | A-02 Student ili A-03 Partner |
+| **Povezani zahtjevi**             | F-032, F-002 |
+| **Preduvjeti**                    | Korisnik se upravo prvi put prijavio (UC-1.1 ili UC-1.2) i još nije prihvatio uvjete korištenja. |
+| **Glavni uspješni tok**           | 1. Sustav prikazuje stranicu `/dobrodoslica` s poljem za ime i prezime (ispunjenim podatkom pružatelja identiteta, ako postoji) i poveznicom na uvjete korištenja (`/uvjeti`).<br>2. Korisnik po potrebi ispravlja ime i označava da prihvaća uvjete korištenja, u kojima piše da student uz kupon pokazuje studentsku iskaznicu (X-icu).<br>3. Sustav sprema ime i vrijeme prihvaćanja uvjeta (vrijeme postavlja baza).<br>4. Sustav vodi korisnika na stranicu s koje je krenuo. |
+| **Alternativni tokovi / Iznimke** | **2a — Uvjeti nisu označeni:** sustav prikazuje poruku „Za nastavak prihvati uvjete korištenja.” i ništa ne sprema.<br>**2b — Ime je prazno ili dulje od 100 znakova:** sustav prikazuje poruku o duljini imena.<br>**4a — Korisnik bez prihvaćenih uvjeta otvori drugu stranicu za prijavljene:** sustav ga vraća na `/dobrodoslica`. |
+| **Posljedice (ishod)**            | Profil ima ime i vrijeme prihvaćanja uvjeta; korisnik može koristiti stranice svoje uloge. |
+
+### UC-1.4: Uređivanje profila i deaktivacija vlastitog računa
+
+| Element specifikacije             | Opis |
+| :-------------------------------- | :--- |
+| **Primarni akter**                | A-02 Student, A-03 Partner ili A-04 Administrator |
+| **Povezani zahtjevi**             | F-005, NF-03 |
+| **Preduvjeti**                    | Korisnik je prijavljen i prihvatio je uvjete korištenja. |
+| **Glavni uspješni tok**           | 1. Korisnik otvara stranicu `/profil`.<br>2. Sustav prikazuje e-mail, ulogu i, za studenta, naziv učilišta.<br>3. Korisnik mijenja ime i prezime i sprema promjenu.<br>4. Sustav sprema ime i prikazuje poruku „Promjene su spremljene.” |
+| **Alternativni tokovi / Iznimke** | **3a — Ime je prazno ili dulje od 100 znakova:** sustav prikazuje poruku o duljini imena i ništa ne sprema.<br>**3b — Korisnik deaktivira račun:** korisnik označava da razumije posljedice i potvrđuje deaktivaciju; sustav označava račun kao neaktivan, odjavljuje korisnika i prikazuje poruku da je račun deaktiviran. Ponovno ga može aktivirati samo administrator (F-026).<br>**3c — Deaktivacija bez potvrde posljedica:** sustav prikazuje poruku i račun ostaje aktivan.<br>**3d — Pokušaj promjene uloge ili statusa studenta mimo sučelja:** baza odbija promjenu (NF-03). |
+| **Posljedice (ishod)**            | Profil ima novo ime ili je račun deaktiviran; deaktivirani korisnik ne može se ponovno prijaviti, a njegove recenzije nisu javne. |
+
 ### UC-5.1: Generiranje kupona za ponudu
 
 | Element specifikacije             | Opis                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
