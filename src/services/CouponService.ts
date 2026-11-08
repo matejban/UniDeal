@@ -6,7 +6,7 @@ import type { OfferRepository } from "@/repositories/OfferRepository";
 // rezultat generiranja: kupon ili razlog zašto ga nema
 export type IssueResult =
   | { ok: true; coupon: Coupon }
-  | { ok: false; reason: "nepotvrden" | "ponuda" };
+  | { ok: false; reason: "nepotvrden" | "ponuda" | "iskoristen"};
 
 export class CouponService {
   constructor(
@@ -27,7 +27,21 @@ export class CouponService {
       return { ok: false, reason: "ponuda" };
     }
 
-    // TODO #29: jednom po studentu
+  
+    // jednom po studentu (F-021)
+    if (offer.isOncePerStudent()) {
+      const existing = await this.coupons.findByStudentAndOffer(user.id, offerId);
+      for (const c of existing) {
+        // vec iskoristio dakle ne smije novi
+        if (c.status === "iskoristen") {
+          return { ok: false, reason: "iskoristen" };
+        }
+        // vec ima vazeci kupon dakle pokazi njega umjesto novog
+        if (c.isValid()) {
+          return { ok: true, coupon: c };
+        }
+      }
+    }
 
     // ako se kod slučajno ponovi, probaj s novim (najviše 3 puta)
     for (let i = 0; i < 3; i++) {
