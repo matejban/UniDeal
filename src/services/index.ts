@@ -4,6 +4,7 @@ import { SupabaseOfferRepository } from "@/repositories/supabase/SupabaseOfferRe
 import { SupabasePartnerRepository } from "@/repositories/supabase/SupabasePartnerRepository";
 import { SupabaseStatisticsRepository } from "@/repositories/supabase/SupabaseStatisticsRepository";
 import { SupabaseUserRepository } from "@/repositories/supabase/SupabaseUserRepository";
+import { CategoryService } from "@/services/CategoryService";
 import { OfferService } from "@/services/OfferService";
 import { PartnerService } from "@/services/PartnerService";
 import { StatisticsService } from "@/services/StatisticsService";
@@ -18,6 +19,7 @@ import {
 
 const offerRepository = new SupabaseOfferRepository();
 const partnerRepository = new SupabasePartnerRepository();
+const categoryRepository = new SupabaseCategoryRepository();
 
 // E-mail ide preko Resenda kad postoji ključ; bez njega (lokalni razvoj) ispisuje se u konzolu (#14).
 let notificationService: NotificationService;
@@ -32,9 +34,11 @@ export const offerService = new OfferService(offerRepository, partnerRepository)
 export const partnerService = new PartnerService(
   partnerRepository,
   offerRepository,
-  new SupabaseCategoryRepository(),
+  categoryRepository,
   notificationService,
 );
+
+export const categoryService = new CategoryService(categoryRepository);
 
 export const userService = new UserService(new SupabaseUserRepository());
 
