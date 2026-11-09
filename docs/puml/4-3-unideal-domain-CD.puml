@@ -29,6 +29,10 @@ package "Aplikacijski sloj" {
         +search(filter: OfferFilter): OfferListing[]
         +getActiveOffer(id: String): OfferListing
         +getPartnerOffers(partnerId: String): Offer[]
+        +getOwnOffer(ownerId: String, offerId: String): Offer
+        +createOffer(ownerId: String, data: OfferInput, photo: File): OfferErrors
+        +updateOffer(ownerId: String, offerId: String, data: OfferInput, photo: File): OfferErrors
+        +deleteOffer(ownerId: String, offerId: String): Boolean
     }
     class PartnerService {
         +getAll(): Partner[]
@@ -51,13 +55,18 @@ package "Domenski sloj" {
     class Offer {
         +id: String
         +title: String
+        +description: String
         +category: String
+        +categoryId: String
         +discountType: DiscountType
         +discountValue: Number
         +validUntil: String
         +conditions: String
         +status: OfferStatus
+        +photoUrl: String
         +isActive(): Boolean
+        +canBeActivated(): Boolean
+        +canBeEdited(): Boolean
         +discountLabel: String
     }
     class Partner {
@@ -72,11 +81,18 @@ package "Domenski sloj" {
         +findAll(): Offer[]
         +findById(id: String): Offer
         +findByPartner(partnerId: String): Offer[]
+        +create(partnerId: String, data: OfferInput): String
+        +update(id: String, data: OfferInput): void
+        +setPhoto(id: String, photoUrl: String): void
+        +delete(id: String): void
     }
     interface PartnerRepository {
         +findAll(): Partner[]
         +findById(id: String): Partner
         +findByOwner(ownerId: String): Partner
+    }
+    interface CategoryRepository {
+        +findAll(): Category[]
     }
 }
 
@@ -91,6 +107,7 @@ Offer --> DiscountType
 
 OfferService --> OfferRepository
 OfferService --> PartnerRepository
+OfferService --> CategoryRepository
 PartnerService --> PartnerRepository
 PartnerService --> OfferRepository
 
