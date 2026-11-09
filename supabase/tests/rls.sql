@@ -178,6 +178,94 @@ exception when no_data_found then
   insert into rezultati values ('odobravanje nepostojećeg partnera se odbija', true);
 end $$;
 
+-- ---------------------------------------------------------------- kategorije (F-027, #39)
+do $$ declare n int; begin
+  insert into public.categories (name) values ('Probna');
+  get diagnostics n = row_count;
+  insert into rezultati values ('administrator dodaje kategoriju', n = 1);
+  update public.categories set name = 'Probna nova' where name = 'Probna';
+  get diagnostics n = row_count;
+  insert into rezultati values ('administrator preimenuje kategoriju', n = 1);
+end $$;
+do $$ begin
+  insert into public.categories (name) values ('Hrana');
+  insert into rezultati values ('nova kategorija ne smije imati zauzet naziv', false);
+exception when unique_violation then
+  insert into rezultati values ('nova kategorija ne smije imati zauzet naziv', true);
+end $$;
+do $$ begin
+  update public.categories set name = 'Hrana' where name = 'Probna nova';
+  insert into rezultati values ('preimenovanje ne smije uzeti zauzet naziv', false);
+exception when unique_violation then
+  insert into rezultati values ('preimenovanje ne smije uzeti zauzet naziv', true);
+end $$;
+do $$ begin
+  delete from public.categories where name = 'Hrana';
+  insert into rezultati values ('kategorija koju koriste ponude ne može se obrisati', false);
+exception when foreign_key_violation then
+  insert into rezultati values ('kategorija koju koriste ponude ne može se obrisati', true);
+end $$;
+
+-- Student i partner: RLS ne javlja grešku pri mijenjanju i brisanju, nego ne dira nijedan redak.
+set local request.jwt.claims = '{"sub":"00000000-0000-4000-8000-0000000000a1","role":"authenticated"}';
+do $$ begin
+  insert into public.categories (name) values ('Hakirano');
+  insert into rezultati values ('student ne može dodati kategoriju', false);
+exception when insufficient_privilege then
+  insert into rezultati values ('student ne može dodati kategoriju', true);
+end $$;
+do $$ declare n int; begin
+  update public.categories set name = 'Hakirano' where name = 'Probna nova';
+  get diagnostics n = row_count;
+  insert into rezultati values ('student ne može preimenovati kategoriju', n = 0);
+  delete from public.categories where name = 'Probna nova';
+  get diagnostics n = row_count;
+  insert into rezultati values ('student ne može obrisati kategoriju', n = 0);
+end $$;
+
+set local request.jwt.claims = '{"sub":"00000000-0000-4000-8000-0000000000a2","role":"authenticated"}';
+do $$ begin
+  insert into public.categories (name) values ('Hakirano');
+  insert into rezultati values ('partner ne može dodati kategoriju', false);
+exception when insufficient_privilege then
+  insert into rezultati values ('partner ne može dodati kategoriju', true);
+end $$;
+do $$ declare n int; begin
+  update public.categories set name = 'Hakirano' where name = 'Probna nova';
+  get diagnostics n = row_count;
+  insert into rezultati values ('partner ne može preimenovati kategoriju', n = 0);
+  delete from public.categories where name = 'Probna nova';
+  get diagnostics n = row_count;
+  insert into rezultati values ('partner ne može obrisati kategoriju', n = 0);
+end $$;
+
+set local role anon;
+set local request.jwt.claims = '{"role":"anon"}';
+do $$ declare n int; begin
+  update public.categories set name = 'Hakirano' where name = 'Probna nova';
+  get diagnostics n = row_count;
+  insert into rezultati values ('anon ne može preimenovati kategoriju', n = 0);
+exception when insufficient_privilege then
+  insert into rezultati values ('anon ne može preimenovati kategoriju', true);
+end $$;
+do $$ declare n int; begin
+  delete from public.categories where name = 'Probna nova';
+  get diagnostics n = row_count;
+  insert into rezultati values ('anon ne može obrisati kategoriju', n = 0);
+exception when insufficient_privilege then
+  insert into rezultati values ('anon ne može obrisati kategoriju', true);
+end $$;
+
+set local role authenticated;
+set local request.jwt.claims = '{"sub":"00000000-0000-4000-8000-0000000000a4","role":"authenticated"}';
+insert into rezultati select 'odbijeni pokušaji nisu promijenili kategoriju', count(*) = 1
+  from public.categories where name = 'Probna nova';
+do $$ declare n int; begin
+  delete from public.categories where name = 'Probna nova';
+  get diagnostics n = row_count;
+  insert into rezultati values ('administrator briše nekorištenu kategoriju', n = 1);
+end $$;
+
 -- ---------------------------------------------------------------- vlastiti profil (F-005)
 set local request.jwt.claims = '{"sub":"00000000-0000-4000-8000-0000000000a1","role":"authenticated"}';
 
