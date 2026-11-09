@@ -2,9 +2,11 @@
 import { SupabaseCategoryRepository } from "@/repositories/supabase/SupabaseCategoryRepository";
 import { SupabaseOfferRepository } from "@/repositories/supabase/SupabaseOfferRepository";
 import { SupabasePartnerRepository } from "@/repositories/supabase/SupabasePartnerRepository";
+import { SupabaseStatisticsRepository } from "@/repositories/supabase/SupabaseStatisticsRepository";
 import { SupabaseUserRepository } from "@/repositories/supabase/SupabaseUserRepository";
 import { OfferService } from "@/services/OfferService";
 import { PartnerService } from "@/services/PartnerService";
+import { StatisticsService } from "@/services/StatisticsService";
 import { UserService } from "@/services/UserService";
 import { SupabaseCouponRepository } from "@/repositories/supabase/SupabaseCouponRepository";
 import { CouponService } from "@/services/CouponService";
@@ -37,3 +39,5 @@ export const partnerService = new PartnerService(
 export const userService = new UserService(new SupabaseUserRepository());
 
 export const couponService = new CouponService(new SupabaseCouponRepository(), offerRepository);
+
+export const statisticsService = new StatisticsService(new SupabaseStatisticsRepository());
