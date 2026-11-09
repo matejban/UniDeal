@@ -245,6 +245,58 @@ exception when insufficient_privilege then
   insert into rezultati values ('anon ne može odobriti partnera', true);
 end $$;
 
+-- ---------------------------------------------------------------- statistika (F-030, #42)
+-- Do ovdje je iskorišten jedan kupon: TEST-0001, ponuda partnera Kafić Kampus iz kategorije Hrana u Zagrebu.
+set local role authenticated;
+set local request.jwt.claims = '{"sub":"00000000-0000-4000-8000-0000000000a4","role":"authenticated"}';
+
+insert into rezultati select 'statistika broji iskorišteni kupon u razdoblju',
+    (s ->> 'redeemed_coupons')::int = 1
+    and s -> 'by_category' = '[{"name": "Hrana", "count": 1}]'
+    and s -> 'by_city' = '[{"name": "Zagreb", "count": 1}]'
+  from public.platform_statistics(current_date - 1, current_date + 1) s;
+insert into rezultati select 'statistika ne broji kupon izvan razdoblja',
+    (s ->> 'redeemed_coupons')::int = 0 and s -> 'by_category' = '[]' and s -> 'by_city' = '[]'
+  from public.platform_statistics('2020-01-01', '2020-01-31') s;
+insert into rezultati select 'statistika broji samo odobrene partnere iz seeda', (s ->> 'partners')::int = 3
+  from public.platform_statistics(current_date, current_date) s;
+insert into rezultati select 'statistika broji aktivne ponude kao javni popis', (s ->> 'active_offers')::int = 3
+  from public.platform_statistics(current_date, current_date) s;
+insert into rezultati select 'statistika ne broji studente i partnere nastale nakon razdoblja',
+    (s ->> 'students')::int = 0 and (s ->> 'partners')::int = 0
+  from public.platform_statistics('2020-01-01', '2020-01-31') s;
+do $$ begin
+  perform public.platform_statistics('2026-02-01', '2026-01-01');
+  insert into rezultati values ('statistika odbija početak nakon kraja', false);
+exception when invalid_parameter_value then
+  insert into rezultati values ('statistika odbija početak nakon kraja', true);
+end $$;
+
+set local request.jwt.claims = '{"sub":"00000000-0000-4000-8000-0000000000a1","role":"authenticated"}';
+do $$ begin
+  perform public.platform_statistics(current_date, current_date);
+  insert into rezultati values ('student ne može vidjeti statistiku', false);
+exception when insufficient_privilege then
+  insert into rezultati values ('student ne može vidjeti statistiku', true);
+end $$;
+
+set local request.jwt.claims = '{"sub":"00000000-0000-4000-8000-0000000000a2","role":"authenticated"}';
+do $$ begin
+  perform public.platform_statistics(current_date, current_date);
+  insert into rezultati values ('partner ne može vidjeti statistiku', false);
+exception when insufficient_privilege then
+  insert into rezultati values ('partner ne može vidjeti statistiku', true);
+end $$;
+
+set local role anon;
+set local request.jwt.claims = '{"role":"anon"}';
+do $$ begin
+  perform public.platform_statistics(current_date, current_date);
+  insert into rezultati values ('anon ne može vidjeti statistiku', false);
+exception when insufficient_privilege then
+  insert into rezultati values ('anon ne može vidjeti statistiku', true);
+end $$;
+
 -- ---------------------------------------------------------------- rezultat
 reset role;
 
