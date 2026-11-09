@@ -101,7 +101,7 @@ Uloge se tijekom projekta mogu mijenjati. Repozitorij i dogovoreni alat za prać
 
 ## Doprinos projektu
 
-[Ako je primjenjivo, ukratko opišite kako se evidentiraju zadaci i nedostaci te kako se pregledavaju promjene koda i gdje se nalazi aktualna evidencija zadataka. Ako tim održava `CONTRIBUTING.md`, ovdje postavite poveznicu umjesto ponavljanja pravila. Nemojte stvarati tu datoteku samo zato da biste popunili ovaj odjeljak.]
+Svaki zadatak ima svoj issue u [GitHub Issues](https://github.com/matejban/UniDeal/issues) s oznakom područja; nedostaci se prijavljuju na isti način. Rad na zadatku ide na zasebnoj grani nazvanoj po autoru i zadatku (npr. `fran/13-upload`, `elide/29-jednom-po-studentu`), a commitovi u poruci navode broj issuea ili ID zahtjeva. Promjena ulazi u granu `master` samo kroz pull request: drugi član tima pregleda kod, a CI (`.github/workflows/ci.yml`) mora proći lint, testove i izgradnju. Promjena sheme baze uvijek je nova migracija u `supabase/migrations/` (vidi [6. Postavljanje](docs/6-Postavljanje-instalacija-i-konfiguracija.md)).
 
 <a id="license"></a>
 
