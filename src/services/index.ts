@@ -30,7 +30,7 @@ if (process.env.RESEND_API_KEY) {
 }
 export { notificationService };
 
-export const offerService = new OfferService(offerRepository, partnerRepository);
+export const offerService = new OfferService(offerRepository, partnerRepository, categoryRepository);
 export const partnerService = new PartnerService(
   partnerRepository,
   offerRepository,
