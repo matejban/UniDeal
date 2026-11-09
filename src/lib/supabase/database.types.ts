@@ -686,6 +686,10 @@ export type Database = {
     }
     Functions: {
       is_admin: { Args: never; Returns: boolean }
+      platform_statistics: {
+        Args: { date_from: string; date_to: string }
+        Returns: Json
+      }
       set_user_active: {
         Args: { active: boolean; target_id: string }
         Returns: undefined
