@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getCurrentUser } from "@/lib/auth";
@@ -28,6 +29,15 @@ export default async function OfferPage({
 
   return (
     <div className="max-w-2xl rounded-lg border border-gray-200 bg-white p-6">
+      {offer.photoUrl && (
+        <Image
+          src={offer.photoUrl}
+          alt={offer.title}
+          width={640}
+          height={320}
+          className="mb-4 h-56 w-full rounded object-cover"
+        />
+      )}
       <p className="text-sm text-gray-500">{offer.category}</p>
       <h1 className="mt-1 text-2xl font-bold">{offer.title}</h1>
       <p className="mt-1 text-2xl font-semibold text-blue-700">{offer.discountLabel}</p>
