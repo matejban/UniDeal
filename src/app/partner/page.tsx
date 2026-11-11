@@ -64,7 +64,12 @@ export default async function PartnerDashboardPage({
       >
         Uredi profil
       </Link>
-      <p className="mt-2 text-gray-600">Pretplata: nije aktivna</p>
+      <p className="mt-2 text-gray-600">
+        Pretplata: nije aktivna.{" "}
+        <Link href="/partner/pretplata" className="text-blue-700 hover:underline">
+          Plati pretplatu
+        </Link>
+      </p>
 
       <section className="mt-6 rounded-lg border border-gray-200 bg-white p-4">
         <h2 className="font-semibold">Potvrda kupona</h2>

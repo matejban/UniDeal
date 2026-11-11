@@ -10,6 +10,9 @@ import { PartnerService } from "@/services/PartnerService";
 import { StatisticsService } from "@/services/StatisticsService";
 import { UserService } from "@/services/UserService";
 import { SupabaseCouponRepository } from "@/repositories/supabase/SupabaseCouponRepository";
+import { SupabaseSubscriptionRepository } from "@/repositories/supabase/SupabaseSubscriptionRepository";
+import { StripePaymentGateway } from "@/services/StripePaymentGateway";
+import { SubscriptionService } from "@/services/SubscriptionService";
 import { CouponService } from "@/services/CouponService";
 import {
   ConsoleNotificationService,
@@ -45,3 +48,9 @@ export const userService = new UserService(new SupabaseUserRepository());
 export const couponService = new CouponService(new SupabaseCouponRepository(), offerRepository);
 
 export const statisticsService = new StatisticsService(new SupabaseStatisticsRepository());
+
+export const subscriptionService = new SubscriptionService(
+  new SupabaseSubscriptionRepository(),
+  partnerRepository,
+  new StripePaymentGateway(),
+);
