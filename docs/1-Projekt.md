@@ -17,7 +17,9 @@ Cilj projekta je web platforma UniDeal koja povezuje studente i partnere na jedn
 ## 1.3 Granice projekta
 
 **Uključeno:** Prijava studenata studentskim Microsoft računom, čime je potvrđen status studenta, a partnera Google računom ili e-mailom i lozinkom (administrator se dodjeljuje ručno); profili partnera i ponude sa statusima nacrt, aktivna i istekla; pretraga, filtriranje i prikaz ponuda na karti; favoriti; kuponi s kodom i QR kodom te partnerska potvrda korištenja; ocjene i recenzije nakon iskorištenja; pretplata partnera; e-mail obavijesti; administratorski panel, statistika i izvoz izvještaja.  
-**Izvan opsega ili odgođeno:** Prijava putem AAI@EduHr i pouzdano razlikovanje studenata od djelatnika ustanove (vidi [7.3 Budući rad](7-Zakljucak-i-buduci-rad.md#73-budući-rad)). [Tim treba dogovoriti ostale stavke, npr. plaćanje samih popusta kroz platformu ili mobilnu aplikaciju.]
+**Izvan opsega:** plaćanje samih popusta kroz platformu (student popust koristi izravno kod partnera, a naplata kroz aplikaciju odnosi se samo na pretplatu partnera, C-02); nativna mobilna aplikacija (samo web prilagođen mobitelu, NF-08); potvrda i prikaz kupona bez internetske veze te ispis kupona (AS-02); sučelje na drugim jezicima osim hrvatskog (NF-11); prijava studenata računom koji nije studentski Microsoft račun te prijava partnera drugim pružateljima osim Googlea i e-maila (C-01); naplata pretplate drugim načinima osim kreditne kartice (C-02).  
+**Odgođeno:** prijava putem AAI@EduHr i pouzdano razlikovanje studenata od djelatnika ustanove (vidi [7.3 Budući rad](7-Zakljucak-i-buduci-rad.md#73-budući-rad)).
+
 **Vanjske ovisnosti:** Microsoft Entra ID (prijava studenata), Google OAuth 2.0 (prijava partnera), Google Maps API (karta i geokodiranje), Stripe (naplata pretplate), servis za slanje e-maila (Resend), Supabase (baza, autentifikacija i pohrana datoteka) i Vercel (smještaj aplikacije).
 
 ## 1.4 Postojeći pristupi i opravdanost projekta
