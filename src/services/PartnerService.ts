@@ -1,7 +1,7 @@
 import { after } from "next/server";
 import { checkImage } from "@/domain/Image";
 import { type ApprovalDecision, Partner, type PendingPartner } from "@/domain/Partner";
-import { uploadImage } from "@/lib/storage";
+import { deleteImage, uploadImage } from "@/lib/storage";
 import type { Category, CategoryRepository } from "@/repositories/CategoryRepository";
 import type { OfferRepository } from "@/repositories/OfferRepository";
 import {
@@ -195,8 +195,13 @@ export class PartnerService {
     if (error !== "") {
       return error;
     }
+    const oldLogoUrl = (await this.partners.findByOwner(ownerId))?.logoUrl ?? null;
     const logoUrl = await uploadImage("partner-logos", partnerId, file);
     await this.partners.setLogo(partnerId, ownerId, logoUrl);
+    // novi logo je spremljen, pa stari više ne treba
+    if (oldLogoUrl) {
+      await deleteImage("partner-logos", oldLogoUrl);
+    }
     return "";
   }
 }

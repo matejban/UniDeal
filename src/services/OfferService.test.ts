@@ -6,9 +6,13 @@ import type { OfferInput, OfferRepository } from "@/repositories/OfferRepository
 import type { PartnerRepository } from "@/repositories/PartnerRepository";
 import { OfferService } from "./OfferService";
 
-// bez pravog uploada u storage
+// bez pravog uploada u storage; svaka učitana slika dobiva novo ime
+const storage = vi.hoisted(() => ({ uploads: 0, deleted: [] as string[] }));
 vi.mock("../lib/storage", () => ({
-  uploadImage: async (_bucket: string, partnerId: string) => `https://slike/${partnerId}/foto.jpg`,
+  uploadImage: async (_bucket: string, partnerId: string) => `https://slike/${partnerId}/foto${++storage.uploads}.jpg`,
+  deleteImage: async (_bucket: string, url: string) => {
+    storage.deleted.push(url);
+  },
 }));
 
 function partner(id: string, ownerId: string, approval: Partner["approvalStatus"] = "odobren") {
@@ -94,6 +98,7 @@ describe("OfferService", () => {
 
   beforeEach(() => {
     repo = new FakeOfferRepository();
+    storage.deleted = [];
     service = new OfferService(repo, partners, categories);
   });
 
@@ -106,7 +111,7 @@ describe("OfferService", () => {
 
   it("fotografija se sprema uz novu ponudu", async () => {
     await service.createOffer("ana", valid, image());
-    expect(repo.rows[0].photoUrl).toBe("https://slike/p1/foto.jpg");
+    expect(repo.rows[0].photoUrl).toMatch(/^https:\/\/slike\/p1\/foto\d+\.jpg$/);
   });
 
   it("korisnik bez profila partnera ne može stvoriti ponudu", async () => {
@@ -164,6 +169,29 @@ describe("OfferService", () => {
   it("istekla ponuda ne može se urediti", async () => {
     repo.rows.push(toOffer("stara", "p1", valid, "istekla", null));
     expect(await service.updateOffer("ana", "stara", valid, null)).toHaveProperty("form");
+  });
+
+  it("nova fotografija zamjenjuje staru, a stara se briše iz Storagea", async () => {
+    await service.createOffer("ana", valid, image("image/jpeg"));
+    const first = repo.rows[0].photoUrl;
+    expect(first).not.toBeNull();
+
+    expect(await service.updateOffer("ana", "o1", valid, image("image/png"))).toEqual({});
+    expect(repo.rows[0].photoUrl).not.toBe(first);
+    expect(storage.deleted).toEqual([first]);
+  });
+
+  it("uređivanje bez nove fotografije ne briše postojeću", async () => {
+    await service.createOffer("ana", valid, image("image/jpeg"));
+    await service.updateOffer("ana", "o1", { ...valid, title: "Dvije kave" }, null);
+    expect(storage.deleted).toEqual([]);
+  });
+
+  it("brisanje ponude briše i njezinu fotografiju", async () => {
+    await service.createOffer("ana", valid, image("image/jpeg"));
+    const photo = repo.rows[0].photoUrl;
+    expect(await service.deleteOffer("ana", "o1")).toBe(true);
+    expect(storage.deleted).toEqual([photo]);
   });
 
   it("obrisana ponuda više ne postoji", async () => {

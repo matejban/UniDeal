@@ -1,7 +1,7 @@
-import { IMAGE_TYPES } from "@/domain/Image";
+import { IMAGE_TYPES, type ImageBucket, imagePath } from "@/domain/Image";
 import { createClient } from "@/lib/supabase/server";
 
-export type ImageBucket = "partner-logos" | "offer-photos";
+export type { ImageBucket };
 
 // Učitava sliku u Supabase Storage i vraća njezin javni URL (#13).
 // Slika ide u mapu partnera (<partnerId>/…); pravila Storagea dopuštaju upis samo vlasniku partnera.
@@ -21,4 +21,18 @@ export async function uploadImage(bucket: ImageBucket, partnerId: string, file: 
 
   const { data } = supabase.storage.from(bucket).getPublicUrl(path);
   return data.publicUrl;
+}
+
+// Briše sliku koju je zamijenila nova ili čija je ponuda obrisana, da ne ostane u Storageu.
+// Prima javni URL kakav vraća uploadImage. Neuspjelo brisanje samo se zapiše: korisnikova radnja je već uspjela.
+export async function deleteImage(bucket: ImageBucket, publicUrl: string): Promise<void> {
+  const path = imagePath(bucket, publicUrl);
+  if (!path) {
+    return;
+  }
+  const supabase = await createClient();
+  const { error } = await supabase.storage.from(bucket).remove([path]);
+  if (error) {
+    console.error(`Brisanje stare slike nije uspjelo (${path}):`, error.message);
+  }
 }

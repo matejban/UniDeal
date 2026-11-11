@@ -1,7 +1,7 @@
 import { checkImage } from "../domain/Image";
 import { type Offer, today } from "../domain/Offer";
 import type { Partner } from "@/domain/Partner";
-import { uploadImage } from "../lib/storage";
+import { deleteImage, uploadImage } from "../lib/storage";
 import type { Category, CategoryRepository } from "@/repositories/CategoryRepository";
 import type { OfferInput, OfferRepository } from "@/repositories/OfferRepository";
 import type { PartnerRepository } from "@/repositories/PartnerRepository";
@@ -96,6 +96,10 @@ export class OfferService {
     await this.offers.update(offerId, data);
     if (photo) {
       await this.offers.setPhoto(offerId, await uploadImage("offer-photos", offer.partnerId, photo));
+      // nova fotografija je spremljena, pa stara više ne treba
+      if (offer.photoUrl) {
+        await deleteImage("offer-photos", offer.photoUrl);
+      }
     }
     return {};
   }
@@ -106,6 +110,9 @@ export class OfferService {
       return false;
     }
     await this.offers.delete(offerId);
+    if (offer.photoUrl) {
+      await deleteImage("offer-photos", offer.photoUrl);
+    }
     return true;
   }
 
