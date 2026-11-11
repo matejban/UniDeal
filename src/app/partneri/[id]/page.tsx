@@ -46,7 +46,7 @@ export default async function PartnerProfilePage({ params }: { params: Promise<{
       </div>
       <p className="mt-4 max-w-2xl">{partner.description}</p>
       <dl className="mt-4 space-y-1 text-sm">
-        <div><dt className="inline font-semibold">Adresa: </dt><dd className="inline">{partner.address}</dd></div>
+        <div><dt className="inline font-semibold">Adresa: </dt><dd className="inline">{partner.address}, {partner.city}</dd></div>
         <div><dt className="inline font-semibold">Telefon: </dt><dd className="inline">{partner.phone}</dd></div>
         <div><dt className="inline font-semibold">Radno vrijeme: </dt><dd className="inline">{partner.hours}</dd></div>
       </dl>

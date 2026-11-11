@@ -22,8 +22,16 @@ export default function OfferForm({ action, values: initialValues, categories, p
   const errors = state.errors;
   const values = state.values;
 
+  // React nakon slanja vraća obrazac na početne vrijednosti. Tekstna polja preuzmu vraćene vrijednosti,
+  // a padajući izbornici ne, pa bi se kategorija, vrsta popusta i ograničenje tiho vratili na zadano.
+  // Novi key ponovno iscrta obrazac s vrijednostima koje je vratio poslužitelj.
   return (
-    <form action={formAction} noValidate className="space-y-4 rounded-lg border border-gray-200 bg-white p-6">
+    <form
+      key={JSON.stringify(values)}
+      action={formAction}
+      noValidate
+      className="space-y-4 rounded-lg border border-gray-200 bg-white p-6"
+    >
       {errors.form && <p className="rounded bg-red-50 p-3 text-sm text-red-700">{errors.form}</p>}
 
       <div className="space-y-1">
