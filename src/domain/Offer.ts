@@ -2,8 +2,6 @@ export type OfferStatus = "nacrt" | "aktivna" | "istekla";
 export type DiscountType = "postotak" | "iznos";
 export type UsageLimit = "jednom_po_studentu" | "neograniceno";
 
-export const OFFER_CATEGORIES = ["Hrana", "Zdravlje i sport", "Obrazovanje", "Zabava"];
-
 export function today(): string {
   return new Date().toISOString().slice(0, 10);
 }

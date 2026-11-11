@@ -1,5 +1,4 @@
 import OfferCard from "@/components/OfferCard";
-import { OFFER_CATEGORIES } from "@/domain/Offer";
 import { offerService, partnerService } from "@/services";
 
 export default async function OffersPage({
@@ -8,8 +7,12 @@ export default async function OffersPage({
   searchParams: Promise<{ kategorija?: string; grad?: string }>;
 }) {
   const { kategorija, grad } = await searchParams;
-  const cities = await partnerService.getCities();
-  const results = await offerService.search({ category: kategorija, city: grad });
+  // Kategorije dolaze iz baze, pa filtar prati dodavanje i preimenovanje na /admin/kategorije (F-027).
+  const [categories, cities, results] = await Promise.all([
+    offerService.getCategories(),
+    partnerService.getCities(),
+    offerService.search({ category: kategorija, city: grad }),
+  ]);
 
   return (
     <div>
@@ -18,8 +21,8 @@ export default async function OffersPage({
       <form className="mt-4 flex flex-wrap gap-3">
         <select name="kategorija" defaultValue={kategorija ?? ""} className="rounded border border-gray-300 bg-white px-3 py-2">
           <option value="">Sve kategorije</option>
-          {OFFER_CATEGORIES.map((c) => (
-            <option key={c}>{c}</option>
+          {categories.map((c) => (
+            <option key={c.id}>{c.name}</option>
           ))}
         </select>
         <select name="grad" defaultValue={grad ?? ""} className="rounded border border-gray-300 bg-white px-3 py-2">

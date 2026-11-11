@@ -18,8 +18,15 @@ export default function RegistrationForm({ categories }: { categories: Category[
   const values = state.values;
 
   // Polja provjerava poslužitelj (noValidate), da poruke budu iste u svakom pregledniku.
+  // React nakon slanja vraća obrazac na početne vrijednosti, a odabrana kategorija ne bi ostala odabrana;
+  // novi key ponovno iscrta obrazac s vrijednostima koje je vratio poslužitelj.
   return (
-    <form action={action} noValidate className="space-y-4 rounded-lg border border-gray-200 bg-white p-6">
+    <form
+      key={JSON.stringify(values)}
+      action={action}
+      noValidate
+      className="space-y-4 rounded-lg border border-gray-200 bg-white p-6"
+    >
       {errors.form && <p className="rounded bg-red-50 p-3 text-sm text-red-700">{errors.form}</p>}
 
       <div className="space-y-1">
