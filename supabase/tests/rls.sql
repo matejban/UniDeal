@@ -1,11 +1,16 @@
 -- Test RLS pravila (#3, NF-03): za svaku ulogu pokušava dopuštene i nedopuštene radnje.
--- Pokreće se nad bazom s podacima iz seed.sql (psql ili SQL Editor). Sve se poništava na kraju (rollback).
+-- Pokreće se nad bazom s podacima iz seed.sql (psql ili SQL Editor), a radi i kad baza ima dodatne partnere,
+-- ponude i kupone: očekivane brojeve skripta računa bez RLS-a (tablica ocekivano) i uspoređuje ih s onim što
+-- vidi pojedina uloga. Sve se poništava na kraju (rollback).
 -- Ako neki test padne, skripta završava greškom s nazivima palih testova.
 
 begin;
 
 create temp table rezultati (test text, ok boolean) on commit drop;
 grant insert on rezultati to anon, authenticated;
+-- Očekivane vrijednosti izračunate kao vlasnik baze (bez RLS-a), neposredno prije provjere koja ih koristi.
+create temp table ocekivano (kljuc text primary key, n bigint) on commit drop;
+grant select on ocekivano to anon, authenticated;
 
 -- Probni korisnici; okidač handle_new_user stvara im profile.
 insert into auth.users (id, email, raw_app_meta_data, raw_user_meta_data, aud, role) values
@@ -27,12 +32,20 @@ insert into public.offers (id, partner_id, category_id, title, description, disc
          'Partner nije odobren.', 'postotak', 50, '2027-12-31', 'aktivna'
   from public.categories where name = 'Hrana';
 
+-- Javno je ono što određuju private.partner_is_public i uvjet za javne ponude; s podacima iz seeda to su 3 i 3.
+insert into ocekivano values
+  ('javne_ponude', (select count(*) from public.offers
+                    where status = 'aktivna' and valid_until >= current_date and private.partner_is_public(partner_id))),
+  ('javni_partneri', (select count(*) from public.partners where private.partner_is_public(id)));
+
 -- ---------------------------------------------------------------- posjetitelj (anon)
 set local role anon;
 set local request.jwt.claims = '{"role":"anon"}';
 
-insert into rezultati select 'anon vidi samo 3 javne ponude', count(*) = 3 from public.offers;
-insert into rezultati select 'anon vidi samo 3 javna partnera', count(*) = 3 from public.partners;
+insert into rezultati select 'anon vidi samo javne ponude', count(*) = (select n from ocekivano where kljuc = 'javne_ponude')
+  and not coalesce(bool_or(id = 'b1000000-0000-4000-8000-0000000000f1'), false) from public.offers;
+insert into rezultati select 'anon vidi samo javne partnere', count(*) = (select n from ocekivano where kljuc = 'javni_partneri')
+  and not coalesce(bool_or(id = 'a1000000-0000-4000-8000-0000000000f1'), false) from public.partners;
 insert into rezultati select 'anon ne vidi pretplate', count(*) = 0 from public.subscriptions;
 insert into rezultati select 'anon ne vidi kupone', count(*) = 0 from public.coupons;
 do $$ begin
@@ -116,9 +129,18 @@ do $$ declare n int; begin
 end $$;
 
 -- ---------------------------------------------------------------- partner vlasnik ponude
+-- Svi kuponi ponuda partnera Kafić Kampus, uključujući TEST-0001; s podacima iz seeda samo TEST-0001.
+reset role;
+insert into ocekivano select 'kuponi_kafic_kampus', count(*)
+  from public.coupons c join public.offers o on o.id = c.offer_id
+  where o.partner_id = 'a1000000-0000-4000-8000-000000000001';
+set local role authenticated;
 set local request.jwt.claims = '{"sub":"00000000-0000-4000-8000-0000000000a2","role":"authenticated"}';
 
-insert into rezultati select 'partner vidi kupon svoje ponude', count(*) = 1 from public.coupons;
+insert into rezultati select 'partner vidi kupone svojih ponuda, i samo njih',
+    count(*) = (select n from ocekivano where kljuc = 'kuponi_kafic_kampus')
+    and coalesce(bool_or(code = 'TEST-0001'), false)
+  from public.coupons;
 do $$ declare n int; begin
   update public.coupons set status = 'iskoristen', redeemed_at = now() where code = 'TEST-0001';
   get diagnostics n = row_count;
@@ -151,10 +173,18 @@ exception when insufficient_privilege then
 end $$;
 
 -- ---------------------------------------------------------------- administrator
+-- Administrator vidi sve retke; s podacima iz seeda 5 ponuda i 4 partnera.
+reset role;
+insert into ocekivano values
+  ('sve_ponude', (select count(*) from public.offers)),
+  ('svi_partneri', (select count(*) from public.partners));
+set local role authenticated;
 set local request.jwt.claims = '{"sub":"00000000-0000-4000-8000-0000000000a4","role":"authenticated"}';
 
-insert into rezultati select 'administrator vidi sve ponude', count(*) = 5 from public.offers;
-insert into rezultati select 'administrator vidi sve partnere', count(*) = 4 from public.partners;
+insert into rezultati select 'administrator vidi sve ponude', count(*) = (select n from ocekivano where kljuc = 'sve_ponude')
+  from public.offers;
+insert into rezultati select 'administrator vidi sve partnere', count(*) = (select n from ocekivano where kljuc = 'svi_partneri')
+  from public.partners;
 
 -- Odobravanje partnera (F-025, #37).
 insert into rezultati select 'administrator vidi partnera na čekanju', count(*) = 1
@@ -334,21 +364,53 @@ exception when insufficient_privilege then
 end $$;
 
 -- ---------------------------------------------------------------- statistika (F-030, #42)
--- Do ovdje je iskorišten jedan kupon: TEST-0001, ponuda partnera Kafić Kampus iz kategorije Hrana u Zagrebu.
+-- Do ovdje je iskorišten kupon TEST-0001, ponuda partnera Kafić Kampus iz kategorije Hrana u Zagrebu.
+-- Očekivani brojevi računaju se bez RLS-a za isto razdoblje (po zagrebačkom vremenu, kao platform_statistics);
+-- s podacima iz seeda to je samo TEST-0001 i 3 odobrena partnera.
+reset role;
+insert into ocekivano
+  select 'iskoristeni', count(*) from public.coupons
+  where status = 'iskoristen'
+    and redeemed_at >= (current_date - 1)::timestamp at time zone 'Europe/Zagreb'
+    and redeemed_at < (current_date + 2)::timestamp at time zone 'Europe/Zagreb';
+insert into ocekivano
+  select 'iskoristeni_' || g.kljuc, count(c.id)
+  from (values ('hrana'), ('zagreb')) g (kljuc)
+  left join (
+    public.coupons c
+    join public.offers o on o.id = c.offer_id
+    join public.categories cat on cat.id = o.category_id
+    join public.partners p on p.id = o.partner_id
+  ) on c.status = 'iskoristen'
+    and c.redeemed_at >= (current_date - 1)::timestamp at time zone 'Europe/Zagreb'
+    and c.redeemed_at < (current_date + 2)::timestamp at time zone 'Europe/Zagreb'
+    and ((g.kljuc = 'hrana' and cat.name = 'Hrana') or (g.kljuc = 'zagreb' and p.city = 'Zagreb'))
+  group by g.kljuc;
+insert into ocekivano values
+  ('odobreni_partneri', (select count(*) from public.partners
+                         where approval_status = 'odobren'
+                           and created_at < (current_date + 1)::timestamp at time zone 'Europe/Zagreb')),
+  ('aktivne_ponude', (select count(*) from public.offers
+                      where status = 'aktivna' and valid_until >= current_date and private.partner_is_public(partner_id)));
 set local role authenticated;
 set local request.jwt.claims = '{"sub":"00000000-0000-4000-8000-0000000000a4","role":"authenticated"}';
 
 insert into rezultati select 'statistika broji iskorišteni kupon u razdoblju',
-    (s ->> 'redeemed_coupons')::int = 1
-    and s -> 'by_category' = '[{"name": "Hrana", "count": 1}]'
-    and s -> 'by_city' = '[{"name": "Zagreb", "count": 1}]'
+    (select n from ocekivano where kljuc = 'iskoristeni') >= 1
+    and (s ->> 'redeemed_coupons')::int = (select n from ocekivano where kljuc = 'iskoristeni')
+    and s -> 'by_category' @> jsonb_build_array(jsonb_build_object(
+          'name', 'Hrana', 'count', (select n from ocekivano where kljuc = 'iskoristeni_hrana')))
+    and s -> 'by_city' @> jsonb_build_array(jsonb_build_object(
+          'name', 'Zagreb', 'count', (select n from ocekivano where kljuc = 'iskoristeni_zagreb')))
   from public.platform_statistics(current_date - 1, current_date + 1) s;
 insert into rezultati select 'statistika ne broji kupon izvan razdoblja',
     (s ->> 'redeemed_coupons')::int = 0 and s -> 'by_category' = '[]' and s -> 'by_city' = '[]'
   from public.platform_statistics('2020-01-01', '2020-01-31') s;
-insert into rezultati select 'statistika broji samo odobrene partnere iz seeda', (s ->> 'partners')::int = 3
+insert into rezultati select 'statistika broji samo odobrene partnere',
+    (s ->> 'partners')::int = (select n from ocekivano where kljuc = 'odobreni_partneri')
   from public.platform_statistics(current_date, current_date) s;
-insert into rezultati select 'statistika broji aktivne ponude kao javni popis', (s ->> 'active_offers')::int = 3
+insert into rezultati select 'statistika broji aktivne ponude kao javni popis',
+    (s ->> 'active_offers')::int = (select n from ocekivano where kljuc = 'aktivne_ponude')
   from public.platform_statistics(current_date, current_date) s;
 insert into rezultati select 'statistika ne broji studente i partnere nastale nakon razdoblja',
     (s ->> 'students')::int = 0 and (s ->> 'partners')::int = 0
