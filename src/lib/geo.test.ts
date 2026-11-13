@@ -1,5 +1,18 @@
 import { describe, expect, it } from "vitest";
-import { boundsOf, centerOf } from "./geo";
+import { boundsOf, centerOf, isInCroatia } from "./geo";
+
+describe("isInCroatia", () => {
+  it("točke u Hrvatskoj prolaze", () => {
+    expect(isInCroatia({ lat: 45.8, lng: 15.97 })).toBe(true); // Zagreb
+    expect(isInCroatia({ lat: 42.65, lng: 18.09 })).toBe(true); // Dubrovnik
+  });
+
+  it("točke izvan Hrvatske i neispravni brojevi se odbijaju", () => {
+    expect(isInCroatia({ lat: 48.2, lng: 16.37 })).toBe(false); // Beč
+    expect(isInCroatia({ lat: 45.8, lng: 12.0 })).toBe(false);
+    expect(isInCroatia({ lat: Number.NaN, lng: 15.97 })).toBe(false);
+  });
+});
 
 describe("boundsOf", () => {
   it("prazan popis nema granice", () => {

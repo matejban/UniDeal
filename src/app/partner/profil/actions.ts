@@ -48,10 +48,47 @@ export async function updateProfile(_prev: ProfileState, formData: FormData): Pr
     return { errors, values, saved: false };
   }
 
-  // Promjena se odmah vidi na javnom profilu i na partnerskoj ploči.
+  // Promjena se odmah vidi na javnom profilu i na partnerskoj ploči, a nova adresa i na karti (#24).
   revalidatePath(`/partneri/${partner.id}`);
   revalidatePath("/partner");
+  revalidatePath("/partner/profil");
+  revalidatePath("/karta");
   return { errors: {}, values, saved: true };
+}
+
+export type LocationState = { error: string; saved: boolean };
+
+// Ručno označena lokacija partnera na karti, kad geokodiranje ne pronađe adresu (F-013, #24).
+export async function saveLocation(_prev: LocationState, formData: FormData): Promise<LocationState> {
+  const user = await requireRole("partner");
+
+  const lat = readField(formData, "lat");
+  const lng = readField(formData, "lng");
+  if (lat === "" || lng === "") {
+    return { error: "Klikni na kartu da označiš lokaciju.", saved: false };
+  }
+
+  const partner = await partnerService.getByOwner(user.id);
+  if (!partner) {
+    return { error: "Još nemaš profil partnera.", saved: false };
+  }
+
+  let error: string;
+  try {
+    error = await partnerService.setLocation(partner.id, user.id, { lat: Number(lat), lng: Number(lng) });
+  } catch (e) {
+    console.error("Spremanje lokacije nije uspjelo:", e);
+    error = "Spremanje nije uspjelo. Pokušaj ponovno.";
+  }
+  if (error !== "") {
+    return { error, saved: false };
+  }
+
+  revalidatePath(`/partneri/${partner.id}`);
+  revalidatePath("/partner");
+  revalidatePath("/partner/profil");
+  revalidatePath("/karta");
+  return { error: "", saved: true };
 }
 
 export type LogoState = { error: string; saved: boolean };

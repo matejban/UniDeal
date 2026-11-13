@@ -14,6 +14,8 @@ import { SupabaseSubscriptionRepository } from "@/repositories/supabase/Supabase
 import { StripePaymentGateway } from "@/services/StripePaymentGateway";
 import { SubscriptionService } from "@/services/SubscriptionService";
 import { CouponService } from "@/services/CouponService";
+import { type Geocoder, NoGeocoder } from "@/services/Geocoder";
+import { GoogleGeocoder } from "@/services/GoogleGeocoder";
 import {
   ConsoleNotificationService,
   ResendNotificationService,
@@ -34,11 +36,20 @@ if (process.env.RESEND_API_KEY) {
 export { notificationService };
 
 export const offerService = new OfferService(offerRepository, partnerRepository, categoryRepository);
+// Adrese partnera geokodira Google kad postoji ključ; bez njega partner lokaciju označava ručno (#24).
+let geocoder: Geocoder;
+if (process.env.GOOGLE_GEOCODING_API_KEY) {
+  geocoder = new GoogleGeocoder(process.env.GOOGLE_GEOCODING_API_KEY);
+} else {
+  geocoder = new NoGeocoder();
+}
+
 export const partnerService = new PartnerService(
   partnerRepository,
   offerRepository,
   categoryRepository,
   notificationService,
+  geocoder,
 );
 
 export const categoryService = new CategoryService(categoryRepository);

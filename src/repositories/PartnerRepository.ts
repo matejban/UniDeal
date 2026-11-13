@@ -1,4 +1,5 @@
 import type { ApprovalDecision, Partner, PendingPartner } from "@/domain/Partner";
+import type { LatLng } from "@/lib/geo";
 
 // Podaci koje partner unosi pri registraciji (F-006).
 export type NewPartner = {
@@ -9,6 +10,9 @@ export type NewPartner = {
   address: string;
   city: string;
   phone: string;
+  // Koordinate adrese (F-013); prazne ako geokodiranje nije pronašlo adresu.
+  lat: number | null;
+  lng: number | null;
 };
 
 // Podaci javnog profila koje partner smije mijenjati (F-010).
@@ -40,6 +44,8 @@ export interface PartnerRepository {
   update(id: string, ownerId: string, profile: PartnerProfile): Promise<void>;
   // Sprema URL loga, isto samo za vlasnika profila (#13).
   setLogo(id: string, ownerId: string, logoUrl: string): Promise<void>;
+  // Sprema ili briše koordinate adrese, samo za vlasnika profila (F-013).
+  setLocation(id: string, ownerId: string, location: LatLng | null): Promise<void>;
   // Profili na čekanju odobrenja, najstariji prvi; vidi ih samo administrator (F-025).
   findPending(): Promise<PendingPartner[]>;
   setApproval(id: string, decision: ApprovalDecision): Promise<void>;

@@ -1,4 +1,5 @@
 import { type ApprovalDecision, type ApprovalStatus, Partner, PendingPartner } from "@/domain/Partner";
+import type { LatLng } from "@/lib/geo";
 import type { Tables } from "@/lib/supabase/database.types";
 import { createClient } from "@/lib/supabase/server";
 import {
@@ -98,6 +99,8 @@ export class SupabasePartnerRepository implements PartnerRepository {
         address: p.address,
         city: p.city,
         phone: p.phone,
+        lat: p.lat,
+        lng: p.lng,
       })
       .select(COLUMNS)
       .single();
@@ -144,6 +147,23 @@ export class SupabasePartnerRepository implements PartnerRepository {
       .select("id");
     if (error) {
       throw new Error(`Spremanje loga nije uspjelo: ${error.message}`);
+    }
+    if (data.length === 0) {
+      throw new Error("Profil partnera nije pronađen.");
+    }
+  }
+
+  // Koordinate adrese (F-013), isto samo za vlasnika profila. null briše staru lokaciju nakon promjene adrese.
+  async setLocation(id: string, ownerId: string, location: LatLng | null) {
+    const supabase = await createClient();
+    const { data, error } = await supabase
+      .from("partners")
+      .update({ lat: location?.lat ?? null, lng: location?.lng ?? null })
+      .eq("id", id)
+      .eq("owner_id", ownerId)
+      .select("id");
+    if (error) {
+      throw new Error(`Spremanje lokacije nije uspjelo: ${error.message}`);
     }
     if (data.length === 0) {
       throw new Error("Profil partnera nije pronađen.");
