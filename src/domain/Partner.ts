@@ -17,6 +17,9 @@ export class Partner {
     readonly ownerId: string | null,
     // Javni URL loga u Supabase Storageu (#13); prazno dok ga partner ne učita.
     readonly logoUrl: string | null,
+    // Koordinate adrese za kartu (F-013, F-018); prazne dok adresa nije geokodirana (#24).
+    readonly lat: number | null = null,
+    readonly lng: number | null = null,
   ) {}
 
   // Provjera OIB-a (F-006): 11 znamenki, a zadnja je kontrolna po ISO 7064 MOD 11,10.
