@@ -1,7 +1,8 @@
 import { after } from "next/server";
-import { checkImage } from "@/domain/Image";
-import { type ApprovalDecision, Partner, type PendingPartner } from "@/domain/Partner";
-import { deleteImage, uploadImage } from "@/lib/storage";
+import { checkImage } from "../domain/Image";
+import { type ApprovalDecision, Partner, type PendingPartner } from "../domain/Partner";
+import { centerOf, type LatLng } from "../lib/geo";
+import { deleteImage, uploadImage } from "../lib/storage";
 import type { Category, CategoryRepository } from "@/repositories/CategoryRepository";
 import type { OfferRepository } from "@/repositories/OfferRepository";
 import {
@@ -9,7 +10,7 @@ import {
   type NewPartner,
   type PartnerProfile,
   type PartnerRepository,
-} from "@/repositories/PartnerRepository";
+} from "../repositories/PartnerRepository";
 import type { NotificationService } from "@/services/NotificationService";
 import type { OfferListing } from "@/services/OfferService";
 
@@ -17,6 +18,9 @@ export type PartnerRegistration = Omit<NewPartner, "ownerId">;
 // Poruka uz svako neispravno polje; "form" je greška koja ne pripada nijednom polju.
 export type RegistrationErrors = Partial<Record<keyof PartnerRegistration | "form", string>>;
 export type ProfileErrors = Partial<Record<keyof PartnerProfile | "form", string>>;
+
+export type MapPartner = LatLng & { id: string; name: string; category: string; address: string; city: string };
+export type MapCity = LatLng & { name: string };
 
 export class PartnerService {
   constructor(
@@ -77,6 +81,26 @@ export class PartnerService {
 
   async getCities(): Promise<string[]> {
     return [...new Set((await this.partners.findAll()).map((p) => p.city))];
+  }
+
+  // Podaci za kartu partnera (F-018): javni partneri s koordinatama i središte svakog grada.
+  // Obični objekti, jer ih stranica predaje klijentskoj komponenti karte.
+  async getMapData(): Promise<{ partners: MapPartner[]; cities: MapCity[] }> {
+    const partners: MapPartner[] = [];
+    for (const p of await this.partners.findAll()) {
+      if (p.lat !== null && p.lng !== null) {
+        partners.push({ id: p.id, name: p.name, category: p.category, address: p.address, city: p.city, lat: p.lat, lng: p.lng });
+      }
+    }
+
+    const cities: MapCity[] = [];
+    for (const name of [...new Set(partners.map((p) => p.city))].sort()) {
+      const center = centerOf(partners.filter((p) => p.city === name));
+      if (center) {
+        cities.push({ name, ...center });
+      }
+    }
+    return { partners, cities };
   }
 
   async getProfile(id: string): Promise<{ partner: Partner; listings: OfferListing[] } | undefined> {

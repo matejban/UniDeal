@@ -9,7 +9,7 @@ import {
 } from "@/repositories/PartnerRepository";
 
 const COLUMNS =
-  "id, name, city, address, phone, hours, description, approval_status, oib, owner_id, logo_url, categories(name)";
+  "id, name, city, address, phone, hours, description, approval_status, oib, owner_id, logo_url, lat, lng, categories(name)";
 
 // Ugrađena kategorija je objekt, iako je netipizirani klijent vidi kao niz (vidi SupabaseOfferRepository).
 type PartnerRow = Pick<
@@ -25,6 +25,8 @@ type PartnerRow = Pick<
   | "oib"
   | "owner_id"
   | "logo_url"
+  | "lat"
+  | "lng"
 > & {
   categories: { name: string } | null;
 };
@@ -43,6 +45,8 @@ function toPartner(r: PartnerRow) {
     r.oib,
     r.owner_id,
     r.logo_url,
+    r.lat,
+    r.lng,
   );
 }
 
