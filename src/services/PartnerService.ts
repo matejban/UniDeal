@@ -1,7 +1,7 @@
 import { after } from "next/server";
 import { checkImage } from "../domain/Image";
 import { type ApprovalDecision, Partner, type PendingPartner } from "../domain/Partner";
-import { centerOf, type LatLng } from "../lib/geo";
+import { centerOf, isInCroatia, type LatLng } from "../lib/geo";
 import { deleteImage, uploadImage } from "../lib/storage";
 import type { Category, CategoryRepository } from "@/repositories/CategoryRepository";
 import type { OfferRepository } from "@/repositories/OfferRepository";
@@ -11,10 +11,12 @@ import {
   type PartnerProfile,
   type PartnerRepository,
 } from "../repositories/PartnerRepository";
+import type { Geocoder } from "@/services/Geocoder";
 import type { NotificationService } from "@/services/NotificationService";
 import type { OfferListing } from "@/services/OfferService";
 
-export type PartnerRegistration = Omit<NewPartner, "ownerId">;
+// Koordinate ne unosi partner, nego ih računa geokodiranje (F-013).
+export type PartnerRegistration = Omit<NewPartner, "ownerId" | "lat" | "lng">;
 // Poruka uz svako neispravno polje; "form" je greška koja ne pripada nijednom polju.
 export type RegistrationErrors = Partial<Record<keyof PartnerRegistration | "form", string>>;
 export type ProfileErrors = Partial<Record<keyof PartnerProfile | "form", string>>;
@@ -28,7 +30,19 @@ export class PartnerService {
     private readonly offers: OfferRepository,
     private readonly categories: CategoryRepository,
     private readonly notifications: NotificationService,
+    private readonly geocoder: Geocoder,
   ) {}
+
+  // Koordinate adrese (F-013). Greška geokodiranja (npr. krivi ključ) ne smije spriječiti spremanje profila,
+  // pa se zapiše u log, a partner lokaciju može označiti ručno.
+  private async locate(address: string, city: string): Promise<LatLng | null> {
+    try {
+      return await this.geocoder.geocode(address, city);
+    } catch (e) {
+      console.error("Geokodiranje adrese nije uspjelo:", e);
+      return null;
+    }
+  }
 
   async getAll(): Promise<Partner[]> {
     return this.partners.findAll();
@@ -160,6 +174,9 @@ export class PartnerService {
       return errors;
     }
 
+    // Nepronađena adresa ne sprječava registraciju; partner lokaciju označava na profilu (F-013).
+    const location = await this.locate(data.address, data.city);
+
     try {
       await this.partners.create({
         ownerId: ownerId,
@@ -169,6 +186,8 @@ export class PartnerService {
         address: data.address,
         city: data.city,
         phone: data.phone,
+        lat: location?.lat ?? null,
+        lng: location?.lng ?? null,
       });
     } catch (e) {
       // Baza javlja da OIB ili vlasnik već postoje; ostale greške idu dalje.
@@ -209,8 +228,27 @@ export class PartnerService {
       return errors;
     }
 
+    const before = await this.partners.findByOwner(ownerId);
     await this.partners.update(partnerId, ownerId, data);
+
+    // Geokodira se samo nova adresa ili profil koji još nema lokaciju (F-013). Ako nova adresa nije
+    // pronađena, stara se lokacija briše, jer bi oznaka na karti inače bila na staroj adresi.
+    const addressChanged = !before || before.address !== data.address || before.city !== data.city;
+    const hasLocation = before !== undefined && before.lat !== null && before.lng !== null;
+    if (addressChanged || !hasLocation) {
+      await this.partners.setLocation(partnerId, ownerId, await this.locate(data.address, data.city));
+    }
     return {};
+  }
+
+  // Ručno označena lokacija (F-013), kad geokodiranje ne pronađe adresu. Vraća poruku o grešci
+  // ili prazan tekst ako je lokacija spremljena.
+  async setLocation(partnerId: string, ownerId: string, location: LatLng): Promise<string> {
+    if (!isInCroatia(location)) {
+      return "Označi lokaciju u Hrvatskoj.";
+    }
+    await this.partners.setLocation(partnerId, ownerId, location);
+    return "";
   }
 
   // Novi logo partnera (#13). Vraća poruku o grešci ili prazan tekst ako je logo spremljen.

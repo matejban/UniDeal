@@ -58,6 +58,14 @@ export default async function PartnerDashboardPage({
       <p className={`mt-4 rounded p-3 text-sm ${approval[partner.approvalStatus].className}`}>
         {approval[partner.approvalStatus].text}
       </p>
+      {(partner.lat === null || partner.lng === null) && (
+        <p className="mt-2 rounded bg-yellow-100 p-3 text-sm text-yellow-800">
+          Adresa nije pronađena na karti, pa te studenti ne vide na karti partnera.{" "}
+          <Link href="/partner/profil#lokacija" className="font-semibold underline">
+            Označi lokaciju
+          </Link>
+        </p>
+      )}
       <Link
         href="/partner/profil"
         className="mt-4 inline-block rounded border border-gray-300 bg-white px-4 py-2 text-sm hover:border-blue-700"
