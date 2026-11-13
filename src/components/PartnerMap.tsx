@@ -3,7 +3,7 @@
 import { AdvancedMarker, APIProvider, InfoWindow, Map, Pin, useMap } from "@vis.gl/react-google-maps";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { CROATIA_CENTER, type LatLng } from "@/lib/geo";
+import { boundsOf, CROATIA_CENTER, type LatLng } from "@/lib/geo";
 import type { MapCity, MapPartner } from "@/services/PartnerService";
 
 // AdvancedMarker traži Map ID; Googleov ogledni ID dovoljan je dok ne napravimo vlastiti stil karte.
@@ -69,6 +69,12 @@ export default function PartnerMap({ apiKey, partners, cities }: { apiKey: strin
 
   const selected = partners.find((p) => p.id === selectedId);
 
+  // Početni prikaz obuhvaća sve partnere; s jednim partnerom ili bez njih karta se centrira na točku.
+  const bounds = partners.length > 1 ? boundsOf(partners) : null;
+  const initialView = bounds
+    ? { defaultBounds: { ...bounds, padding: 48 } }
+    : { defaultCenter: partners[0] ?? CROATIA_CENTER, defaultZoom: partners.length === 1 ? 13 : 7 };
+
   return (
     <div className="mt-4">
       <div className="flex flex-wrap items-center gap-3">
@@ -96,8 +102,7 @@ export default function PartnerMap({ apiKey, partners, cities }: { apiKey: strin
       <APIProvider apiKey={apiKey} language="hr" region="HR" onError={() => setFailed(true)}>
         <Map
           mapId={MAP_ID}
-          defaultCenter={CROATIA_CENTER}
-          defaultZoom={7}
+          {...initialView}
           gestureHandling="cooperative"
           className="mt-3 h-96 w-full overflow-hidden rounded-lg border border-gray-300"
         >
@@ -110,15 +115,20 @@ export default function PartnerMap({ apiKey, partners, cities }: { apiKey: strin
           ))}
 
           {userPosition && (
-            <AdvancedMarker position={userPosition} title="Tvoja lokacija">
+            // zIndex: točka korisnika ostaje vidljiva i kad stoji uz partnera
+            <AdvancedMarker position={userPosition} title="Tvoja lokacija" zIndex={1000}>
               <div className="h-4 w-4 rounded-full border-2 border-white bg-sky-500 shadow" />
             </AdvancedMarker>
           )}
 
           {selected && (
-            <InfoWindow position={selected} pixelOffset={[0, -40]} onCloseClick={() => setSelectedId(null)}>
+            <InfoWindow
+              position={selected}
+              pixelOffset={[0, -40]}
+              headerContent={<p className="text-sm font-semibold text-gray-900">{selected.name}</p>}
+              onCloseClick={() => setSelectedId(null)}
+            >
               <div className="text-sm text-gray-900">
-                <p className="font-semibold">{selected.name}</p>
                 <p className="text-gray-600">
                   {selected.category} · {selected.address}
                 </p>
