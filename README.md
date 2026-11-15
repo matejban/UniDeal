@@ -76,13 +76,13 @@ Tehnologije koje aplikacija koristi:
 
 | Član | Glavna uloga ili doprinos |
 | --- | --- |
-| Matej Ban | 1. Temelji i autentifikacija |
-| Fran Lovrić | 2. Partneri i obavijesti |
-| Krešimir Daković | 3. Ponude |
-| Karlo Brkić | 4. Pretraga, karta i favoriti |
-| Elide Babić | 5. Kuponi, QR i recenzije |
-| Josip Čaljkušić | 6. Plaćanje i pretplate |
-| Fran Čeko | 7. Admin i izvještaji |
+| [Matej Ban](https://github.com/matejban) | 1. Temelji i autentifikacija |
+| [Fran Lovrić](https://github.com/franlovric) | 2. Partneri i obavijesti |
+| [Krešimir Daković](https://github.com/kresimir-dakovic) | 3. Ponude |
+| [Karlo Brkić](https://github.com/karlobrkic) | 4. Pretraga, karta i favoriti |
+| [Elide Babić](https://github.com/elide-babic-fer) | 5. Kuponi, QR i recenzije |
+| [Josip Čaljkušić](https://github.com/josip-caljkusic) | 6. Plaćanje i pretplate |
+| [Fran Čeko](https://github.com/fran-ceko) | 7. Admin i izvještaji |
 
 Zadaci po području vode se u [GitHub Issues](https://github.com/matejban/UniDeal/issues), s oznakom područja (npr. `podrucje-3-ponude`).
 
