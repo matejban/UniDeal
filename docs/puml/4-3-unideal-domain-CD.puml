@@ -1,9 +1,10 @@
 ' ==============================================================================
 ' 4-3-unideal-domain-CD.puml
 '
-' Svrha:    Prikazuje domenske razrede Offer i Partner, servise OfferService i
-'           PartnerService te sučelja repozitorija kojima je trajna pohrana
-'           apstrahirana. Servisi primaju repozitorije kroz konstruktor.
+' Svrha:    Prikazuje domenske razrede Offer, Partner i Coupon, servise
+'           OfferService, PartnerService i CouponService te sučelja repozitorija
+'           kojima je trajna pohrana apstrahirana. Servisi primaju repozitorije
+'           kroz konstruktor.
 ' Kod:      src/domain, src/services, src/repositories
 '
 ' Diagram level: Structural / Domain Design
@@ -12,7 +13,7 @@
 
 @startuml
 !pragma layout smetana
-title UniDeal – domenski model ponuda i partnera
+title UniDeal – domenski model ponuda, partnera i kupona
 
 skinparam shadowing false
 skinparam defaultFontName Arial
@@ -40,6 +41,10 @@ package "Aplikacijski sloj" {
         +getCities(): String[]
         +getProfile(id: String): Profile
     }
+    class CouponService {
+        +issue(user: User, offerId: String): IssueResult
+        +getCoupon(id: String): Coupon
+    }
 }
 
 package "Domenski sloj" {
@@ -51,6 +56,15 @@ package "Domenski sloj" {
     enum DiscountType {
         postotak
         iznos
+    }
+    enum UsageLimit {
+        jednom_po_studentu
+        neograniceno
+    }
+    enum CouponStatus {
+        izdan
+        iskoristen
+        istekao
     }
     class Offer {
         +id: String
@@ -64,7 +78,9 @@ package "Domenski sloj" {
         +conditions: String
         +status: OfferStatus
         +photoUrl: String
+        +usageLimit: UsageLimit
         +isActive(): Boolean
+        +isOncePerStudent(): Boolean
         +canBeActivated(): Boolean
         +canBeEdited(): Boolean
         +discountLabel: String
@@ -76,6 +92,16 @@ package "Domenski sloj" {
         +city: String
         +address: String
         +hours: String
+    }
+    class Coupon {
+        +id: String
+        +offerId: String
+        +studentId: String
+        +code: String
+        +status: CouponStatus
+        +issuedAt: Date
+        +validUntil: String
+        +isValid(): Boolean
     }
     interface OfferRepository {
         +findAll(): Offer[]
@@ -94,24 +120,38 @@ package "Domenski sloj" {
     interface CategoryRepository {
         +findAll(): Category[]
     }
+    interface CouponRepository {
+        +create(offerId: String, studentId: String, code: String): Coupon
+        +findById(id: String): Coupon
+        +findByStudentAndOffer(studentId: String, offerId: String): Coupon[]
+    }
 }
 
 package "Infrastruktura" {
     class SupabaseOfferRepository
     class SupabasePartnerRepository
+    class SupabaseCouponRepository
 }
 
 Partner "1" -- "0..*" Offer : objavljuje >
 Offer --> OfferStatus
 Offer --> DiscountType
+Offer --> UsageLimit
+Offer "1" -- "0..*" Coupon : ima >
+Coupon --> CouponStatus
+
 
 OfferService --> OfferRepository
 OfferService --> PartnerRepository
 OfferService --> CategoryRepository
 PartnerService --> PartnerRepository
 PartnerService --> OfferRepository
+CouponService --> CouponRepository
+CouponService --> OfferRepository
 
 SupabaseOfferRepository ..|> OfferRepository
 SupabasePartnerRepository ..|> PartnerRepository
+SupabaseCouponRepository ..|> CouponRepository
 
 @enduml
+ 

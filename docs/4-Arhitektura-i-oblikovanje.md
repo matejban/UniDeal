@@ -100,11 +100,11 @@ Svaki korisnik ima jedan profil s ulogom; partner (poslovni subjekt) pripada naj
 
 **Dijagram razreda:**
 
-![Dijagram razreda za ponude i partnere sustava UniDeal](./assets/diagrams/4-3-unideal-domain-CD.svg)
+![Dijagram razreda za ponude, partnere i kupone sustava UniDeal](./assets/diagrams/4-3-unideal-domain-CD.svg)
 
-**Slika 4.3. Dijagram razreda za ponude i partnere sustava UniDeal**
+**Slika 4.3. Dijagram razreda za ponude, partnere i kupone sustava UniDeal**
 
-`Offer` sam određuje je li ponuda aktivna (`isActive()`), smije li se objaviti (`canBeActivated()`: obavezna polja popunjena i rok nije prošao) i smije li se uređivati (`canBeEdited()`: istekla ponuda ne smije), pa servisi ne ponavljaju ta pravila. `OfferService` pri uređivanju i brisanju provjerava da ponuda pripada prijavljenom partneru, a novu ponudu dopušta samo partneru kojeg je odobrio administrator. `OfferService` i `PartnerService` koordiniraju dohvat podataka za stranice, a sučelja `OfferRepository` i `PartnerRepository` opisuju potrebne operacije trajne pohrane. Implementiraju ih `SupabaseOfferRepository` i `SupabasePartnerRepository`, koji su zamijenili nekadašnje lažne repozitorije bez promjene servisa i stranica. Javni popisi čitaju se iz pogleda `public_offers` i `public_partners`, pa pretraga i karta prikazuju isto bez obzira na to tko je prijavljen.
+`Offer` sam određuje je li ponuda aktivna (`isActive()`), smije li se objaviti (`canBeActivated()`: obavezna polja popunjena i rok nije prošao) i smije li se uređivati (`canBeEdited()`: istekla ponuda ne smije), pa servisi ne ponavljaju ta pravila. `OfferService` pri uređivanju i brisanju provjerava da ponuda pripada prijavljenom partneru, a novu ponudu dopušta samo partneru kojeg je odobrio administrator. `OfferService` i `PartnerService` koordiniraju dohvat podataka za stranice, a sučelja `OfferRepository` i `PartnerRepository` opisuju potrebne operacije trajne pohrane. Implementiraju ih `SupabaseOfferRepository` i `SupabasePartnerRepository`, koji su zamijenili nekadašnje lažne repozitorije bez promjene servisa i stranica. Javni popisi čitaju se iz pogleda `public_offers` i `public_partners`, pa pretraga i karta prikazuju isto bez obzira na to tko je prijavljen. Kupon (`Coupon`) sam određuje vrijedi li (`isValid()`: status je „izdan” i ponuda nije istekla), a `Offer.isOncePerStudent()` govori smije li student za ponudu dobiti samo jedan kupon. `CouponService.issue()` pri generiranju provjerava status studenta, aktivnost ponude i to ograničenje, a nasumični kod (`generateCouponCode()`) ponovno generira ako je slučajno zauzet. Kuponi se spremaju preko sučelja `CouponRepository`, koje implementira `SupabaseCouponRepository`.
 
 **PlantUML izvor:** [4-3-unideal-domain-CD.puml](./puml/4-3-unideal-domain-CD.puml)  
 **Referenca na kod pri završnom pregledu:** [`src/domain`](../src/domain), [`src/services`](../src/services), [`src/repositories`](../src/repositories)
