@@ -144,6 +144,30 @@ Ako odobreni zadatak umjesto toga koristi isključivo OAuth prijavu, zamijenite 
 | **Alternativni tokovi / Iznimke** | **3a — Ime je prazno ili dulje od 100 znakova:** sustav prikazuje poruku o duljini imena i ništa ne sprema.<br>**3b — Korisnik deaktivira račun:** korisnik označava da razumije posljedice i potvrđuje deaktivaciju; sustav označava račun kao neaktivan, odjavljuje korisnika i prikazuje poruku da je račun deaktiviran. Ponovno ga može aktivirati samo administrator (F-026).<br>**3c — Deaktivacija bez potvrde posljedica:** sustav prikazuje poruku i račun ostaje aktivan.<br>**3d — Pokušaj promjene uloge ili statusa studenta mimo sučelja:** baza odbija promjenu (NF-03). |
 | **Posljedice (ishod)**            | Profil ima novo ime ili je račun deaktiviran; deaktivirani korisnik ne može se ponovno prijaviti, a njegove recenzije nisu javne. |
 
+### UC-3.1: Izrada, uređivanje i brisanje ponude
+
+| Element specifikacije             | Opis |
+| :-------------------------------- | :--- |
+| **Primarni akter**                | A-03 Partner |
+| **Povezani zahtjevi**             | F-011, F-021, F-025, NF-03 |
+| **Preduvjeti**                    | Partner je prijavljen i administrator je odobrio njegov profil (UC-7.1). |
+| **Glavni uspješni tok**           | 1. Partner na `/partner` odabire „Nova ponuda”.<br>2. Partner upisuje naziv, opis, kategoriju, popust (postotak ili iznos), rok trajanja, uvjete i ograničenje korištenja, po želji dodaje fotografiju i odabire „Spremi nacrt”.<br>3. Sustav sprema ponudu kao nacrt i prikazuje je u tablici „Moje ponude”.<br>4. Partner ponudu može urediti („Uredi”) ili obrisati (ikona koša) uz potvrdu. |
+| **Alternativni tokovi / Iznimke** | **1a — Profil nije odobren:** gumba nema, nego poruka „Ponude možeš dodavati kad administrator odobri tvoj profil.”<br>**2a — Polje nedostaje ili je neispravno (npr. rok u prošlosti, postotak veći od 100):** poruka ispod polja, ništa se ne sprema.<br>**2b — Slika nije JPG, PNG ili WebP ili ima više od 2 MB:** poruka ispod polja.<br>**4a — Ponuda je istekla:** ne može se urediti, samo obrisati.<br>**4b — Tuđa ponuda:** stranica za uređivanje ne postoji, a baza odbija izmjenu (NF-03). |
+| **Posljedice (ishod)**            | Nacrt vide samo partner i administrator, a studenti tek nakon objave (UC-3.2). S obrisanom ponudom brišu se i njezini kuponi i recenzije. |
+
+### UC-3.2: Objava ponude
+
+_Trenutačno oblikovanje: objava (#17) i automatski istek (#18) još nisu ostvareni._
+
+| Element specifikacije             | Opis |
+| :-------------------------------- | :--- |
+| **Primarni akter**                | A-03 Partner, A-09 Vremenski okidač |
+| **Povezani zahtjevi**             | F-012, F-007, F-024 |
+| **Preduvjeti**                    | Partner je odobren, a ponuda je nacrt (UC-3.1). |
+| **Glavni uspješni tok**           | 1. Partner uz nacrt odabire „Objavi”.<br>2. Sustav provjerava da su polja popunjena i da rok nije prošao te ponudi postavlja status „aktivna”.<br>3. Ponuda se prikazuje na `/ponude`, na karti i na profilu partnera, a pretplaćeni studenti dobivaju e-mail (F-024).<br>4. Kad rok prođe, vremenski okidač ponudi postavlja status „istekla”. |
+| **Alternativni tokovi / Iznimke** | **2a — Rok je prošao:** poruka, ponuda ostaje nacrt.<br>**2b — Istekla ponuda:** ne može se ponovno objaviti.<br>**3a — Partner nema aktivnu pretplatu:** ponuda je aktivna, ali nije javna (F-007).<br>**4a — Okidač se još nije pokrenuo:** istekla ponuda se svejedno ne prikazuje u pretrazi. |
+| **Posljedice (ishod)**            | Studenti za aktivnu ponudu mogu generirati kupone (UC-5.1) do isteka roka. |
+
 ### UC-5.1: Generiranje kupona za ponudu
 
 | Element specifikacije             | Opis                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
