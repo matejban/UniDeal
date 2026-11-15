@@ -6,56 +6,61 @@
 
 **Cilj:** Voditi kratak zapis projektnih sastanaka i tjedne koordinacije: tko je sudjelovao, što je odlučeno i koja je radnja uslijedila. Raspravu koja nije dovela do odluke zabilježite samo ako je važno pitanje ostalo otvoreno.
 
->Definirati prije prve uporabe:
-`[Inicijali/Kratica] = [Ime i prezime]` (npr. *AK = Ana Kovač; LM = Luka Marić; EP = Ema Petrović; NK = Nika Kralj*).																														
+**Kratice članova tima:** MB = Matej Ban; FL = Fran Lovrić; KD = Krešimir Daković; KB = Karlo Brkić; EB = Elide Babić; JČ = Josip Čaljkušić; FČ = Fran Čeko.
 
 | Datum i sudionici | Glavna tema | Donesena odluka ili zadatak  | Poveznica na zadatak ili  rezultat, ako postoji |
 | --- | --- | --- | --- |
-|  |  |  |  |
-
-Za svaki relevantan sastanak ili zapis tjedne koordinacije upišite jedan sažet redak. Dodijeljeni zadatak treba imati odgovornu osobu; za neriješeno pitanje treba navesti tko će ga dalje obraditi. Sam naslov sastanka ne pokazuje što se promijenilo. U ovu evidenciju nemojte kopirati cijeli popis issuea ni prijepis razgovora.
-
-<details>
-<summary><strong>Primjer evidencije sastanaka (CrisisMap)</strong></summary>
-
-**Primjer — CrisisMap:**
-
-**Kratice članova tima:** AK = Ana Kovač; LM = Luka Marić; EP = Ema Petrović; NK = Nika Kralj.
-
-| Datum i sudionici | Glavna tema | Odluka, radnja ili otvoreno pitanje | Poveznica na zadatak ili nastali rezultat, ako postoji |
-| --- | --- | --- | --- |
-| 15. 11. 2025.; AK, LM, EP | Lokacija kada je pristup preglednika odbijen | Dodati ručni odabir položaja na karti u obrazac za prijavu. AK obrađuje obrazac; LM provjerava valjanost lokacije. | Zadataka #21 i #23. |
-| 22. 11. 2025.; AK, EP | Usklađivanje formata lokacijskih podataka | klijentski dio i poslužiteljski API koriste neusklađene formate koordinata. EP će uskladiti format zahtjeva i demonstrira spremanje na sljedećem pregledu. | Zadatak #25. |
-
-**Ishod i odgovornost:** Zapisi jasno definiraju tko je odgovoran za koji dio posla i koji je provjerljivi rezultat dogovoren. npr Rečenica „Raspravljali smo o obradi lokacije” prikrila bi je li se itko obvezao na promjenu. Ovi redci navode odluku ili otvorenu radnju, odgovornu osobu i rezultat koji se može pregledati.
-
-</details>
+| 12. 10. 2026.; MB, KB, EB, JČ, FČ | Upoznavanje tima, odabir teme i tehnologija | Tim je odabrao vlastitu temu, platformu studentskih popusta UniDeal, i dogovorio tehnologije (Next.js, Supabase, Vercel). Na sastanku je započet opis ideje; MB i EB su ga dovršili i poslali asistentici na pregled. | [1. Opseg projekta](1-Projekt.md) |
+| 26. 10. 2026.; MB, FL, KD, KB, EB, JČ, FČ | Podjela rada po područjima | Svaki član radi kao fullstack i preuzima jedno područje: MB temelje, bazu i prijavu; FL partnere i obavijesti; KD ponude i statistiku; KB pretragu, kartu i favorite; EB kupone, QR i recenzije; JČ plaćanje i pretplate; FČ administraciju i izvještaje. Tim je zajedno napravio plan rada po područjima, a MB je kao vlasnik repozitorija otvorio issue za svaku funkcionalnost. | [GitHub Issues](https://github.com/matejban/UniDeal/issues), s oznakom područja (npr. `podrucje-3-ponude`) |
 
 ## A.2 Plan rada
 
 **Cilj:** Prikazati planirani redoslijed rada i odgovornosti u timu. Prikažite projektne tjedne ili druga kratka razdoblja koja tim koristi, uključujući pripremu za formalne provjere.
 
-**Trenutačni plan:** [Poveznica na GitHub Projects ploču, Gantogram ili održavanu tablicu u nastavku. Navesti osobu zaduženu za ažurnost plana. Odaberite jedan glavni prikaz i navedite tko ga održava ažurnim.]
+**Trenutačni plan:** [GitHub Issues](https://github.com/matejban/UniDeal/issues) s oznakama po područjima (`podrucje-1-temelji` … `podrucje-7-admin`, `zajednicko`) i tablica u nastavku. Rad je podijeljen po područjima, a ne po tjednima: svaki član radi na svom području kad mu odgovara, jer su issuei većinom međusobno neovisni. Svatko održava ažurnima issuee svog područja, a MB kao vlasnik repozitorija otvara issuee i održava oznake.
 
-| Razdoblje/Tjedan | Glavni planirani rad | Odgovorni članovi | Poveznica na zadatke |
+| Razdoblje | Glavni planirani rad | Odgovorni članovi | Poveznica na zadatke |
 | --- | --- | --- | --- |
-|  |  |  |  |
+| 18.–25. 10. 2026. | Postavljanje repozitorija, opis projekta i analiza zahtjeva | svi | — |
+| 26. 10. – 1. 11. 2026. | Temelji: Supabase projekt, shema i migracije, RLS po ulogama, prijava i uloge, repozitoriji podataka, CI. Podjela zadataka po područjima. | MB (temelji), svi (podjela zadataka) | [#1]–[#8], [#45] |
+| od 2. 11. 2026. (paralelno) | Partneri: registracija, javni profil, upload slika, e-mail obavijesti, pretplata studenata | FL | [#10]–[#15] |
+| od 2. 11. 2026. (paralelno) | Ponude: CRUD, statusi, automatski istek, kategorije, pregled vlastitih ponuda partnera, statistika za partnera | KD | [#16]–[#20], [#43] |
+| od 2. 11. 2026. (paralelno) | Pretraga i karta: filtri, sortiranje, karta, geokodiranje, ponude u blizini, favoriti | KB | [#21]–[#26] |
+| od 2. 11. 2026. (paralelno) | Kuponi: generiranje koda i QR koda, ograničenje korištenja, potvrda kod partnera, povijest kupona, recenzije | EB | [#27]–[#31] |
+| od 2. 11. 2026. (paralelno) | Plaćanje: Stripe proizvodi i Checkout, webhook, skrivanje ponuda bez pretplate, stranica pretplate | JČ | [#32]–[#36] |
+| od 2. 11. 2026. (paralelno) | Administracija: korisnici, odobravanje partnera, kategorije, moderacija, cijene pretplate, statistika za administratora, izvoz CSV/PDF | FČ | [#37]–[#42], [#44] |
+| 11.–20. 11. 2026. | Priprema za prvu predaju (20. 11. 2026.): dokumentacija, granice projekta, ručno ispitivanje prijave, ažuriranje README-a | EB ([#48], [#86]), KB ([#49], [#84]), FL ([#46], [#85]), JČ ([#50]), KD ([#51]), FČ ([#47], [#87]), MB ([#9]) | oznaka [`zajednicko`][oznaka-zajednicko] |
+| od 21. 11. 2026. | Nastavak rada na zadacima koji nisu riješeni do prve predaje, dovršetak otvorenih zadataka u svakom području i integracija područja (pretplata ↔ vidljivost ponuda, kuponi ↔ recenzije, statistika) | svi, svatko za svoje područje | otvoreni zadaci po oznaci područja |
 
-Ako koristite tablicu, plan vodite na korisnoj tjednoj razini i ažurirajte ga kada se prioriteti promijene. Kratice članova tima definirajte  u A.1 i ovdje ih primjenjujte dosljedno; ako dva člana imaju iste inicijale, proširite kraticu. Plan nije dokaz da je planirani rad dovršen (to dokazuje kod i dokumentacija).
-
-<details>
-<summary><strong>Primjer plana rada</strong></summary>
-
-**Primjer — CrisisMap:** Plan rada obuhvaća razvoj prijava, karte i postavljanja aplikacije. Za svako razdoblje navedeni su glavni zadaci i odgovorni članovi.
-
-| Razdoblje | Glavni planirani rad | Odgovorni članovi | Poveznica na zadatke/opis |
-| --- | --- | --- | --- |
-| Projektni tjedan 6 | Obrazac za prijavu i provjera valjanosti lokacije | AK, LM | Zadataka #21 i #23. |
-| Projektni tjedan 7 | Povezivanje obrasca s API-jem za prijave | EP | Zadatak #25. |
-
-**Čitanje plana:** Kratice štede prostor u sažetom planu; njihove definicije s početka A.1 vrijede u cijelom ovom primjeru. Kada rad kasni, ažurirajte stvarni zadatak i očekivanje u planu; nemojte tvrditi da je nedovršena funkcionalnost završena samo zato što je predviđeni tjedan prošao.
-
-</details>
+[#1]: https://github.com/matejban/UniDeal/issues/1
+[#8]: https://github.com/matejban/UniDeal/issues/8
+[#9]: https://github.com/matejban/UniDeal/issues/9
+[#10]: https://github.com/matejban/UniDeal/issues/10
+[#15]: https://github.com/matejban/UniDeal/issues/15
+[#16]: https://github.com/matejban/UniDeal/issues/16
+[#20]: https://github.com/matejban/UniDeal/issues/20
+[#21]: https://github.com/matejban/UniDeal/issues/21
+[#26]: https://github.com/matejban/UniDeal/issues/26
+[#27]: https://github.com/matejban/UniDeal/issues/27
+[#31]: https://github.com/matejban/UniDeal/issues/31
+[#32]: https://github.com/matejban/UniDeal/issues/32
+[#36]: https://github.com/matejban/UniDeal/issues/36
+[#37]: https://github.com/matejban/UniDeal/issues/37
+[#42]: https://github.com/matejban/UniDeal/issues/42
+[#43]: https://github.com/matejban/UniDeal/issues/43
+[#44]: https://github.com/matejban/UniDeal/issues/44
+[#45]: https://github.com/matejban/UniDeal/issues/45
+[#46]: https://github.com/matejban/UniDeal/issues/46
+[#47]: https://github.com/matejban/UniDeal/issues/47
+[#48]: https://github.com/matejban/UniDeal/issues/48
+[#49]: https://github.com/matejban/UniDeal/issues/49
+[#50]: https://github.com/matejban/UniDeal/issues/50
+[#51]: https://github.com/matejban/UniDeal/issues/51
+[#84]: https://github.com/matejban/UniDeal/issues/84
+[#85]: https://github.com/matejban/UniDeal/issues/85
+[#86]: https://github.com/matejban/UniDeal/issues/86
+[#87]: https://github.com/matejban/UniDeal/issues/87
+[oznaka-zajednicko]: https://github.com/matejban/UniDeal/issues?q=label%3Azajednicko
 
 ## A.3 Aktivnosti i doprinosi članova
 
@@ -63,25 +68,56 @@ Ako koristite tablicu, plan vodite na korisnoj tjednoj razini i ažurirajte ga k
 
 | Aktivnost ili rezultat | Član | Prijavljeni sati | Reprezentativni rezultat ili poveznica |
 | --- | --- | --- | --- |
-|  |  |  |  |
+| Otvaranje repozitorija | FČ |  | Početni commit repozitorija |
+| Struktura projekta prema predlošku kolegija | EB |  | Direktoriji `docs/`, `tests/`, `db/`, `build/` |
+| Odjeljak 1.4 Postojeći pristupi | FČ |  | `docs/1-Projekt.md` |
+| Opis projekta, osnovna Next.js aplikacija, objektno orijentirana struktura i prijava Google računom | MB |  | `README.md`, `src/` |
+| Analiza zahtjeva | KB |  | `docs/2-Analiza-zahtjeva.md` |
+| Supabase projekt, prijava studenata Microsoft računom, prijava partnera e-mailom i profili s ulogom | MB |  | Zadaci [#1] i [#6] |
+| Upravljanje korisničkim računima i deaktivacija | FČ |  | Zadatak [#38], PR [#56] |
+| Članovi tima u README-u i dorada analize zahtjeva | KB |  | Zadatak [#45] |
+| Shema baze i migracije, RLS po ulogama, Supabase repozitoriji, zaštita ruta po ulozi, uređivanje profila, CI i README | MB |  | Zadaci [#2]–[#5], [#7]–[#9] |
+| Registracija partnera s provjerom OIB-a | FL |  | Zadatak [#10] |
+| Generiranje kupona s jedinstvenim kodom i QR kodom | EB |  | Zadatak [#27] |
+| Odobravanje partnera u administraciji | FČ |  | Zadatak [#37], PR [#68] |
+| Javni profil partnera i uređivanje profila | FL |  | Zadatak [#11] |
+| Upload logotipa partnera u Supabase Storage | FL |  | Zadatak [#13] |
+| E-mail obavijesti preko Resenda | FL |  | Zadatak [#14] |
+| Ograničenje korištenja kupona (jednom po studentu) | EB |  | Zadatak [#29] |
+| Stripe klijent i cijene mjesečne i godišnje pretplate | JČ |  | Zadatak [#32] |
+| Dokumentacija i testovi temelja i autentifikacije | MB |  | UC-1.1 – UC-1.4, CT-1.x, ST-1.x |
+| Obrasci uporabe, sljedivost i ispitivanje kupona | EB |  | Zadatak [#48]; UC-5.1 – UC-5.4, CT-5.1, CT-5.2, ST-5.1 – ST-5.4 |
+| Upravljanje kategorijama ponuda (u tijeku) | FČ |  | Zadatak [#39] |
+| Statistika za administratora (u tijeku) | FČ |  | Zadatak [#42] |
+| Izrada, uređivanje i brisanje ponude te dijagram razreda (4.3.2) | KD |  | Zadatak [#16] |
+| Sljedivost F-016 i opis načina rada u README-u | MB |  | `README.md`, `docs/2-Analiza-zahtjeva.md` |
+| Stripe Checkout za partnera | JČ |  | Zadatak [#33] |
+| Granice projekta (1.3) i dorada postojećih pristupa (1.4) | FČ |  | Zadatak [#47] |
+| Brisanje stare slike iz Storagea, ispravak RLS testa, ispitivanje CT-1.3 i ST-1.3 – ST-1.6, dorada obrazaca | MB |  | `docs/5-Ispitivanje.md` |
+| Ručno ispitivanje prijave Microsoft računom | FČ |  | Zadatak [#87]; ST-1.1, ST-1.2 |
+| Google Maps karta s oznakama partnera | KB |  | Zadatak [#23] |
+| Geokodiranje adrese partnera i ručno označavanje lokacije | KB |  | Zadatak [#24] |
+| Dokumentacija administratorskog područja | FČ |  | UC-7.1 – UC-7.4 |
+| Dijagram razreda za kupone: `Coupon`, `CouponService` i `CouponRepository` | EB |  | PR [#95]; `docs/puml/4-3-unideal-domain-CD.puml` |
+| Dokumentacija pretplate: obrasci uporabe, sljedivost i ispitivanje | JČ |  | PR [#94]; UC-6.1, UC-6.2, CT-6.1 – CT-6.3, ST-6.1 – ST-6.4 |
 
-Koristite aktivnosti specifične za projekt umjesto obaveznog retka za svako poglavlje dokumentacije ili svaki UML dijagram. Tim treba dosljedno bilježiti sate i izbjegavati dvostruko brojanje zajedničkog rada; reprezentativni rezultat objašnjava što je prijavljeni trud proizveo. Sati su samoprijavljena procjena uloženog rada, a ne mjera kvalitete niti zamjena za pregled koda i artefakata.
-
-<details>
-<summary><strong>Primjer aktivnosti i rezultata rada</strong></summary>
-
-**Primjer — CrisisMap:** Tablica razlikuje implementaciju, integraciju i dokumentaciju te svaku aktivnost povezuje s rezultatom.
-
-| Aktivnost ili rezultat | Član | Prijavljeni sati | Reprezentativni rezultat ili poveznica |
-| --- | --- | --- | --- |
-| Ručni unos položaja na karti | AK | 8 | Zadatak #21; promjena klijentskog dijela. |
-| Provjera valjanosti i trajna pohrana prijave | LM | 10 | Zadatak #23; promjena pozadinskog sustava i ispitivanje. |
-| Integracija klijenta i API-ja te javno postavljanje | EP | 7 | Zadatak #25; konfiguracija u `render.yaml` i `dist/` |
-| Obrazac uporabe za podnošenje prijave i provjera odbijenog dopuštenja | NK | 5 | Završene izmjene UC-002 i ispitivanje ST-03. |
-
-**Trud i rezultat:** Završni stupac omogućuje raspravu o doprinosu bez tretiranja velikog broja sati kao dokaza isporuke. Tim može prijaviti stvarno dugotrajan, još neriješen problem integracije kao obavljen rad i iskreno opisati njegov ishod.
-
-</details>
+[#2]: https://github.com/matejban/UniDeal/issues/2
+[#5]: https://github.com/matejban/UniDeal/issues/5
+[#6]: https://github.com/matejban/UniDeal/issues/6
+[#7]: https://github.com/matejban/UniDeal/issues/7
+[#11]: https://github.com/matejban/UniDeal/issues/11
+[#13]: https://github.com/matejban/UniDeal/issues/13
+[#14]: https://github.com/matejban/UniDeal/issues/14
+[#23]: https://github.com/matejban/UniDeal/issues/23
+[#24]: https://github.com/matejban/UniDeal/issues/24
+[#29]: https://github.com/matejban/UniDeal/issues/29
+[#33]: https://github.com/matejban/UniDeal/issues/33
+[#38]: https://github.com/matejban/UniDeal/issues/38
+[#39]: https://github.com/matejban/UniDeal/issues/39
+[#56]: https://github.com/matejban/UniDeal/pull/56
+[#68]: https://github.com/matejban/UniDeal/pull/68
+[#94]: https://github.com/matejban/UniDeal/pull/94
+[#95]: https://github.com/matejban/UniDeal/pull/95
 
 ## A.4 Pregled promjena u repozitoriju
 
