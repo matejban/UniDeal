@@ -38,7 +38,7 @@ Ažurirani popis članova, njihovih GitHub profila i glavnih uloga ili doprinosa
 | Kontrolna točka | Demonstracija | Video |
 | --- | --- | --- |
 | Iteracija 1 |[www.unideal.site](https://www.unideal.site) | nije snimljen |
-| Završni pregled | [Poveznica na završnu inačicu projekta] | [Poveznica na video završne demonstracije, ako je snimljen] |
+| Završni pregled | [www.unideal.site](https://www.unideal.site) | nije snimljen |
 
 Dokumentacija se kontinuirano ažurira kako se aplikacija razvija.
 
