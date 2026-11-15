@@ -1,11 +1,3 @@
-<!--
-PREDLOŽAK — README završnog projekta na kolegiju Programsko inženjerstvo FER-a.
-Kopirajte ovu datoteku u README.md u repozitoriju svojeg projekta. Zamijenite
-svaku uputu u uglatim zagradama činjenicama o svojem projektu, uklonite sve
-komentare s uputama i ogledne <details> blokove te prije predaje izbrišite ovu
-napomenu. Nemojte kopirati nastavni primjer kao rezultat svojeg projekta.
--->
-
 # UniDeal
 
 UniDeal je web platforma na kojoj studenti na jednom mjestu pronalaze i koriste popuste i pogodnosti partnera (trgovina, kafića, restorana, teretana, servisa i kulturnih ustanova).
@@ -16,23 +8,21 @@ UniDeal je web platforma na kojoj studenti na jednom mjestu pronalaze i koriste 
 
 Studentske ponude danas su razbacane po web-stranicama, društvenim mrežama i letcima, često su zastarjele, a partneri nemaju jednostavan način da dopru do studenata. UniDeal okuplja aktualne ponude na jednom mjestu: studenti ih besplatno pretražuju, vide na karti i koriste putem kupona s QR kodom, a partneri uz mjesečnu ili godišnju pretplatu objavljuju ponude i prate njihovu učinkovitost. Administrator odobrava partnere i moderira sadržaj platforme.
 
-Aplikacija je u izradi; sve funkcionalnosti u nastavku su **planirane**. Stanje izrade prati se u [GitHub Issues](https://github.com/matejban/UniDeal/issues).
+Aplikacija je u izradi. Označene funkcionalnosti već rade na javnoj adresi, a ostale su planirane. Stanje izrade prati se u [GitHub Issues](https://github.com/matejban/UniDeal/issues).
 
-**Ključne funkcionalnosti (planirano)**
+**Ključne funkcionalnosti**
 
-- Prijava studenata računom visokog učilišta (Microsoft), čime je potvrđen status studenta, a partnera Google računom ili e-mailom
-- Pretraga ponuda prema kategoriji, gradu, visini popusta i roku trajanja te prikaz partnera na interaktivnoj karti
-- Digitalni kupon s jedinstvenim kodom i QR kodom koji partner potvrđuje pri korištenju
-- Ocjene i recenzije koje može ostaviti samo student koji je ponudu stvarno iskoristio
-- Pretplata partnera (Stripe) i statistika pregleda i iskorištenja ponuda
+- [x] Prijava studenata računom visokog učilišta (Microsoft), čime je potvrđen status studenta, a partnera Google računom ili e-mailom
+- [x] Pretraga ponuda prema kategoriji, gradu, visini popusta i roku trajanja te prikaz partnera na interaktivnoj karti
+- [x] Digitalni kupon s jedinstvenim kodom i QR kodom; potvrdu kupona kod partnera tek treba ostvariti
+- [ ] Ocjene i recenzije koje može ostaviti samo student koji je ponudu stvarno iskoristio
+- [x] Plaćanje pretplate partnera (Stripe); automatsko aktiviranje pretplate nakon plaćanja tek treba ostvariti
+- [ ] Statistika pregleda i iskorištenja ponuda za partnere
 
 Za potpuni opseg, zahtjeve, oblikovanje i dokaze ispitivanja pogledajte [docs](docs/Home.md).
 
 <a id="deployment"></a>
 ## Postavljanje (engl. deployment)
-
-<!-- UPUTA: Ovaj odjeljak opisuje već postavljenu aplikaciju koju se  može otvoriti i isprobati bez lokalnog pokretanja izvornog koda.
-Za Iteraciju 1 i Završni pregled navedite konkretne podatke. Provjerite vodi li URL na javno dostupnu pokrenutu aplikaciju i radi li navedeni tijek uporabe. Nikada ne objavljujte lozinke ni pristupne tokene. -->
 
 **Javno dostupna aplikacija:** <https://www.unideal.site>
 
@@ -40,14 +30,13 @@ Za Iteraciju 1 i Završni pregled navedite konkretne podatke. Provjerite vodi li
 
 **Demonstracija:** za pregled ponuda, partnera i karte korisnički račun nije potreban. Studentski dio (`/student`) otvara se prijavom studentskim Microsoft računom hrvatskog visokog učilišta (npr. `@fer.hr`), a partnerski (`/partner`) registracijom e-mailom i lozinkom ili Google računom. Administratorsku ulogu demonstratoru na zahtjev dodjeljuje tim u bazi, nakon njegove prve prijave; lozinke se ne dijele.
 
-**Ograničenja:** partneri i ponude su izmišljeni demo podaci. Registracija partnera s podacima tvrtke, izrada ponuda, kuponi s QR kodom, recenzije, karta, pretplata (Stripe) i odobravanje partnera još nisu implementirani; stanje po zadacima vidi se u [GitHub Issues](https://github.com/matejban/UniDeal/issues). Status studenta prepoznaje se po domeni Microsoft računa, pa se student ne razlikuje od djelatnika istog učilišta (AS-01 u [analizi zahtjeva](docs/2-Analiza-zahtjeva.md)).
+**Ograničenja:** partneri i ponude su izmišljeni demo podaci. Još nisu implementirani partnerska potvrda kupona, povijest kupona, recenzije, favoriti, e-mail obavijesti studentima, statistika za partnere, moderacija, izvoz izvještaja i automatsko aktiviranje pretplate nakon plaćanja (Stripe webhook); stanje po zadacima vidi se u [GitHub Issues](https://github.com/matejban/UniDeal/issues). Status studenta prepoznaje se po domeni Microsoft računa, pa se student ne razlikuje od djelatnika istog učilišta (AS-01 u [analizi zahtjeva](docs/2-Analiza-zahtjeva.md)); zato student pri korištenju kupona pokazuje studentsku iskaznicu (X-icu).
 
-[Vodič za postavljanje i pokretanje](docs/6-Postavljanje-instalacija-i-konfiguracija.md) opisuje smještaj aplikacije (engl. hosting) koji tim stvarno koristi. Tim može koristiti Render ili drugu platformu koju ste dogovorili s asistentom/demonstratorom.
+[Vodič za postavljanje i pokretanje](docs/6-Postavljanje-instalacija-i-konfiguracija.md) opisuje smještaj aplikacije (engl. hosting) koji tim koristi: aplikacija je na Vercelu, a baza, prijava i pohrana datoteka na Supabaseu.
 
 <a id="quick-start"></a>
 ## Brzi početak / instalacija
 
-<!-- Obavezno od Demo 1 nadalje. Zamijenite mjesta za unos naredbama koje je drugi član tima uspješno provjerio nakon čistog kloniranja repozitorija. Detaljne upute za administraciju držite u projektnoj dokumentaciji u direktoriju docs/. -->
 
 **Preduvjeti:** Node.js 20.9 ili noviji i npm.
 
@@ -67,7 +56,7 @@ npm run dev
 
 ## Tehnologije
 
-Dogovoreni tehnološki skup (planirano; tablicu ažurirati prema stvarnom repozitoriju kada aplikacija bude postavljena):
+Tehnologije koje aplikacija koristi:
 
 | Tehnologija ili alat | Uloga u ovom projektu | Razlog uporabe ili važno ograničenje |
 | --- | --- | --- |
@@ -76,7 +65,7 @@ Dogovoreni tehnološki skup (planirano; tablicu ažurirati prema stvarnom repozi
 | Supabase Auth (Microsoft Entra ID, Google OAuth 2.0, e-mail i lozinka) | Prijava studenata (Microsoft) i partnera (Google ili e-mail) | Status studenta potvrđuje se domenom studentskog Microsoft računa (tablica `allowed_student_domains`) |
 | Row Level Security (RLS) | Ograničavanje pristupa podacima prema ulozi (student, partner, administrator) | Pravila se provode u bazi, pa ih treba ispitati za svaku ulogu |
 | Supabase Storage | Pohrana logotipa partnera i slika ponuda | — |
-| pg_cron ili Supabase Edge Function | Automatski istek ponuda | Istekle ponude moraju nestati iz pretrage bez ručne radnje |
+| pg_cron (planirano) | Automatski istek ponuda | Istekle ponude moraju nestati iz pretrage bez ručne radnje |
 | Stripe (test mode) | Naplata mjesečne i godišnje pretplate partnera | Status pretplate ažurira se putem webhooka; bez aktivne pretplate ponude nisu javne |
 | Google Maps JavaScript API | Karta partnera i ponuda, geokodiranje adrese, ponude u blizini | Vanjska usluga s API ključem i ograničenjem korištenja |
 | Resend | Slanje e-maila (SMTP za Supabase Auth, kasnije obavijesti) | Pošiljatelj `noreply@unideal.site`; domena je potvrđena DNS zapisima |
@@ -87,13 +76,13 @@ Dogovoreni tehnološki skup (planirano; tablicu ažurirati prema stvarnom repozi
 
 | Član | Glavna uloga ili doprinos |
 | --- | --- |
-| Matej Ban | 1. Temelji i autentifikacija |
-| Fran Lovrić | 2. Partneri i obavijesti |
-| Krešimir Daković | 3. Ponude |
-| Karlo Brkić | 4. Pretraga, karta i favoriti |
-| Elide Babić | 5. Kuponi, QR i recenzije |
-| Josip Čaljkušić | 6. Plaćanje i pretplate |
-| Fran Čeko | 7. Admin i izvještaji |
+| [Matej Ban](https://github.com/matejban) | 1. Temelji i autentifikacija |
+| [Fran Lovrić](https://github.com/franlovric) | 2. Partneri i obavijesti |
+| [Krešimir Daković](https://github.com/kresimir-dakovic) | 3. Ponude |
+| [Karlo Brkić](https://github.com/karlobrkic) | 4. Pretraga, karta i favoriti |
+| [Elide Babić](https://github.com/elide-babic-fer) | 5. Kuponi, QR i recenzije |
+| [Josip Čaljkušić](https://github.com/josip-caljkusic) | 6. Plaćanje i pretplate |
+| [Fran Čeko](https://github.com/fran-ceko) | 7. Admin i izvještaji |
 
 Zadaci po području vode se u [GitHub Issues](https://github.com/matejban/UniDeal/issues), s oznakom područja (npr. `podrucje-3-ponude`).
 
@@ -105,25 +94,31 @@ Svaki zadatak ima svoj issue u [GitHub Issues](https://github.com/matejban/UniDe
 
 <a id="license"></a>
 
-**Status licence:** [Navedite licencu i postavite poveznicu na projektnu datoteku `LICENSE` ili izričito navedite da nije dodijeljena licenca koja dopušta javnu ponovnu uporabu. Namjeravani opseg provjerite s timom; nemojte prepisivati licencu predloška ove dokumentacije kao licencu svoje aplikacije.]
+**Status licence:** Ovom projektu nije dodijeljena licenca koja dopušta javnu ponovnu uporabu; sva prava pridržavaju autori (članovi tima navedeni gore). Datoteka [LICENSE](LICENSE) odnosi se na predložak dokumentacije iz repozitorija VladoSruk/programsko-inzenjerstvo, a ne na kod aplikacije.
 
-Dokumentacijski predložak kolegija sadrži otvorene obrazovne sadržaje (engl. Open Educational Resources, OER) i licenciran je licencom Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International. Ta licenca **ne određuje automatski licencu studentske aplikacije**; tim treba jasno navesti licencu svojeg projekta u prethodnom retku i datoteci `LICENSE`, ako je primjenjivo.
+Dokumentacijski predložak kolegija sadrži otvorene obrazovne sadržaje (engl. Open Educational Resources, OER) i licenciran je licencom Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International. Ta licenca ne određuje licencu aplikacije; licenca aplikacije navedena je u prethodnom retku.
 
-Kod trećih strana, skupovi podataka, slike, ikone i drugi sadržaji zadržavaju vlastite licence i uvjete uporabe. [Po potrebi postavite poveznicu na zahvale i izvore.]
+Kod trećih strana, skupovi podataka, slike, ikone i drugi sadržaji zadržavaju vlastite licence i uvjete uporabe.
 
 <a id="ai-usage"></a>
 ## Uporaba umjetne inteligencije [![AI Usage: Disclosed](https://img.shields.io/badge/AI%20Usage-Disclosed-blue.svg)](https://www.fer.unizg.hr/_download/repository/Policy%20on%20the%20appropriate%20use%20of%20artificial%20intelligence%20at%20the%20faculty%20of%20electrical%20engineering%20and%20computing%5B1%5D.pdf)
 
 Ovaj projekt slijedi FER-ova [pravila o primjerenoj uporabi umjetne inteligencije](https://www.fer.unizg.hr/_download/repository/Policy%20on%20the%20appropriate%20use%20of%20artificial%20intelligence%20at%20the%20faculty%20of%20electrical%20engineering%20and%20computing%5B1%5D.pdf).
 
-**Izjava:** [Navedite jesu li korišteni alati umjetne inteligencije. Ako jesu, navedite alate i njihove glavne namjene te objasnite kako je tim pregledao nastali kod ili tekst i kako može objasniti vlastiti doprinos. Ako nisu korišteni, to jasno navedite. U alate umjetne inteligencije nemojte unositi privatne podatke, pristupne podatke ni tuđe zaštićene materijale.]
+**Izjava:** Svi članovi tima koristili su alat umjetne inteligencije **Claude (Anthropic)**. Korišten je za:
 
-[Ako je za ovaj projekt potreban detaljniji zapis uporabe umjetne inteligencije, postavite poveznicu na njegovo jedinstveno mjerodavno mjesto u dokumentaciji.]
+- objašnjavanje postojećeg koda i tehnologija (Next.js, Supabase) te vođenje kroz implementaciju funkcionalnosti
+- pomoć pri pisanju koda i pronalaženju grešaka
+- pomoć pri ispravnom i potpunom popunjavanju dokumentacije, uključujući upozorenja na dijelove koji nedostaju i prijedloge teksta
+- prepisivanje zadataka iz početne `.md` datoteke u GitHub Issues
+- pisanje komentara na zajedničkim zadacima u GitHub Issues
+
+Kod i tekst koje je predložio Claude član tima je pregledao, prilagodio i provjerio prije nego što je ušao u repozitorij: lintom i izgradnjom aplikacije, automatskim testovima (`npm test`) i ručnim testiranjem na https://www.unideal.site. Promjene ulaze u granu `master` kroz pull request koji pregleda voditelj tima. Svaki član može objasniti vlastiti doprinos.
 
 <a id="code-of-conduct-and-support"></a>
 ## Kodeks ponašanja i podrška [![Contributor Covenant](https://img.shields.io/badge/Contributor%20Covenant-2.1-4baaaa.svg)](CODE_OF_CONDUCT.md)
 
-Od članova tima očekuje se pridržavanje **Kodeksa ponašanja studenata** Fakulteta elektrotehnike i računarstva Sveučilišta u Zagrebu, pravila timskog rada na kolegiju i [Etičkog kodeksa IEEE-a](https://www.ieee.org/about/corporate/governance/p7-8.html). [Postavite poveznicu na `CODE_OF_CONDUCT.md` ako se ta datoteka koristi u vašem repozitoriju.]
+Od članova tima očekuje se pridržavanje **Kodeksa ponašanja studenata** Fakulteta elektrotehnike i računarstva Sveučilišta u Zagrebu, pravila timskog rada na kolegiju i [Etičkog kodeksa IEEE-a](https://www.ieee.org/about/corporate/governance/p7-8.html). Pravila ponašanja u repozitoriju nalaze se u datoteci [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md).
 
 ---
 
