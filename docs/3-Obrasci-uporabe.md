@@ -188,6 +188,50 @@ Ako odobreni zadatak umjesto toga koristi isključivo OAuth prijavu, zamijenite 
 | **Alternativni tokovi / Iznimke** | **1a — Kupon nije iskorišten:** mogućnost ocjenjivanja se ne prikazuje; pokušaj mimo sučelja baza odbija.<br>**3a — Kupon je već ocijenjen:** sustav odbija drugu recenziju za isti kupon.               |
 | **Posljedice (ishod)**            | Recenzija je javno vidljiva na profilu partnera; administrator je može ukloniti.                                                                                                                         |
 
+### UC-7.1: Odobravanje partnera
+
+| Element specifikacije             | Opis |
+| :-------------------------------- | :--- |
+| **Primarni akter**                | A-04 Administrator (uz A-08 Resend) |
+| **Povezani zahtjevi**             | F-025, NF-03 |
+| **Preduvjeti**                    | Administrator je prijavljen; postoji barem jedan profil partnera sa statusom „na čekanju”. |
+| **Glavni uspješni tok**           | 1. Administrator na `/admin` vidi broj partnera na čekanju i otvara `/admin/partneri`.<br>2. Sustav prikazuje popis profila na čekanju (naziv, OIB, kategorija, adresa, kontakt, datum prijave).<br>3. Administrator odabire „Odobri” ili „Odbij” uz pojedini profil.<br>4. Sustav sprema odluku i uklanja profil s popisa na čekanju.<br>5. Sustav vlasniku profila šalje e-mail o odluci. |
+| **Alternativni tokovi / Iznimke** | **3a — Korisnik nije administrator:** stranica ne postoji (404), a baza odbija promjenu statusa i mimo sučelja.<br>**4a — Spremanje ne uspije:** sustav prikazuje „Odluka nije spremljena. Pokušaj ponovno.”, a status profila se ne mijenja.<br>**5a — Profil nema vlasnika (demonstracijski partner):** e-mail se ne šalje.<br>**5b — Slanje e-maila ne uspije:** greška se zapisuje, a odluka ostaje spremljena. |
+| **Posljedice (ishod)**            | Profil je odobren ili odbijen; partner vidi status na `/partner`. Odobreni profil postaje javan tek uz aktivnu pretplatu. |
+
+### UC-7.2: Upravljanje korisničkim računima
+
+| Element specifikacije             | Opis |
+| :-------------------------------- | :--- |
+| **Primarni akter**                | A-04 Administrator |
+| **Povezani zahtjevi**             | F-026, NF-03 |
+| **Preduvjeti**                    | Administrator je prijavljen. |
+| **Glavni uspješni tok**           | 1. Administrator otvara `/admin/korisnici`.<br>2. Sustav prikazuje korisnike (ime, e-mail, uloga, status studenta, aktivnost računa).<br>3. Administrator po želji filtrira popis po e-mailu ili ulozi.<br>4. Administrator uz račun odabire „Deaktiviraj”.<br>5. Sustav označava račun kao deaktiviran i osvježava popis. |
+| **Alternativni tokovi / Iznimke** | **3a — Nema korisnika za zadane uvjete:** sustav prikazuje „Nema korisnika za zadane uvjete.”<br>**4a — Račun je već deaktiviran:** administrator odabire „Aktiviraj” i račun ponovno postaje aktivan.<br>**4b — Vlastiti račun:** gumb se ne prikazuje; pokušaj mimo sučelja odbija se porukom „Ne možeš deaktivirati vlastiti račun.”<br>**5a — Spremanje ne uspije:** sustav prikazuje „Promjena nije uspjela. Pokušaj ponovno.” |
+| **Posljedice (ishod)**            | Deaktivirani korisnik ne može se prijaviti (UC-1.1, 5a), a aktivna sesija smatra se neprijavljenom. |
+
+### UC-7.3: Upravljanje kategorijama ponuda
+
+| Element specifikacije             | Opis |
+| :-------------------------------- | :--- |
+| **Primarni akter**                | A-04 Administrator |
+| **Povezani zahtjevi**             | F-027, NF-03 |
+| **Preduvjeti**                    | Administrator je prijavljen. |
+| **Glavni uspješni tok**           | 1. Administrator otvara `/admin/kategorije`.<br>2. Sustav prikazuje kategorije s brojem ponuda i partnera koji ih koriste.<br>3. Administrator upisuje naziv nove kategorije i dodaje je, preimenuje postojeću ili uklanja kategoriju koju nitko ne koristi.<br>4. Sustav sprema promjenu i osvježava popis. |
+| **Alternativni tokovi / Iznimke** | **3a — Prazan naziv:** „Upiši naziv kategorije.”<br>**3b — Naziv već postoji (bez obzira na velika i mala slova):** „Kategorija s tim nazivom već postoji.”<br>**3c — Kategoriju koriste ponude ili partneri:** sustav odbija uklanjanje i navodi broj ponuda i partnera koji je koriste.<br>**4a — Spremanje ne uspije:** „Promjena nije spremljena. Pokušaj ponovno.” |
+| **Posljedice (ishod)**            | Nova ili preimenovana kategorija nudi se partneru pri izradi ponude i u filtru na `/ponude`; uklonjena se više ne nudi. |
+
+### UC-7.4: Pregled statistike platforme
+
+| Element specifikacije             | Opis |
+| :-------------------------------- | :--- |
+| **Primarni akter**                | A-04 Administrator |
+| **Povezani zahtjevi**             | F-030, NF-03 |
+| **Preduvjeti**                    | Administrator je prijavljen. |
+| **Glavni uspješni tok**           | 1. Administrator otvara `/admin`.<br>2. Sustav prikazuje statistiku za zadnjih 30 dana: broj studenata i partnera, aktivnih ponuda i iskorištenih kupona te iskorištene kupone po kategorijama i gradovima.<br>3. Administrator odabire početni i završni datum i „Prikaži”.<br>4. Sustav prikazuje statistiku za odabrano razdoblje. |
+| **Alternativni tokovi / Iznimke** | **3a — Neispravan datum ili početak nakon kraja:** sustav prikazuje zadnjih 30 dana uz poruku „Razdoblje nije ispravno, pa je prikazano zadnjih 30 dana.”<br>**4a — Nema iskorištenih kupona u razdoblju:** „Nema iskorištenih kupona u odabranom razdoblju.”<br>**4b — Prihod od pretplata:** prikazuje se „—” (još nije dostupno) dok se ne bilježe plaćanja (#34). |
+| **Posljedice (ishod)**            | Podaci se samo čitaju; ništa se ne mijenja. |
+
 ## 3.3 Provjera dosljednosti obrazaca uporabe
 
 **Cilj:** Provjeriti međusobnu usklađenost obrazaca uporabe, aktera, zahtjeva i ispitnih slučajeva. Cjelovito mapiranje održava se isključivo u **[matrici sljedivosti zahtjeva](2-Analiza-zahtjeva.md#26-sljedivost-zahtjeva)**.
