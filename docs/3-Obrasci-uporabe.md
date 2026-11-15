@@ -144,6 +144,52 @@ Ako odobreni zadatak umjesto toga koristi isključivo OAuth prijavu, zamijenite 
 | **Alternativni tokovi / Iznimke** | **3a — Ime je prazno ili dulje od 100 znakova:** sustav prikazuje poruku o duljini imena i ništa ne sprema.<br>**3b — Korisnik deaktivira račun:** korisnik označava da razumije posljedice i potvrđuje deaktivaciju; sustav označava račun kao neaktivan, odjavljuje korisnika i prikazuje poruku da je račun deaktiviran. Ponovno ga može aktivirati samo administrator (F-026).<br>**3c — Deaktivacija bez potvrde posljedica:** sustav prikazuje poruku i račun ostaje aktivan.<br>**3d — Pokušaj promjene uloge ili statusa studenta mimo sučelja:** baza odbija promjenu (NF-03). |
 | **Posljedice (ishod)**            | Profil ima novo ime ili je račun deaktiviran; deaktivirani korisnik ne može se ponovno prijaviti, a njegove recenzije nisu javne. |
 
+### UC-2.1: Registracija poslovnog subjekta
+
+| Element specifikacije             | Opis |
+| :-------------------------------- | :--- |
+| **Primarni akter**                | A-03 Partner (uz A-06 Google Maps API) |
+| **Povezani zahtjevi**             | F-006, F-013, F-025 |
+| **Preduvjeti**                    | Partner je prijavljen (UC-1.2), prihvatio je uvjete korištenja (UC-1.3) i još nema profil poslovnog subjekta. |
+| **Glavni uspješni tok**           | 1. Partner na partnerskoj ploči `/partner` odabire „Registriraj poslovni subjekt”.<br>2. Sustav na `/partner/registracija` prikazuje obrazac: naziv, OIB, kategorija djelatnosti, adresa, grad i kontakt telefon.<br>3. Partner popunjava obrazac i šalje ga.<br>4. Sustav provjerava obavezna polja, OIB (11 znamenki i ispravna kontrolna znamenka) i postoji li odabrana kategorija.<br>5. Sustav adresu pretvara u koordinate (F-013) i sprema profil sa statusom „na čekanju”.<br>6. Sustav vodi partnera na `/partner`, gdje prikazuje „Profil čeka odobrenje administratora. Do odobrenja profil i ponude nisu javno vidljivi.” |
+| **Alternativni tokovi / Iznimke** | **1a — Partner već ima profil:** `/partner/registracija` odmah vodi na `/partner`.<br>**1b — Korisnik nije partner:** neprijavljeni korisnik vodi se na `/prijava`, a korisniku druge uloge stranica ne postoji (404).<br>**4a — Obavezno polje je prazno:** sustav uz polje prikazuje poruku (npr. „Upiši naziv poslovnog subjekta.”, „Upiši OIB.”), a upisane vrijednosti ostaju u obrascu.<br>**4b — OIB nije ispravan:** „OIB mora imati 11 znamenki i ispravnu kontrolnu znamenku.”<br>**4c — Kategorija nije odabrana ili ne postoji:** „Odaberi kategoriju djelatnosti.”<br>**5a — Adresa nije pronađena ili geokodiranje ne uspije:** profil se svejedno sprema, bez koordinata; partner lokaciju označava ručno (UC-2.2).<br>**5b — OIB je već registriran:** „Partner s tim OIB-om već je registriran.”<br>**5c — Spremanje ne uspije:** „Spremanje nije uspjelo. Pokušaj ponovno.” |
+| **Posljedice (ishod)**            | Postoji profil partnera sa statusom „na čekanju” i vlasnikom koji ga je registrirao. Profil nije javan dok ga administrator ne odobri (UC-7.1) i dok partner nema aktivnu pretplatu (UC-6.1). |
+
+### UC-2.2: Uređivanje javnog profila partnera
+
+| Element specifikacije             | Opis |
+| :-------------------------------- | :--- |
+| **Primarni akter**                | A-03 Partner (uz A-06 Google Maps API) |
+| **Povezani zahtjevi**             | F-010, F-013 |
+| **Preduvjeti**                    | Partner je prijavljen i registrirao je poslovni subjekt (UC-2.1). Profil ne mora biti odobren. |
+| **Glavni uspješni tok**           | 1. Partner na `/partner` odabire „Uredi profil”.<br>2. Sustav na `/partner/profil` prikazuje obrazac s trenutačnim podacima (naziv, adresa, grad, telefon, radno vrijeme, opis), obrazac za logo i odabir lokacije na karti.<br>3. Partner mijenja podatke i odabire „Spremi profil”.<br>4. Sustav provjerava obavezna polja (naziv, adresa, grad, telefon) i duljinu opisa (najviše 1000 znakova) te sprema profil.<br>5. Ako se adresa promijenila, sustav je ponovno pretvara u koordinate (F-013).<br>6. Sustav prikazuje „Profil je spremljen.”; promjene su odmah vidljive na javnom profilu (UC-2.3).<br>7. Partner po želji odabire sliku (JPG, PNG ili WebP, najviše 2 MB) i „Učitaj logo”; sustav sprema sliku u Supabase Storage, briše stari logo i prikazuje „Logo je spremljen.” |
+| **Alternativni tokovi / Iznimke** | **1a — Partner još nema profil:** sustav ga vodi na `/partner/registracija` (UC-2.1).<br>**4a — Obavezno polje je prazno:** poruka uz polje (npr. „Upiši adresu.”); upisane vrijednosti ostaju u obrascu.<br>**4b — Opis je predug:** „Opis može imati najviše 1000 znakova.”<br>**4c — Spremanje ne uspije:** „Spremanje nije uspjelo. Pokušaj ponovno.”<br>**5a — Nova adresa nije pronađena:** profil se sprema, a stara lokacija se briše; partner lokaciju označava ručno na karti, koja prihvaća samo lokaciju u Hrvatskoj.<br>**7a — Slika nije odabrana:** „Odaberi sliku.”<br>**7b — Kriva vrsta datoteke:** „Slika mora biti JPG, PNG ili WebP.”<br>**7c — Slika je veća od 2 MB:** „Slika može imati najviše 2 MB.”<br>**7d — Učitavanje ne uspije:** „Učitavanje nije uspjelo. Pokušaj ponovno.”; stari logo ostaje. |
+| **Posljedice (ishod)**            | Profil ima nove podatke, odnosno novi logo. Partner smije mijenjati samo vlastiti profil i pisati samo u mapu svojeg partnera u Storageu (RLS); status odobrenja ne može mijenjati sam. |
+
+### UC-2.3: Pregled profila partnera
+
+| Element specifikacije             | Opis |
+| :-------------------------------- | :--- |
+| **Primarni akter**                | A-01 Posjetitelj (i A-02 Student) |
+| **Povezani zahtjevi**             | F-010, F-007 |
+| **Preduvjeti**                    | — (prijava nije potrebna). |
+| **Glavni uspješni tok**           | 1. Posjetitelj iz popisa ponuda, s kartice ponude ili s karte odabire partnera.<br>2. Sustav na `/partneri/[id]` prikazuje logo, naziv, kategoriju, opis, adresu, telefon i radno vrijeme partnera.<br>3. Sustav ispod podataka prikazuje sve aktivne ponude partnera; odabirom ponude otvara se njezina stranica. |
+| **Alternativni tokovi / Iznimke** | **2a — Partner nije javan** (nije odobren, nema aktivnu pretplatu ili mu je račun deaktiviran, F-007) **ili ne postoji:** stranica ne postoji (404).<br>**2b — Vlasnik otvara svoj profil koji još nije javan:** sustav prikazuje profil uz napomenu „Ovo je pregled tvog profila. Javno je vidljiv tek kad ga administrator odobri i dok imaš aktivnu pretplatu.”<br>**3a — Partner nema aktivnih ponuda:** „Još nema aktivnih ponuda.” |
+| **Posljedice (ishod)**            | Podaci se samo čitaju; ništa se ne mijenja. |
+
+### UC-2.4: Praćenje kategorija i partnera i obavijesti o ponudama
+
+_Trenutačno oblikovanje: praćenje i slanje obavijesti još nisu ostvareni (#15); ovise o statusima ponude (#17) i automatskom isteku (#18). Tablica `notification_subscriptions` s RLS pravilima i metode `sendNewOffer` i `sendOfferExpiring` u `NotificationService` (#14) već postoje._
+
+| Element specifikacije             | Opis |
+| :-------------------------------- | :--- |
+| **Primarni akter**                | A-02 Student (uz A-08 Resend i A-09 Vremenski okidač) |
+| **Povezani zahtjevi**             | F-024 |
+| **Preduvjeti**                    | Student je prijavljen i prihvatio je uvjete korištenja. |
+| **Glavni uspješni tok**           | 1. Student na `/ponude` uz kategoriju odabire „Prati kategoriju” ili na profilu partnera (UC-2.3) „Prati partnera”.<br>2. Sustav sprema praćenje i gumb mijenja u „Ne prati više”.<br>3. Kad partner objavi novu aktivnu ponudu u praćenoj kategoriji ili kod praćenog partnera, sustav studentu šalje e-mail s nazivom ponude i partnera.<br>4. Svaki dan vremenski okidač pronalazi aktivne ponude kojima rok istječe za 3 dana i studentima koji ih prate šalje podsjetnik.<br>5. Student na `/student` vidi popis svega što prati. |
+| **Alternativni tokovi / Iznimke** | **1a — Korisnik nije prijavljen:** sustav ga vodi na `/prijava`.<br>**1b — Student već prati kategoriju ili partnera:** sustav ne sprema drugo isto praćenje.<br>**2a — Student otkaže praćenje** (na istom mjestu ili na `/student`): sustav briše praćenje i student više ne prima te obavijesti.<br>**3a — Slanje e-maila ne uspije:** greška se zapisuje, a objava ponude se ne prekida.<br>**4a — Podsjetnik za ponudu je već poslan:** ne šalje se ponovno. |
+| **Posljedice (ishod)**            | Student prima e-mail o novim ponudama i podsjetnike samo za ono što prati; svako praćenje može otkazati. Student vidi i mijenja samo vlastita praćenja (RLS). |
+
 ### UC-5.1: Generiranje kupona za ponudu
 
 | Element specifikacije             | Opis                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
