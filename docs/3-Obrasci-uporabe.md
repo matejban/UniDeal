@@ -188,6 +188,30 @@ Ako odobreni zadatak umjesto toga koristi isključivo OAuth prijavu, zamijenite 
 | **Alternativni tokovi / Iznimke** | **1a — Kupon nije iskorišten:** mogućnost ocjenjivanja se ne prikazuje; pokušaj mimo sučelja baza odbija.<br>**3a — Kupon je već ocijenjen:** sustav odbija drugu recenziju za isti kupon.               |
 | **Posljedice (ishod)**            | Recenzija je javno vidljiva na profilu partnera; administrator je može ukloniti.                                                                                                                         |
 
+### UC-6.1: Plaćanje pretplate
+
+| Element specifikacije             | Opis |
+| :-------------------------------- | :--- |
+| **Primarni akter**                | A-03 Partner (uz A-07 Stripe) |
+| **Povezani zahtjevi**             | F-008, F-007, NF-05 |
+| **Preduvjeti**                    | Partner je prijavljen, prihvatio je uvjete korištenja i registrirao je poslovni subjekt (F-006). Nema pretplatu koja još vrijedi. |
+| **Glavni uspješni tok**           | 1. Partner na partnerskoj ploči `/partner` odabire „Plati pretplatu”.<br>2. Sustav na `/partner/pretplata` prikazuje mjesečnu i godišnju pretplatu s cijenama iz baze i gumbom „Plati” uz svaku.<br>3. Partner odabire „Plati” uz željeni plan.<br>4. Sustav provjerava plan, profil partnera, postojeću pretplatu i cijenu plana u Stripeu te partnera šalje na Stripeovu stranicu za plaćanje (Stripe Checkout) s cijenom plana i e-mailom partnera.<br>5. Partner na Stripeovoj stranici upisuje podatke kartice i plaća; podaci kartice ne prolaze kroz aplikaciju (NF-05).<br>6. Stripe vraća partnera na `/partner/pretplata`, gdje sustav prikazuje „Plaćanje se obrađuje. Pretplata će se aktivirati čim Stripe potvrdi uplatu.”<br>7. Stripe javlja sustavu da je uplata primljena, a sustav pretplati postavlja status „aktivna” i datum isteka (UC-6.2). |
+| **Alternativni tokovi / Iznimke** | **1a — Korisnik nije partner:** neprijavljeni korisnik vodi se na `/prijava`, a korisniku druge uloge stranica ne postoji (404).<br>**2a — Partner još nije registrirao poslovni subjekt:** sustav prikazuje „Pretplatu možeš platiti tek nakon što registriraš poslovni subjekt.” i poveznicu na registraciju; gumbi za plaćanje se ne prikazuju.<br>**2b — Cijene nisu postavljene ili cijena plana nije napravljena u Stripeu:** sustav prikazuje „Cijene pretplate još nisu postavljene.”, odnosno uz taj plan onemogućen gumb „Plati” i napomenu „Plaćanje još nije dostupno.”; zahtjev mimo sučelja odbija se porukom „Plaćanje ovog plana trenutačno nije dostupno.”<br>**4a — Profil je odbijen:** sustav prikazuje „Profil je odbijen pa pretplata nije moguća. Za više informacija javi se administratoru.”<br>**4b — Pretplata još vrijedi:** sustav prikazuje „Pretplata je već aktivna.” i ne naplaćuje je ponovno.<br>**4c — Nepoznat plan (zahtjev mimo sučelja):** sustav prikazuje „Odabran je nepoznat plan pretplate.”<br>**4d — Stripe nije dostupan:** sustav prikazuje „Plaćanje nije moguće pokrenuti. Pokušaj ponovno kasnije.”<br>**5a — Partner odustane na Stripeovoj stranici:** Stripe ga vraća na `/partner/pretplata`, gdje sustav prikazuje „Plaćanje je otkazano. Ništa nije naplaćeno i pretplata nije promijenjena.”<br>**5b — Kartica je odbijena:** Stripe na svojoj stranici prikazuje grešku i ništa ne naplaćuje; partner može pokušati drugom karticom ili odustati (5a). Pretplata se ne aktivira. |
+| **Posljedice (ishod)**            | Stripe je naplatio pretplatu i uz nju zapisao ID partnera. Nakon potvrde uplate (UC-6.2) pretplata ima status „aktivna” i datum isteka, a odobreni partner i njegove aktivne ponude javno su vidljivi (F-007). Partner koji još čeka odobrenje smije platiti, ali javan postaje tek nakon odobrenja (UC-7.1). |
+
+### UC-6.2: Ažuriranje stanja pretplate iz Stripea
+
+_Trenutačno oblikovanje: Stripe webhook (#34) i prikaz stanja pretplate partneru (#36) još nisu ostvareni. Pravilo da je partner javan samo uz aktivnu pretplatu već vrijedi u bazi (`private.partner_is_public`)._
+
+| Element specifikacije             | Opis |
+| :-------------------------------- | :--- |
+| **Primarni akter**                | A-07 Stripe |
+| **Povezani zahtjevi**             | F-008, F-007, C-02, NF-03 |
+| **Preduvjeti**                    | Partner je pokrenuo plaćanje pretplate (UC-6.1). U Stripeu je upisana adresa webhooka aplikacije, a u aplikaciji tajna `STRIPE_WEBHOOK_SECRET`. |
+| **Glavni uspješni tok**           | 1. Nakon uspješne naplate ili obnove pretplate Stripe šalje obavijest na `/api/stripe/webhook`.<br>2. Sustav provjerava potpis obavijesti tajnom `STRIPE_WEBHOOK_SECRET`.<br>3. Sustav iz obavijesti čita ID partnera (`client_reference_id` ili `metadata.partner_id`) te Stripeove identifikatore kupca i pretplate.<br>4. Sustav u tablicu `subscriptions` upisuje plan, status „aktivna” i datum isteka jednak kraju plaćenog razdoblja.<br>5. Partner na `/partner/pretplata` vidi da je pretplata aktivna i do kada vrijedi; ako ga je administrator odobrio, partner i njegove aktivne ponude prikazuju se u pretrazi, na karti i na javnom profilu (F-007). |
+| **Alternativni tokovi / Iznimke** | **2a — Potpis nije ispravan:** sustav odbija obavijest (HTTP 400) i ništa ne mijenja.<br>**3a — Ista obavijest stigne više puta ili drugim redoslijedom:** sustav postavlja stanje iz obavijesti umjesto da produžuje rok, pa ponovljena obavijest ne mijenja ishod.<br>**4a — Partner otkaže pretplatu ili naplata ne uspije:** sustav pretplatu označava kao neaktivnu (status „otkazana” ili „istekla”); partner i njegove ponude više nisu javni.<br>**4b — Rok prođe bez obnove ili obavijest kasni:** pretplata se ne smatra aktivnom čim prođe datum isteka, jer baza (`private.partner_is_public`) i domena (`Subscription.isActive()`) uz status provjeravaju i datum; partner i ponude nestaju iz pretrage i s karte, a nakon obnove ponovno se prikazuju. |
+| **Posljedice (ishod)**            | Tablica `subscriptions` odražava stanje pretplate u Stripeu. Pretplatu upisuje samo poslužitelj secret ključem; partner je ne može sam upisati ni promijeniti (NF-03). |
+
 ### UC-7.1: Odobravanje partnera
 
 | Element specifikacije             | Opis |
