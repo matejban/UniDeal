@@ -133,20 +133,11 @@ Graf može pokazati kada su zapisi promjena napravljeni i tko ih je napravio, al
 
 | Izazov | Poduzeta radnja | Ishod ili preostalo ograničenje |
 | --- | --- | --- |
-|  |  |  |
+| Status studenta trebalo je potvrditi bez ručne provjere dokumenata, a domena e-mail adrese ne razlikuje studenta od djelatnika iste ustanove (AS-01). | MB je uveo prijavu studenata studentskim Microsoft računom; SQL funkcija `student_institution` dodjeljuje status studenta prema popisu domena hrvatskih visokih učilišta. MB i EB dodali su uvjete korištenja (F-032) s obvezom pokazivanja X-ice pri korištenju kupona, a prijava putem AAI@EduHr zapisana je kao budući rad (7.3). | Student FER-a dobiva potvrđen status pri prvoj prijavi (ST-1.1). Ostaje ograničenje: djelatnik može dobiti status studenta, popis domena održava se ručno, a stvarnim računom provjerena je samo domena `fer.hr` (5.4). |
+| Nakon zamjene loga partnera ili fotografije ponude stara datoteka ostajala je u Supabase Storageu, a brisanje nije javljalo grešku. | MB je utvrdio da Storage za brisanje treba i pravilo za `select` nad `storage.objects`. Dodao je to pravilo (vlasnik vidi samo datoteke u mapi svojeg partnera) i funkciju `deleteImage()`, koja briše staru sliku pri zamjeni i pri brisanju ponude ([#81]). | Nakon zamjene u Storageu ostaje samo nova datoteka. Neuspjelo brisanje samo se zapisuje u log, a partnerova radnja svejedno uspijeva, pa datoteka u tom slučaju i dalje može ostati. |
+| Stripe ključ nije radio na starijoj preview inačici aplikacije, iako je bio upisan u Vercel. | Uočeno je da je pri slanju ključa preko Outlooka (JČ je ključ iz Stripea poslao MB-u, koji ga je upisao u Vercel) prvo slovo ključa automatski postalo veliko. Ključ je ponovno upisan u Vercel u izvornom obliku. | Plaćanje preko Stripea je proradilo, jer je promijenjeno slovo bilo jedina greška. |
 
-<details>
-<summary><strong>Rješavanje nesklada formata lokacije</strong></summary>
-
-**Primjer — CrisisMap:**
-
-| Izazov | Poduzeta radnja | Ishod ili preostalo ograničenje |
-| --- | --- | --- |
-| Odabrani položaj na karti prikazivao se u klijentu, ali podnesena prijava nije zadržavala koordinate. | AK i EP usporedile su zahtjev preglednika s poljima lokacije koje očekuje API; AK je uskladila format zahtjeva, a LM je dodao provjeru valjanosti lokacije. | Nova prijava u ovom se scenariju može dohvatiti sa spremljenim položajem; tim povezuje odgovarajuću promjenu integracije i provjeru. |
-
-**Problem, odgovor i ishod:** Svaki se dio može provjeriti u projektu. Rečenica poput „imali smo poteškoće s integracijom i riješili ih timskim radom” ne bi čitatelju rekla što nije radilo ni kako je rješenje promijenjeno.
-
-</details>
+[#81]: https://github.com/matejban/UniDeal/pull/81
 
 ---
 

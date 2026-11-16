@@ -19,6 +19,10 @@
 
 </details>
 
+### Stripe ključ poslan e-mailom
+
+Stripe ključ nije radio na starijoj preview inačici aplikacije, iako je bio upisan u Vercel. JČ je ključ iz Stripea poslao MB-u preko Outlooka, a Outlook je pritom prvo slovo ključa automatski promijenio u veliko. Kad je ključ ponovno upisan u Vercel u izvornom obliku, plaćanje je proradilo. Naučili smo da tajne ključeve ne treba slati e-mailom ni drugim porukama koje mogu promijeniti tekst, nego ih kopirati izravno iz Stripe Dashboarda u Vercel. Kad vanjska usluga odbije ključ, prvo treba usporediti upisani ključ s onim u Dashboardu, prije nego što se traži greška u kodu.
+
 ## 7.3 Budući rad
 
 [Navedite mali broj opravdanih poboljšanja i ograničite se na nekoliko prioriteta. Razlikujte nedovršene funkcionalnosti potrebne za ispunjenje izvornog opsega od neobaveznih proširenja. Za svako ukratko objasnite korist i što bi trebalo promijeniti.]
