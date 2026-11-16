@@ -87,7 +87,7 @@
 | Stripe klijent i cijene mjesečne i godišnje pretplate | JČ |  | Zadatak [#32] |
 | Dokumentacija i testovi temelja i autentifikacije | MB |  | UC-1.1 – UC-1.4, CT-1.x, ST-1.x |
 | Obrasci uporabe, sljedivost i ispitivanje kupona | EB |  | Zadatak [#48]; UC-5.1 – UC-5.4, CT-5.1, CT-5.2, ST-5.1 – ST-5.4 |
-| Upravljanje kategorijama ponuda (u tijeku) | FČ |  | Zadatak [#39] |
+| Upravljanje kategorijama ponuda | FČ |  | Zadatak [#39], PR [#78] |
 | Statistika za administratora (u tijeku) | FČ |  | Zadatak [#42] |
 | Izrada, uređivanje i brisanje ponude te dijagram razreda (4.3.2) | KD |  | Zadatak [#16] |
 | Sljedivost F-016 i opis načina rada u README-u | MB |  | `README.md`, `docs/2-Analiza-zahtjeva.md` |
@@ -116,6 +116,7 @@
 [#39]: https://github.com/matejban/UniDeal/issues/39
 [#56]: https://github.com/matejban/UniDeal/pull/56
 [#68]: https://github.com/matejban/UniDeal/pull/68
+[#78]: https://github.com/matejban/UniDeal/pull/78
 [#94]: https://github.com/matejban/UniDeal/pull/94
 [#95]: https://github.com/matejban/UniDeal/pull/95
 
@@ -133,20 +134,11 @@ Graf može pokazati kada su zapisi promjena napravljeni i tko ih je napravio, al
 
 | Izazov | Poduzeta radnja | Ishod ili preostalo ograničenje |
 | --- | --- | --- |
-|  |  |  |
+| Status studenta trebalo je potvrditi bez ručne provjere dokumenata, a domena e-mail adrese ne razlikuje studenta od djelatnika iste ustanove (AS-01). | MB je uveo prijavu studenata studentskim Microsoft računom; SQL funkcija `student_institution` dodjeljuje status studenta prema popisu domena hrvatskih visokih učilišta. MB i EB dodali su uvjete korištenja (F-032) s obvezom pokazivanja X-ice pri korištenju kupona, a prijava putem AAI@EduHr zapisana je kao budući rad (7.3). | Student FER-a dobiva potvrđen status pri prvoj prijavi (ST-1.1). Ostaje ograničenje: djelatnik može dobiti status studenta, popis domena održava se ručno, a stvarnim računom provjerena je samo domena `fer.hr` (5.4). |
+| Nakon zamjene loga partnera ili fotografije ponude stara datoteka ostajala je u Supabase Storageu, a brisanje nije javljalo grešku. | MB je utvrdio da Storage za brisanje treba i pravilo za `select` nad `storage.objects`. Dodao je to pravilo (vlasnik vidi samo datoteke u mapi svojeg partnera) i funkciju `deleteImage()`, koja briše staru sliku pri zamjeni i pri brisanju ponude ([#81]). | Nakon zamjene u Storageu ostaje samo nova datoteka. Neuspjelo brisanje samo se zapisuje u log, a partnerova radnja svejedno uspijeva, pa datoteka u tom slučaju i dalje može ostati. |
+| Stripe ključ nije radio na starijoj preview inačici aplikacije, iako je bio upisan u Vercel. | Uočeno je da je pri slanju ključa preko Outlooka (JČ je ključ iz Stripea poslao MB-u, koji ga je upisao u Vercel) prvo slovo ključa automatski postalo veliko. Ključ je ponovno upisan u Vercel u izvornom obliku. | Plaćanje preko Stripea je proradilo, jer je promijenjeno slovo bilo jedina greška. |
 
-<details>
-<summary><strong>Rješavanje nesklada formata lokacije</strong></summary>
-
-**Primjer — CrisisMap:**
-
-| Izazov | Poduzeta radnja | Ishod ili preostalo ograničenje |
-| --- | --- | --- |
-| Odabrani položaj na karti prikazivao se u klijentu, ali podnesena prijava nije zadržavala koordinate. | AK i EP usporedile su zahtjev preglednika s poljima lokacije koje očekuje API; AK je uskladila format zahtjeva, a LM je dodao provjeru valjanosti lokacije. | Nova prijava u ovom se scenariju može dohvatiti sa spremljenim položajem; tim povezuje odgovarajuću promjenu integracije i provjeru. |
-
-**Problem, odgovor i ishod:** Svaki se dio može provjeriti u projektu. Rečenica poput „imali smo poteškoće s integracijom i riješili ih timskim radom” ne bi čitatelju rekla što nije radilo ni kako je rješenje promijenjeno.
-
-</details>
+[#81]: https://github.com/matejban/UniDeal/pull/81
 
 ---
 
