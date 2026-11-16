@@ -87,7 +87,7 @@
 | Stripe klijent i cijene mjesečne i godišnje pretplate | JČ |  | Zadatak [#32] |
 | Dokumentacija i testovi temelja i autentifikacije | MB |  | UC-1.1 – UC-1.4, CT-1.x, ST-1.x |
 | Obrasci uporabe, sljedivost i ispitivanje kupona | EB |  | Zadatak [#48]; UC-5.1 – UC-5.4, CT-5.1, CT-5.2, ST-5.1 – ST-5.4 |
-| Upravljanje kategorijama ponuda (u tijeku) | FČ |  | Zadatak [#39] |
+| Upravljanje kategorijama ponuda | FČ |  | Zadatak [#39], PR [#78] |
 | Statistika za administratora (u tijeku) | FČ |  | Zadatak [#42] |
 | Izrada, uređivanje i brisanje ponude te dijagram razreda (4.3.2) | KD |  | Zadatak [#16] |
 | Sljedivost F-016 i opis načina rada u README-u | MB |  | `README.md`, `docs/2-Analiza-zahtjeva.md` |
@@ -116,6 +116,7 @@
 [#39]: https://github.com/matejban/UniDeal/issues/39
 [#56]: https://github.com/matejban/UniDeal/pull/56
 [#68]: https://github.com/matejban/UniDeal/pull/68
+[#78]: https://github.com/matejban/UniDeal/pull/78
 [#94]: https://github.com/matejban/UniDeal/pull/94
 [#95]: https://github.com/matejban/UniDeal/pull/95
 
