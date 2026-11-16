@@ -168,6 +168,54 @@ _Trenutačno oblikovanje: objava (#17) i automatski istek (#18) još nisu ostvar
 | **Alternativni tokovi / Iznimke** | **2a — Rok je prošao:** poruka, ponuda ostaje nacrt.<br>**2b — Istekla ponuda:** ne može se ponovno objaviti.<br>**3a — Partner nema aktivnu pretplatu:** ponuda je aktivna, ali nije javna (F-007).<br>**4a — Okidač se još nije pokrenuo:** istekla ponuda se svejedno ne prikazuje u pretrazi. |
 | **Posljedice (ishod)**            | Studenti za aktivnu ponudu mogu generirati kupone (UC-5.1) do isteka roka. |
 
+### UC-4.1: Pretraga i filtriranje ponuda
+
+_Trenutačno oblikovanje: filtri po visini popusta i roku trajanja (#21) i poredak po ocjeni i blizini (#22) još nisu ostvareni. Filtri po kategoriji i gradu rade._
+
+| Element specifikacije             | Opis |
+| :-------------------------------- | :--- |
+| **Primarni akter**                | A-01 Posjetitelj ili A-02 Student |
+| **Povezani zahtjevi**             | F-016, F-017, F-007, F-012, NF-06 |
+| **Preduvjeti**                    | Nema; prijava nije potrebna. |
+| **Glavni uspješni tok**           | 1. Korisnik otvara stranicu `/ponude`.<br>2. Sustav prikazuje aktivne ponude javnih partnera.<br>3. Korisnik odabire kategoriju, grad, najmanji popust i koliko dugo ponuda još mora vrijediti te odabire „Filtriraj”.<br>4. Sustav prikazuje samo aktivne ponude koje zadovoljavaju sve odabrane uvjete; filtri ostaju u adresi stranice (npr. `?kategorija=Hrana&grad=Zagreb`).<br>5. Korisnik po želji odabire poredak po prosječnoj ocjeni ili po blizini.<br>6. Korisnik otvara ponudu (`/ponude/[id]`). |
+| **Alternativni tokovi / Iznimke** | **2a — Ponuda je nacrt ili je istekla, ili partner nije odobren ili nema aktivnu pretplatu:** ponuda se ne prikazuje (F-007, F-012).<br>**4a — Nijedna ponuda ne zadovoljava filtre:** sustav prikazuje „Nema ponuda za odabrane filtre.”<br>**5a — Poredak po blizini bez dopuštenja za lokaciju:** sustav prikazuje poruku da poredak po blizini nije dostupan i ne mijenja poredak. |
+| **Posljedice (ishod)**            | Podaci se samo čitaju. Lokacija korisnika koristi se samo za izračun udaljenosti u tom zahtjevu i ne sprema se (NF-06). |
+
+### UC-4.2: Pregled partnera na karti
+
+| Element specifikacije             | Opis |
+| :-------------------------------- | :--- |
+| **Primarni akter**                | A-01 Posjetitelj ili A-02 Student (uz A-06 Google Maps API) |
+| **Povezani zahtjevi**             | F-018, F-013, NF-06, NF-08, NF-10 |
+| **Preduvjeti**                    | Nema; prijava nije potrebna. |
+| **Glavni uspješni tok**           | 1. Korisnik otvara stranicu `/karta`.<br>2. Sustav prikazuje kartu s oznakom za svakog javnog partnera koji ima lokaciju, tako da se vide svi partneri, a ispod karte popis partnera.<br>3. Preglednik traži dopuštenje za lokaciju; uz dopuštenje karta se centrira na korisnika i prikazuje njegovu lokaciju plavom točkom.<br>4. Korisnik odabire oznaku partnera.<br>5. Sustav prikazuje okvir s nazivom, kategorijom i adresom partnera te poveznicom „Otvori profil”.<br>6. Korisnik odabire „Otvori profil” i sustav prikazuje profil partnera (`/partneri/[id]`). |
+| **Alternativni tokovi / Iznimke** | **2a — Ključ za Google Maps nije postavljen:** umjesto karte sustav prikazuje „Karta trenutačno nije dostupna. Partneri su navedeni ispod.”<br>**2b — Google odbije ključ ili se karta ne učita:** sustav prikazuje „Karta se trenutačno ne može učitati. Partneri su navedeni ispod.”; popis partnera i dalje radi (NF-10).<br>**2c — Partner nema lokaciju:** nema ga na karti, ali je na popisu ispod karte (UC-4.3).<br>**3a — Korisnik odbije dijeljenje lokacije:** sustav prikazuje „Lokacija nije dostupna, pa odaberi grad.”; korisnik u izborniku „Grad” odabire grad i karta se centrira na njega.<br>**3b — Korisnik želi vidjeti drugi grad:** izbor grada dostupan je i uz dopuštenje lokacije. |
+| **Posljedice (ishod)**            | Podaci se samo čitaju. Lokacija korisnika koristi se samo u pregledniku i ne sprema se (NF-06). |
+
+### UC-4.3: Označavanje lokacije partnera
+
+| Element specifikacije             | Opis |
+| :-------------------------------- | :--- |
+| **Primarni akter**                | A-03 Partner (uz A-06 Google Maps API) |
+| **Povezani zahtjevi**             | F-013, F-006, F-010, NF-03, NF-04 |
+| **Preduvjeti**                    | Partner je prijavljen i prihvatio je uvjete korištenja. |
+| **Glavni uspješni tok**           | 1. Partner pri registraciji poslovnog subjekta (F-006) ili na `/partner/profil` (F-010) upisuje adresu i grad te sprema podatke.<br>2. Sustav na poslužitelju u Google Geocoding API-ju traži koordinate adrese i sprema ih uz partnera.<br>3. Na `/partner/profil` u odjeljku „Lokacija na karti” sustav prikazuje „Tvoj poslovni prostor označen je na karti.” i kartu s oznakom.<br>4. Kad je profil javan, partner se prikazuje na karti partnera (UC-4.2). |
+| **Alternativni tokovi / Iznimke** | **1a — Partner sprema profil bez promjene adrese i grada:** sustav ne traži koordinate ponovno, osim ako partner još nema lokaciju.<br>**2a — Adresa nije pronađena ili Google prepozna samo grad:** podaci se spremaju bez lokacije (pri promjeni adrese briše se i stara lokacija); na `/partner` sustav prikazuje „Adresa nije pronađena na karti, pa te studenti ne vide na karti partnera.” s poveznicom „Označi lokaciju”. Partner na `/partner/profil` klikne na kartu na mjesto poslovnog prostora i odabere „Spremi lokaciju”.<br>**2b — Geokodiranje nije dostupno (nema ključa ili Google javi grešku):** greška se zapisuje, registracija ili profil ipak se spremaju bez lokacije, a partner nastavlja kao u 2a.<br>**3a — Oznaka nije na pravom mjestu:** partner klikom na kartu premješta oznaku i odabire „Spremi lokaciju”.<br>**3b — Označena lokacija je izvan Hrvatske:** sustav prikazuje „Označi lokaciju u Hrvatskoj.” i ništa ne sprema.<br>**3c — Ključ za Google Maps nije postavljen:** umjesto karte sustav prikazuje „Karta trenutačno nije dostupna, pa lokaciju sada nije moguće označiti.” |
+| **Posljedice (ishod)**            | Partner ima koordinate u bazi i, kad je javan, prikazuje se na karti. Lokaciju može promijeniti samo vlasnik profila (NF-03), a ključ za geokodiranje ne napušta poslužitelj (NF-04). |
+
+### UC-4.4: Spremanje ponuda i partnera u favorite
+
+_Trenutačno oblikovanje: favoriti (#26) još nisu ostvareni. Tablica `favorites` postoji u bazi._
+
+| Element specifikacije             | Opis |
+| :-------------------------------- | :--- |
+| **Primarni akter**                | A-02 Student |
+| **Povezani zahtjevi**             | F-019, NF-03 |
+| **Preduvjeti**                    | Student je prijavljen. |
+| **Glavni uspješni tok**           | 1. Student na kartici ponude, stranici ponude ili profilu partnera odabire zvjezdicu.<br>2. Sustav sprema ponudu ili partnera u favorite i označava zvjezdicu.<br>3. Student na `/student` vidi popis favorita.<br>4. Student uz favorit odabire „Ukloni” i sustav ga uklanja s popisa. |
+| **Alternativni tokovi / Iznimke** | **1a — Korisnik nije prijavljen:** sustav ga vodi na `/prijava`, a nakon prijave vraća na istu stranicu.<br>**1b — Korisnik nije student:** zvjezdica se ne prikazuje, a zahtjev mimo sučelja baza odbija (NF-03).<br>**2a — Ponuda ili partner već su u favoritima:** ponovni odabir zvjezdice uklanja ih iz favorita.<br>**3a — Student nema favorita:** sustav prikazuje „Još nema spremljenih ponuda ni partnera.” |
+| **Posljedice (ishod)**            | Favoriti su spremljeni uz studenta; vidi ih i mijenja samo on (NF-03). |
+
 ### UC-5.1: Generiranje kupona za ponudu
 
 | Element specifikacije             | Opis                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
