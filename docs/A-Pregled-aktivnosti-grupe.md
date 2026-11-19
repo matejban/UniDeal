@@ -86,14 +86,14 @@
 | Upload logotipa partnera u Supabase Storage | FL |  | Zadatak [#13] |
 | E-mail obavijesti preko Resenda | FL |  | Zadatak [#14] |
 | Ograničenje korištenja kupona (jednom po studentu) | EB |  | Zadatak [#29] |
-| Stripe klijent i cijene mjesečne i godišnje pretplate | JČ |  | Zadatak [#32] |
+| Stripe klijent i cijene mjesečne i godišnje pretplate | JČ | 3 | Zadatak [#32] |
 | Dokumentacija i testovi temelja i autentifikacije | MB |  | UC-1.1 – UC-1.4, CT-1.x, ST-1.x |
 | Obrasci uporabe, sljedivost i ispitivanje kupona | EB |  | Zadatak [#48]; UC-5.1 – UC-5.4, CT-5.1, CT-5.2, ST-5.1 – ST-5.4 |
 | Upravljanje kategorijama ponuda | FČ |  | Zadatak [#39], PR [#78] |
 | Statistika za administratora (u tijeku) | FČ |  | Zadatak [#42] |
 | Izrada, uređivanje i brisanje ponude te dijagram razreda (4.3.2) | KD |  | Zadatak [#16] |
 | Sljedivost F-016 i opis načina rada u README-u | MB |  | `README.md`, `docs/2-Analiza-zahtjeva.md` |
-| Stripe Checkout za partnera | JČ |  | Zadatak [#33] |
+| Stripe Checkout za partnera | JČ | 8 | Zadatak [#33] |
 | Granice projekta (1.3) i dorada postojećih pristupa (1.4) | FČ |  | Zadatak [#47] |
 | Brisanje stare slike iz Storagea, ispravak RLS testa, ispitivanje CT-1.3 i ST-1.3 – ST-1.6, dorada obrazaca | MB |  | `docs/5-Ispitivanje.md` |
 | Ručno ispitivanje prijave Microsoft računom | FČ |  | Zadatak [#87]; ST-1.1, ST-1.2 |
@@ -101,9 +101,9 @@
 | Geokodiranje adrese partnera i ručno označavanje lokacije | KB |  | Zadatak [#24] |
 | Dokumentacija administratorskog područja | FČ |  | UC-7.1 – UC-7.4 |
 | Dijagram razreda za kupone: `Coupon`, `CouponService` i `CouponRepository` | EB |  | PR [#95]; `docs/puml/4-3-unideal-domain-CD.puml` |
-| Dokumentacija pretplate: obrasci uporabe, sljedivost i ispitivanje | JČ |  | PR [#94]; UC-6.1, UC-6.2, CT-6.1 – CT-6.3, ST-6.1 – ST-6.4 |
-| Ručno ispitivanje pretplate i upis rezultata | JČ |  | PR [#101]; ST-6.1 – ST-6.4 |
-| Evidencija sastanaka (A.1), pregled promjena u repozitoriju (A.4) i izjava o uporabi umjetne inteligencije za područje 6 | JČ |  | Zadatak [#50], PR [#104] |
+| Dokumentacija pretplate: obrasci uporabe, sljedivost i ispitivanje | JČ | 3 | PR [#94]; UC-6.1, UC-6.2, CT-6.1 – CT-6.3, ST-6.1 – ST-6.4 |
+| Ručno ispitivanje pretplate i upis rezultata | JČ | 2 | PR [#101]; ST-6.1 – ST-6.4 |
+| Evidencija sastanaka (A.1), pregled promjena u repozitoriju (A.4) i izjava o uporabi umjetne inteligencije za područje 6 | JČ | 2 | Zadatak [#50], PR [#104] |
 
 [#2]: https://github.com/matejban/UniDeal/issues/2
 [#5]: https://github.com/matejban/UniDeal/issues/5
