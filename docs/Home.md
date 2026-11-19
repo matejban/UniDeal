@@ -75,6 +75,7 @@ Kratak sažetak: [README – Uporaba umjetne inteligencije](../README.md#ai-usag
 | Dokumentacija područja 5: UC-5.1 – UC-5.4, retci 2.6, ispitivanje CT-5.x i ST-5.x | Izrada nacrta | Prijedlog teksta prema kodu | Tekst provjeren prema kodu i aplikaciji i ispravljen; testove sam izvela i upisala stvarne rezultate | [3](3-Obrasci-uporabe.md), [2.6](2-Analiza-zahtjeva.md), [5](5-Ispitivanje.md) |
 | Kod kupona (#27, #29) | Objašnjenje i prijedlozi dijelova koda | Prijedlozi po koracima | Kod sam pokrenula i testirala lokalno (`npm run dev`, `npm test`), izmijenila dijelove i ručno provjerila na [www.unideal.site](https://www.unideal.site) | PR #67, PR #73 |
 | Dijagram razreda 4.3.2 | Izvor dijagrama | Nacrt PlantUML-a prema kodu | Iscrtan, uspoređen s kodom i pojednostavljen |[`4-3-unideal-domain-CD.puml`](puml/4-3-unideal-domain-CD.puml) |
+| Dokumentacija područja 6: UC-6.1, UC-6.2, retci 2.6, CT-6.x, ST-6.x | Izrada nacrta | Savjeti u izvedbi testova | Ručne testove ST-6.x sam izveo i upisao stvarne rezultate | [3](3-Obrasci-uporabe.md), [2.6](2-Analiza-zahtjeva.md), [5](5-Ispitivanje.md), PR #94, PR #101 |
 | [npr. 3. Obrasci uporabe, UC-002] | [Izrada nacrta / preoblikovanje / prijevod / izvor dijagrama / sažimanje] | [Kratak opis] | [Ulaz zadan alatu; dodane, ispravljene ili uklonjene činjenice] | [Stranica dokumentacije, `.puml` datoteka, PR] |
 
 Stranice i artefakti koji nisu navedeni iznad izrađeni su bez pomoći generativne umjetne inteligencije. [Po želji: kao dodatne retke navedite kod ili ispitivanja izrađena uz pomoć umjetne inteligencije.]
@@ -94,6 +95,8 @@ Stranice i artefakti koji nisu navedeni iznad izrađeni su bez pomoći generativ
 | Problem | Kako je pronađen | Rješenje |
 | --- | --- | --- |
 | Koraci CT-5.1 i CT-5.2 tražili su da se u ispisu pogleda skupina testova | Pokretanjem `npm test`: zadani ispis Vitesta ne prikazuje skupine | Koraci promijenjeni u `npm test -- --reporter=verbose` |
+| U uputi za upis ID-eva Stripeovih cijena ostali su zamjenski tekstovi `price_MONTHLY_ID` i `price_YEARLY_ID`, koji su tako upisani u `subscription_prices`, pa plaćanje pretplate nije moglo započeti | MB je provjerom tablice `subscription_prices` uočio zamjenske tekstove umjesto pravih ID-eva (Stripe za njih javlja „No such price”) | U SQL Editoru upisani pravi ID-evi cijena iz Stripea; plaćanje ispitano testnom karticom na [www.unideal.site](https://www.unideal.site/partner/pretplata) |
+| Uputa je tražila ispitivanje plaćanja na preview adresi grane `josip/33-stripe-checkout`, izgrađenoj prije nego što je u Vercel dodan `STRIPE_SECRET_KEY`, pa je plaćanje javljalo grešku | MB je usporedio vrijeme izgradnje previewa s vremenom dodavanja varijable u Vercelu | Ispitivanje provedeno na produkciji nakon ponovnog postavljanja (Redeploy), koje učitava nove varijable |
 | [Netočna, izmišljena ili iz predloška preuzeta tvrdnja] | [Pregled, ispitivanje ili usporedba s aplikacijom] | [Ispravak s poveznicom] |
 
 <!-- UPUTA: Zabilježite stvarne ispravke ili napišite „Nisu utvrđene”. Općenita tvrdnja poput „sav tekst je pregledan” nije dokaz; dokaz su prethodne tablice. Tim mora moći objasniti svaku rečenicu koju objavi. -->
