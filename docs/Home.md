@@ -75,6 +75,7 @@ Kratak sažetak: [README – Uporaba umjetne inteligencije](../README.md#ai-usag
 | Dokumentacija područja 5: UC-5.1 – UC-5.4, retci 2.6, ispitivanje CT-5.x i ST-5.x | Izrada nacrta | Prijedlog teksta prema kodu | Tekst provjeren prema kodu i aplikaciji i ispravljen; testove sam izvela i upisala stvarne rezultate | [3](3-Obrasci-uporabe.md), [2.6](2-Analiza-zahtjeva.md), [5](5-Ispitivanje.md) |
 | Kod kupona (#27, #29) | Objašnjenje i prijedlozi dijelova koda | Prijedlozi po koracima | Kod sam pokrenula i testirala lokalno (`npm run dev`, `npm test`), izmijenila dijelove i ručno provjerila na [www.unideal.site](https://www.unideal.site) | PR #67, PR #73 |
 | Dijagram razreda 4.3.2 | Izvor dijagrama | Nacrt PlantUML-a prema kodu | Iscrtan, uspoređen s kodom i pojednostavljen |[`4-3-unideal-domain-CD.puml`](puml/4-3-unideal-domain-CD.puml) |
+| Kod ponuda (#16) | Konceptualna pomoć i pomoć pri debuggiranju | Objašnjenje problema i prijedloge dijelova rješenja | Zadao dodatne zahtjeve, pregledao kod, pokrenuo i testirao lokalno i ručno provjerio izradu, uređivanje i brisanje ponude | PR #80 |
 | [npr. 3. Obrasci uporabe, UC-002] | [Izrada nacrta / preoblikovanje / prijevod / izvor dijagrama / sažimanje] | [Kratak opis] | [Ulaz zadan alatu; dodane, ispravljene ili uklonjene činjenice] | [Stranica dokumentacije, `.puml` datoteka, PR] |
 
 Stranice i artefakti koji nisu navedeni iznad izrađeni su bez pomoći generativne umjetne inteligencije. [Po želji: kao dodatne retke navedite kod ili ispitivanja izrađena uz pomoć umjetne inteligencije.]

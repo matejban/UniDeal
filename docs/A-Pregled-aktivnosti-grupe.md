@@ -89,7 +89,7 @@
 | Obrasci uporabe, sljedivost i ispitivanje kupona | EB |  | Zadatak [#48]; UC-5.1 – UC-5.4, CT-5.1, CT-5.2, ST-5.1 – ST-5.4 |
 | Upravljanje kategorijama ponuda | FČ |  | Zadatak [#39], PR [#78] |
 | Statistika za administratora (u tijeku) | FČ |  | Zadatak [#42] |
-| Izrada, uređivanje i brisanje ponude te dijagram razreda (4.3.2) | KD |  | Zadatak [#16] |
+| Izrada, uređivanje i brisanje ponude te dijagram razreda (4.3.2) | KD | 15 | Zadatak [#16] |
 | Sljedivost F-016 i opis načina rada u README-u | MB |  | `README.md`, `docs/2-Analiza-zahtjeva.md` |
 | Stripe Checkout za partnera | JČ |  | Zadatak [#33] |
 | Granice projekta (1.3) i dorada postojećih pristupa (1.4) | FČ |  | Zadatak [#47] |
