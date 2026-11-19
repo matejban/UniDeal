@@ -75,6 +75,10 @@ Kratak sažetak: [README – Uporaba umjetne inteligencije](../README.md#ai-usag
 | Dokumentacija područja 5: UC-5.1 – UC-5.4, retci 2.6, ispitivanje CT-5.x i ST-5.x | Izrada nacrta | Prijedlog teksta prema kodu | Tekst provjeren prema kodu i aplikaciji i ispravljen; testove sam izvela i upisala stvarne rezultate | [3](3-Obrasci-uporabe.md), [2.6](2-Analiza-zahtjeva.md), [5](5-Ispitivanje.md) |
 | Kod kupona (#27, #29) | Objašnjenje i prijedlozi dijelova koda | Prijedlozi po koracima | Kod sam pokrenula i testirala lokalno (`npm run dev`, `npm test`), izmijenila dijelove i ručno provjerila na [www.unideal.site](https://www.unideal.site) | PR #67, PR #73 |
 | Dijagram razreda 4.3.2 | Izvor dijagrama | Nacrt PlantUML-a prema kodu | Iscrtan, uspoređen s kodom i pojednostavljen |[`4-3-unideal-domain-CD.puml`](puml/4-3-unideal-domain-CD.puml) |
+| Kod administracije: odobravanje partnera (#37), korisnički računi (#38), kategorije (#39) i statistika platforme (#42) | Objašnjenje i prijedlozi dijelova koda i SQL-a | Prijedlozi po koracima (repozitorij, servis, stranica), SQL funkcije `platform_statistics` i testova | Kod sam pokrenuo lokalno (`npm run dev`), izmijenio dijelove, testove pokrenuo s `npm test` i `rls.sql` u Supabase SQL Editoru te ručno provjerio na [www.unideal.site](https://www.unideal.site) | PR #56, PR #68, PR #78, PR #79 |
+| Dokumentacija područja 7: UC-7.1 – UC-7.4, retci 2.6, ispitivanje CT-7.x i ST-7.x | Izrada nacrta | Prijedlog teksta prema kodu, ispitnih slučajeva i koraka | Tekst provjeren prema kodu i aplikaciji i ispravljen; CT-7.2 – CT-7.4 pokrenuo sam lokalno, a ST-7.x izveo ručno na produkciji s probnim računima i upisao stvarne rezultate | [3](3-Obrasci-uporabe.md), [2.6](2-Analiza-zahtjeva.md), [5](5-Ispitivanje.md), PR #93, PR #103 |
+| A.1 – A.3 i A.5, 6.3, 7.2 | Preoblikovanje i sažimanje | Kronološki popis aktivnosti prema povijesti repozitorija (commitovi, PR-ovi, issue-i) i nacrt teksta prema mojim bilješkama | Datume, sudionike, odgovorne osobe i poveznice provjerio prema GitHubu; sate i opis izazova unio sam sam | [A](A-Pregled-aktivnosti-grupe.md), PR #96, PR #103 |
+| Probni računi za ispitivanje | Pomoć pri pisanju SQL-a | SQL za stvaranje i brisanje probnih računa u bazi | SQL sam pokrenuo sam u Supabase SQL Editoru, a račune nakon ispitivanja obrisao i provjerio da u bazi nisu ostali | [5.3](5-Ispitivanje.md) |
 | [npr. 3. Obrasci uporabe, UC-002] | [Izrada nacrta / preoblikovanje / prijevod / izvor dijagrama / sažimanje] | [Kratak opis] | [Ulaz zadan alatu; dodane, ispravljene ili uklonjene činjenice] | [Stranica dokumentacije, `.puml` datoteka, PR] |
 
 Stranice i artefakti koji nisu navedeni iznad izrađeni su bez pomoći generativne umjetne inteligencije. [Po želji: kao dodatne retke navedite kod ili ispitivanja izrađena uz pomoć umjetne inteligencije.]
@@ -94,6 +98,7 @@ Stranice i artefakti koji nisu navedeni iznad izrađeni su bez pomoći generativ
 | Problem | Kako je pronađen | Rješenje |
 | --- | --- | --- |
 | Koraci CT-5.1 i CT-5.2 tražili su da se u ispisu pogleda skupina testova | Pokretanjem `npm test`: zadani ispis Vitesta ne prikazuje skupine | Koraci promijenjeni u `npm test -- --reporter=verbose` |
+| U 2.6 pisalo je 15 testova za `CategoryService` i 8 za `StatisticsService` | Pokretanjem `npm test -- --reporter=verbose` | Ispravljeno na 20 i 14 |
 | [Netočna, izmišljena ili iz predloška preuzeta tvrdnja] | [Pregled, ispitivanje ili usporedba s aplikacijom] | [Ispravak s poveznicom] |
 
 <!-- UPUTA: Zabilježite stvarne ispravke ili napišite „Nisu utvrđene”. Općenita tvrdnja poput „sav tekst je pregledan” nije dokaz; dokaz su prethodne tablice. Tim mora moći objasniti svaku rečenicu koju objavi. -->

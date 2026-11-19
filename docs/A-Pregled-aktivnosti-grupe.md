@@ -68,18 +68,18 @@
 
 | Aktivnost ili rezultat | Član | Prijavljeni sati | Reprezentativni rezultat ili poveznica |
 | --- | --- | --- | --- |
-| Otvaranje repozitorija | FČ |  | Početni commit repozitorija |
+| Otvaranje repozitorija | FČ | 1 | Početni commit repozitorija |
 | Struktura projekta prema predlošku kolegija | EB |  | Direktoriji `docs/`, `tests/`, `db/`, `build/` |
-| Odjeljak 1.4 Postojeći pristupi | FČ |  | `docs/1-Projekt.md` |
+| Odjeljak 1.4 Postojeći pristupi | FČ | 2 | `docs/1-Projekt.md` |
 | Opis projekta, osnovna Next.js aplikacija, objektno orijentirana struktura i prijava Google računom | MB |  | `README.md`, `src/` |
 | Analiza zahtjeva | KB |  | `docs/2-Analiza-zahtjeva.md` |
 | Supabase projekt, prijava studenata Microsoft računom, prijava partnera e-mailom i profili s ulogom | MB |  | Zadaci [#1] i [#6] |
-| Upravljanje korisničkim računima i deaktivacija | FČ |  | Zadatak [#38], PR [#56] |
+| Upravljanje korisničkim računima i deaktivacija | FČ | 8 | Zadatak [#38], PR [#56] |
 | Članovi tima u README-u i dorada analize zahtjeva | KB |  | Zadatak [#45] |
 | Shema baze i migracije, RLS po ulogama, Supabase repozitoriji, zaštita ruta po ulozi, uređivanje profila, CI i README | MB |  | Zadaci [#2]–[#5], [#7]–[#9] |
 | Registracija partnera s provjerom OIB-a | FL |  | Zadatak [#10] |
 | Generiranje kupona s jedinstvenim kodom i QR kodom | EB |  | Zadatak [#27] |
-| Odobravanje partnera u administraciji | FČ |  | Zadatak [#37], PR [#68] |
+| Odobravanje partnera u administraciji | FČ | 6 | Zadatak [#37], PR [#68] |
 | Javni profil partnera i uređivanje profila | FL |  | Zadatak [#11] |
 | Upload logotipa partnera u Supabase Storage | FL |  | Zadatak [#13] |
 | E-mail obavijesti preko Resenda | FL |  | Zadatak [#14] |
@@ -87,17 +87,19 @@
 | Stripe klijent i cijene mjesečne i godišnje pretplate | JČ |  | Zadatak [#32] |
 | Dokumentacija i testovi temelja i autentifikacije | MB |  | UC-1.1 – UC-1.4, CT-1.x, ST-1.x |
 | Obrasci uporabe, sljedivost i ispitivanje kupona | EB |  | Zadatak [#48]; UC-5.1 – UC-5.4, CT-5.1, CT-5.2, ST-5.1 – ST-5.4 |
-| Upravljanje kategorijama ponuda | FČ |  | Zadatak [#39], PR [#78] |
-| Statistika za administratora (u tijeku) | FČ |  | Zadatak [#42] |
+| Upravljanje kategorijama ponuda | FČ | 7 | Zadatak [#39], PR [#78] |
+| Statistika za administratora (u tijeku) | FČ | 7 | Zadatak [#42], PR [#79] (prikaz statistike bez prihoda od pretplata; prihod čeka #34) |
 | Izrada, uređivanje i brisanje ponude te dijagram razreda (4.3.2) | KD |  | Zadatak [#16] |
 | Sljedivost F-016 i opis načina rada u README-u | MB |  | `README.md`, `docs/2-Analiza-zahtjeva.md` |
 | Stripe Checkout za partnera | JČ |  | Zadatak [#33] |
-| Granice projekta (1.3) i dorada postojećih pristupa (1.4) | FČ |  | Zadatak [#47] |
+| Granice projekta (1.3) i dorada postojećih pristupa (1.4) | FČ | 1,5 | Zadatak [#47] |
 | Brisanje stare slike iz Storagea, ispravak RLS testa, ispitivanje CT-1.3 i ST-1.3 – ST-1.6, dorada obrazaca | MB |  | `docs/5-Ispitivanje.md` |
-| Ručno ispitivanje prijave Microsoft računom | FČ |  | Zadatak [#87]; ST-1.1, ST-1.2 |
+| Ručno ispitivanje prijave Microsoft računom | FČ | 1,5 | Zadatak [#87]; ST-1.1, ST-1.2 |
 | Google Maps karta s oznakama partnera | KB |  | Zadatak [#23] |
 | Geokodiranje adrese partnera i ručno označavanje lokacije | KB |  | Zadatak [#24] |
-| Dokumentacija administratorskog područja | FČ |  | UC-7.1 – UC-7.4 |
+| Obrasci uporabe administratorskog područja | FČ | 7 | UC-7.1 – UC-7.4; PR [#93] |
+| Pregled aktivnosti grupe: A.1 Evidencija sastanaka, A.2 Plan rada i A.3 Aktivnosti i doprinosi članova | FČ | 3 | `docs/A-Pregled-aktivnosti-grupe.md`; PR [#96] |
+| Ispitni slučajevi s ručnim ispitivanjem na produkciji, sljedivost zahtjeva F-025 – F-031, 6.3, 7.2 i A.5 | FČ | 6 | CT-7.1 – CT-7.4, ST-7.1 – ST-7.5; PR [#103] |
 | Dijagram razreda za kupone: `Coupon`, `CouponService` i `CouponRepository` | EB |  | PR [#95]; `docs/puml/4-3-unideal-domain-CD.puml` |
 | Dokumentacija pretplate: obrasci uporabe, sljedivost i ispitivanje | JČ |  | PR [#94]; UC-6.1, UC-6.2, CT-6.1 – CT-6.3, ST-6.1 – ST-6.4 |
 
@@ -117,8 +119,12 @@
 [#56]: https://github.com/matejban/UniDeal/pull/56
 [#68]: https://github.com/matejban/UniDeal/pull/68
 [#78]: https://github.com/matejban/UniDeal/pull/78
+[#79]: https://github.com/matejban/UniDeal/pull/79
 [#94]: https://github.com/matejban/UniDeal/pull/94
 [#95]: https://github.com/matejban/UniDeal/pull/95
+[#103]: https://github.com/matejban/UniDeal/pull/103
+[#93]: https://github.com/matejban/UniDeal/pull/93
+[#96]: https://github.com/matejban/UniDeal/pull/96
 
 ## A.4 Pregled promjena u repozitoriju
 
