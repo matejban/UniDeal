@@ -12,6 +12,8 @@
 | --- | --- | --- | --- |
 | 12. 10. 2026.; MB, KB, EB, JČ, FČ | Upoznavanje tima, odabir teme i tehnologija | Tim je odabrao vlastitu temu, platformu studentskih popusta UniDeal, i dogovorio tehnologije (Next.js, Supabase, Vercel). Na sastanku je započet opis ideje; MB i EB su ga dovršili i poslali asistentici na pregled. | [1. Opseg projekta](1-Projekt.md) |
 | 26. 10. 2026.; MB, FL, KD, KB, EB, JČ, FČ | Podjela rada po područjima | Svaki član radi kao fullstack i preuzima jedno područje: MB temelje, bazu i prijavu; FL partnere i obavijesti; KD ponude i statistiku; KB pretragu, kartu i favorite; EB kupone, QR i recenzije; JČ plaćanje i pretplate; FČ administraciju i izvještaje. Tim je zajedno napravio plan rada po područjima, a MB je kao vlasnik repozitorija otvorio issue za svaku funkcionalnost. | [GitHub Issues](https://github.com/matejban/UniDeal/issues), s oznakom područja (npr. `podrucje-3-ponude`) |
+| 11. 11. 2026. (online poziv); MB, FL, KD, KB, EB, JČ, FČ | Provjera napretka po područjima | Svaki član je javio dokle je stigao sa svojim zadacima; tim je provjerio ide li rad prema planu i međusobno se posavjetovao oko otvorenih problema. | [GitHub Issues](https://github.com/matejban/UniDeal/issues) |
+| 16. 11. 2026.; MB, FL, KD, KB, EB, JČ, FČ | Stanje koda i plan do predaje | Pregledano je dokle je tko stigao s kodom. Dogovoreno je da se do predaje ne otvaraju novi zadaci i da je fokus dovršetak dokumentacije. | [Dokumentacija](Home.md) |
 
 ## A.2 Plan rada
 
@@ -100,6 +102,8 @@
 | Dokumentacija administratorskog područja | FČ |  | UC-7.1 – UC-7.4 |
 | Dijagram razreda za kupone: `Coupon`, `CouponService` i `CouponRepository` | EB |  | PR [#95]; `docs/puml/4-3-unideal-domain-CD.puml` |
 | Dokumentacija pretplate: obrasci uporabe, sljedivost i ispitivanje | JČ |  | PR [#94]; UC-6.1, UC-6.2, CT-6.1 – CT-6.3, ST-6.1 – ST-6.4 |
+| Ručno ispitivanje pretplate i upis rezultata | JČ |  | PR [#101]; ST-6.1 – ST-6.4 |
+| Evidencija sastanaka (A.1), pregled promjena u repozitoriju (A.4) i izjava o uporabi umjetne inteligencije za područje 6 | JČ |  | Zadatak [#50], PR [#104] |
 
 [#2]: https://github.com/matejban/UniDeal/issues/2
 [#5]: https://github.com/matejban/UniDeal/issues/5
@@ -119,14 +123,19 @@
 [#78]: https://github.com/matejban/UniDeal/pull/78
 [#94]: https://github.com/matejban/UniDeal/pull/94
 [#95]: https://github.com/matejban/UniDeal/pull/95
+[#50]: https://github.com/matejban/UniDeal/issues/50
+[#101]: https://github.com/matejban/UniDeal/pull/101
+[#104]: https://github.com/matejban/UniDeal/pull/104
 
 ## A.4 Pregled promjena u repozitoriju
 
 **Cilj:** Prikazati kada su promjene napravljene u repozitoriju i tko ih je napravio, uz napomenu da sam broj zapisa promjena ne mjeri kvalitetu doprinosa.
 
-**Prikaz aktivnosti repozitorija:** [Ugradite ili povežite GitHubov prikaz `Contributors` i generirani graf za projektni repozitorij; navedite razdoblje koje obuhvaća.]
+**Prikaz aktivnosti repozitorija:** GitHubov prikaz [Contributors](https://github.com/matejban/UniDeal/graphs/contributors), snimljen 19. 11. 2026. Prikazuje tjedni broj commitova u granu `master` bez merge commitova, od početka rada u listopadu do tjedna 16. 11. 2026. (na GitHubu razdoblje „Last 3 months”; prije listopada nema aktivnosti).
 
-Graf može pokazati kada su zapisi promjena napravljeni i tko ih je napravio, ali ne prikazuje sav rad na oblikovanju, ispitivanju, integraciji, pregledu ili dokumentaciji. Ako postoji uočljiv nesklad s tablicom aktivnosti, kratko ga objasnite; nemojte iz grafa izvoditi broj sati. Generirani prikaz neka bude vezan uz stvarni repozitorij umjesto da se ručno crta drugi graf.
+![GitHub Contributors za matejban/UniDeal, stanje 19. 11. 2026.](assets/screenshots/a4-github-contributors-2026-11-19.png)
+
+Graf broji samo commitove, pa ne prikazuje pregled i spajanje pull requestova (MB pregledava i spaja PR-ove, a merge commitovi se ne broje), sastanke ni ručno ispitivanje. Broj commitova ovisi i o načinu rada: neki članovi zadatak predaju jednim commitom, a drugi s više manjih, pa iz grafa nije moguće izvesti uloženi trud. `github-actions[bot]` je automatski posao koji iz PlantUML izvora ponovno iscrtava dijagrame, a `brrrkic` je drugi GitHub račun Karla Brkića (KB) s kojim je 27. 10. predan jedan commit analize zahtjeva.
 
 ## A.5 Ključni inženjerski izazovi i rješenja
 
