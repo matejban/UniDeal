@@ -37,7 +37,7 @@ Ažurirani popis članova, njihovih GitHub profila i glavnih uloga ili doprinosa
 
 | Kontrolna točka | Demonstracija | Video |
 | --- | --- | --- |
-| Iteracija 1 (20. 11. 2026.) | [www.unideal.site](https://www.unideal.site), [kod u trenutku predaje](https://github.com/matejban/UniDeal/tree/iteracija-1) | nije snimljen |
+| Iteracija 1 (20. 11. 2026.) | [www.unideal.site](https://www.unideal.site), [kod u trenutku predaje](https://github.com/matejban/UniDeal/tree/v1) | nije snimljen |
 | Završni pregled | [www.unideal.site](https://www.unideal.site) | nije snimljen |
 
 Dokumentacija se kontinuirano ažurira kako se aplikacija razvija.
