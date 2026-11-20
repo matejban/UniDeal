@@ -75,6 +75,9 @@ Kratak sažetak: [README – Uporaba umjetne inteligencije](../README.md#ai-usag
 | Dokumentacija područja 5: UC-5.1 – UC-5.4, retci 2.6, ispitivanje CT-5.x i ST-5.x | Izrada nacrta | Prijedlog teksta prema kodu | Tekst provjeren prema kodu i aplikaciji i ispravljen; testove sam izvela i upisala stvarne rezultate | [3](3-Obrasci-uporabe.md), [2.6](2-Analiza-zahtjeva.md), [5](5-Ispitivanje.md) |
 | Kod kupona (#27, #29) | Objašnjenje i prijedlozi dijelova koda | Prijedlozi po koracima | Kod sam pokrenula i testirala lokalno (`npm run dev`, `npm test`), izmijenila dijelove i ručno provjerila na [www.unideal.site](https://www.unideal.site) | PR #67, PR #73 |
 | Dijagram razreda 4.3.2 | Izvor dijagrama | Nacrt PlantUML-a prema kodu | Iscrtan, uspoređen s kodom i pojednostavljen |[`4-3-unideal-domain-CD.puml`](puml/4-3-unideal-domain-CD.puml) |
+| Kod karte i geokodiranja (#23, #24) | Prijedlozi koda i objašnjenje | Prijedloge koda za kartu, geokodiranje i ručno označavanje lokacije te jedinične testove | Odredio opseg prema zadacima, napravio i ograničio ključeve u Google Cloudu, pregledao promjene, pokrenuo testove i ispitao kartu i lokaciju partnera s pravim ključevima te otvorio PR-ove | PR #91, PR #92 |
+| 2. Analiza zahtjeva | Izrada nacrta i preoblikovanje | Nacrt zahtjeva, aktera, ograničenja i pretpostavki prema projektnom zadatku | Nacrt sam provjerio prema predlošku i projektnom zadatku te odlučio o uklanjanju izmišljenih datuma i spajanju srodnih zahtjeva prema komentaru asistentice | [2](2-Analiza-zahtjeva.md) |
+| Dokumentacija područja 4: UC-4.1 – UC-4.4, retci 2.6, CT-4.x i ST-4.x, 4.1 | Izrada nacrta | Prijedlog teksta prema kodu | Tekst sam provjerio prema kodu i aplikaciji; ručne testove ST-4.x sam izveo | [3](3-Obrasci-uporabe.md), [2.6](2-Analiza-zahtjeva.md), [5](5-Ispitivanje.md), [4.1](4-Arhitektura-i-oblikovanje.md) |
 | [npr. 3. Obrasci uporabe, UC-002] | [Izrada nacrta / preoblikovanje / prijevod / izvor dijagrama / sažimanje] | [Kratak opis] | [Ulaz zadan alatu; dodane, ispravljene ili uklonjene činjenice] | [Stranica dokumentacije, `.puml` datoteka, PR] |
 
 Stranice i artefakti koji nisu navedeni iznad izrađeni su bez pomoći generativne umjetne inteligencije. [Po želji: kao dodatne retke navedite kod ili ispitivanja izrađena uz pomoć umjetne inteligencije.]
@@ -94,6 +97,9 @@ Stranice i artefakti koji nisu navedeni iznad izrađeni su bez pomoći generativ
 | Problem | Kako je pronađen | Rješenje |
 | --- | --- | --- |
 | Koraci CT-5.1 i CT-5.2 tražili su da se u ispisu pogleda skupina testova | Pokretanjem `npm test`: zadani ispis Vitesta ne prikazuje skupine | Koraci promijenjeni u `npm test -- --reporter=verbose` |
+| Karta za ručno označavanje lokacije nakon spremanja nove adrese zadržavala je staru oznaku | Ispitivanjem ST-4.6 | Karta se ponovno stvara kad se lokacija u bazi promijeni (PR #92) |
+| Nacrt analize zahtjeva sadržavao je izmišljene datume i sastanak s asistentom koji se nije dogodio | Pregledom nacrta | Datumi i sastanak uklonjeni |
+| Komponenta karte pozivala je setState izravno u efektu | `npm run lint` | Ispravljeno prije commita |
 | [Netočna, izmišljena ili iz predloška preuzeta tvrdnja] | [Pregled, ispitivanje ili usporedba s aplikacijom] | [Ispravak s poveznicom] |
 
 <!-- UPUTA: Zabilježite stvarne ispravke ili napišite „Nisu utvrđene”. Općenita tvrdnja poput „sav tekst je pregledan” nije dokaz; dokaz su prethodne tablice. Tim mora moći objasniti svaku rečenicu koju objavi. -->
