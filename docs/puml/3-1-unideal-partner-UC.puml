@@ -59,6 +59,6 @@ UC22 <.. UC43 : <<extend>>\n[adresa promijenjena]
 Visitor --> UC23
 
 UC43 --> Maps
-' Vremenski okidač ponudama kojima je prošao rok postavlja status „istekla”.
-UC32 --> Timer
+' Vremenski okidač je aktivni akter: sam pokreće istek ponuda kojima je prošao rok.
+UC32 <-- Timer
 @enduml

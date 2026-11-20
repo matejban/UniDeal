@@ -36,6 +36,7 @@ actor "Posjetitelj" as Visitor
 actor "Student" as Student
 actor "Partner" as Partner
 
+actor "Vremenski okidač" as Timer <<external system>>
 actor "Google Maps API" as Maps <<external system>>
 actor "Resend\n(e-mail)" as Mail <<external system>>
 
@@ -66,6 +67,8 @@ UC53 <.. UC54 : <<extend>>\n[kupon iskorišten]
 
 Partner --> UC52
 
-UC42 --> Maps
+' Vremenski okidač sam šalje podsjetnik tri dana prije isteka ponude.
+Timer --> UC24
 UC24 --> Mail
+UC42 --> Maps
 @enduml
