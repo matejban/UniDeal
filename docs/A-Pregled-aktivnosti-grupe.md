@@ -72,10 +72,10 @@
 | Struktura projekta prema predlošku kolegija | EB |  | Direktoriji `docs/`, `tests/`, `db/`, `build/` |
 | Odjeljak 1.4 Postojeći pristupi | FČ |  | `docs/1-Projekt.md` |
 | Opis projekta, osnovna Next.js aplikacija, objektno orijentirana struktura i prijava Google računom | MB |  | `README.md`, `src/` |
-| Analiza zahtjeva | KB |  | `docs/2-Analiza-zahtjeva.md` |
+| Analiza zahtjeva | KB | 2 | `docs/2-Analiza-zahtjeva.md` |
 | Supabase projekt, prijava studenata Microsoft računom, prijava partnera e-mailom i profili s ulogom | MB |  | Zadaci [#1] i [#6] |
 | Upravljanje korisničkim računima i deaktivacija | FČ |  | Zadatak [#38], PR [#56] |
-| Članovi tima u README-u i dorada analize zahtjeva | KB |  | Zadatak [#45] |
+| Članovi tima u README-u i dorada analize zahtjeva | KB | 1,5 | Zadatak [#45] |
 | Shema baze i migracije, RLS po ulogama, Supabase repozitoriji, zaštita ruta po ulozi, uređivanje profila, CI i README | MB |  | Zadaci [#2]–[#5], [#7]–[#9] |
 | Registracija partnera s provjerom OIB-a | FL |  | Zadatak [#10] |
 | Generiranje kupona s jedinstvenim kodom i QR kodom | EB |  | Zadatak [#27] |
@@ -95,11 +95,15 @@
 | Granice projekta (1.3) i dorada postojećih pristupa (1.4) | FČ |  | Zadatak [#47] |
 | Brisanje stare slike iz Storagea, ispravak RLS testa, ispitivanje CT-1.3 i ST-1.3 – ST-1.6, dorada obrazaca | MB |  | `docs/5-Ispitivanje.md` |
 | Ručno ispitivanje prijave Microsoft računom | FČ |  | Zadatak [#87]; ST-1.1, ST-1.2 |
-| Google Maps karta s oznakama partnera | KB |  | Zadatak [#23] |
-| Geokodiranje adrese partnera i ručno označavanje lokacije | KB |  | Zadatak [#24] |
+| Google Maps karta s oznakama partnera | KB | 4 | Zadatak [#23], PR [#91] |
+| Geokodiranje adrese partnera i ručno označavanje lokacije | KB | 3,5 | Zadatak [#24], PR [#92] |
 | Dokumentacija administratorskog područja | FČ |  | UC-7.1 – UC-7.4 |
 | Dijagram razreda za kupone: `Coupon`, `CouponService` i `CouponRepository` | EB |  | PR [#95]; `docs/puml/4-3-unideal-domain-CD.puml` |
 | Dokumentacija pretplate: obrasci uporabe, sljedivost i ispitivanje | JČ |  | PR [#94]; UC-6.1, UC-6.2, CT-6.1 – CT-6.3, ST-6.1 – ST-6.4 |
+| Obrasci uporabe područja 4 (pretraga, karta i favoriti) | KB | 1 | Zadatak [#48], PR [#100]; UC-4.1 – UC-4.4 |
+| Sljedivost i ispitivanje područja 4 | KB | 2 | PR [#100]; CT-4.1 – CT-4.4, ST-4.1 – ST-4.9 |
+| Ključne arhitekturne odluke (4.1) | KB | 1,5 | Zadatak [#84], PR [#109] |
+| Izjava o uporabi umjetne inteligencije za područje 4 i sati u A.3 | KB | 1 | Zadatak [#51] |
 
 [#2]: https://github.com/matejban/UniDeal/issues/2
 [#5]: https://github.com/matejban/UniDeal/issues/5
@@ -119,6 +123,10 @@
 [#78]: https://github.com/matejban/UniDeal/pull/78
 [#94]: https://github.com/matejban/UniDeal/pull/94
 [#95]: https://github.com/matejban/UniDeal/pull/95
+[#91]: https://github.com/matejban/UniDeal/pull/91
+[#92]: https://github.com/matejban/UniDeal/pull/92
+[#100]: https://github.com/matejban/UniDeal/pull/100
+[#109]: https://github.com/matejban/UniDeal/pull/109
 
 ## A.4 Pregled promjena u repozitoriju
 
