@@ -75,7 +75,9 @@ Kratak sažetak: [README – Uporaba umjetne inteligencije](../README.md#ai-usag
 | Dokumentacija područja 5: UC-5.1 – UC-5.4, retci 2.6, ispitivanje CT-5.x i ST-5.x | Izrada nacrta | Prijedlog teksta prema kodu | Tekst provjeren prema kodu i aplikaciji i ispravljen; testove sam izvela i upisala stvarne rezultate | [3](3-Obrasci-uporabe.md), [2.6](2-Analiza-zahtjeva.md), [5](5-Ispitivanje.md) |
 | Kod kupona (#27, #29) | Objašnjenje i prijedlozi dijelova koda | Prijedlozi po koracima | Kod sam pokrenula i testirala lokalno (`npm run dev`, `npm test`), izmijenila dijelove i ručno provjerila na [www.unideal.site](https://www.unideal.site) | PR #67, PR #73 |
 | Dijagram razreda 4.3.2 | Izvor dijagrama | Nacrt PlantUML-a prema kodu | Iscrtan, uspoređen s kodom i pojednostavljen |[`4-3-unideal-domain-CD.puml`](puml/4-3-unideal-domain-CD.puml) |
-| [npr. 3. Obrasci uporabe, UC-002] | [Izrada nacrta / preoblikovanje / prijevod / izvor dijagrama / sažimanje] | [Kratak opis] | [Ulaz zadan alatu; dodane, ispravljene ili uklonjene činjenice] | [Stranica dokumentacije, `.puml` datoteka, PR] |
+| Dijagrami obrazaca uporabe 3.1 | Izvor dijagrama | Nacrt PlantUML-a prema uputama | Pregledni dijagram i četiri usmjerena dijagrama prema savjetu asistentice; iscrtani i provjereni prema UC-1.1 – UC-7.4 | [`docs/puml`](puml) |
+
+<!--| [npr. 3. Obrasci uporabe, UC-002] | [Izrada nacrta / preoblikovanje / prijevod / izvor dijagrama / sažimanje] | [Kratak opis] | [Ulaz zadan alatu; dodane, ispravljene ili uklonjene činjenice] | [Stranica dokumentacije, `.puml` datoteka, PR] |-->
 
 Stranice i artefakti koji nisu navedeni iznad izrađeni su bez pomoći generativne umjetne inteligencije. [Po želji: kao dodatne retke navedite kod ili ispitivanja izrađena uz pomoć umjetne inteligencije.]
 
@@ -94,9 +96,15 @@ Stranice i artefakti koji nisu navedeni iznad izrađeni su bez pomoći generativ
 | Problem | Kako je pronađen | Rješenje |
 | --- | --- | --- |
 | Koraci CT-5.1 i CT-5.2 tražili su da se u ispisu pogleda skupina testova | Pokretanjem `npm test`: zadani ispis Vitesta ne prikazuje skupine | Koraci promijenjeni u `npm test -- --reporter=verbose` |
-| [Netočna, izmišljena ili iz predloška preuzeta tvrdnja] | [Pregled, ispitivanje ili usporedba s aplikacijom] | [Ispravak s poveznicom] |
+| Dijagram obrazaca uporabe 3.1: prvi nacrt imao je sve obrasce na jednom dijagramu, zatim podjelu bez preglednog dijagrama i veze bez smjera; jedan nacrt imao je i sintaksnu grešku | Savjet asistentice o preglednosti, usporedba s uputama sa predavanja i iscrtavanje na plantuml.com | Pregledni dijagram (Slika 3.1) i četiri usmjerena dijagrama (Slike 3.2 – 3.5) sa strelicama od aktivnih aktera; [3.1](3-Obrasci-uporabe.md) |
+| Dijagram razreda 4.3.2: razredi su bili podijeljeni u pakete po slojevima (aplikacijski, domenski, infrastruktura), što je otežavalo pregled | Savjet asistentice | Paketi uklonjeni, razredi složeni u retke i stupce, sadržaj isti; [`4-3-unideal-domain-CD.puml`](puml/4-3-unideal-domain-CD.puml) |
 
-<!-- UPUTA: Zabilježite stvarne ispravke ili napišite „Nisu utvrđene”. Općenita tvrdnja poput „sav tekst je pregledan” nije dokaz; dokaz su prethodne tablice. Tim mora moći objasniti svaku rečenicu koju objavi. -->
+
+
+
+<!--| [Netočna, izmišljena ili iz predloška preuzeta tvrdnja] | [Pregled, ispitivanje ili usporedba s aplikacijom] | [Ispravak s poveznicom] |
+
+ UPUTA: Zabilježite stvarne ispravke ili napišite „Nisu utvrđene”. Općenita tvrdnja poput „sav tekst je pregledan” nije dokaz; dokaz su prethodne tablice. Tim mora moći objasniti svaku rečenicu koju objavi. 
 
 <details>
 <summary><strong>Primjer zapisa uporabe umjetne inteligencije</strong></summary>
@@ -116,3 +124,4 @@ Stranice i artefakti koji nisu navedeni iznad izrađeni su bez pomoći generativ
 **Analiza primjera:** Svaki redak navodi stranicu ili datoteku, ono što je alat generirao i ono što je tim promijenio. Pogreške su tipične za generiranu dokumentaciju: funkcionalnost koja ne postoji i tekst predloška prikazan kao činjenica o projektu. Tvrdnje poput „AI je korišten svugdje” ili „sav tekst je pregledan” nije moguće provjeriti. Ovo je nastavni scenarij, a ne opis objavljenog projekta.
 
 </details>
+-->

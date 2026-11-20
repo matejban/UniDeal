@@ -1,0 +1,64 @@
+' ==============================================================================
+' 3-1-unideal-partner-UC.puml
+'
+' Svrha:    Partner i ponude: registracija i profil partnera, lokacija, izrada i objava ponuda (UC-2.1 – UC-2.3, UC-3.1, UC-3.2, UC-4.3).
+' Autor:    Elide Babić
+' AI:       Nacrt je izrađen uz pomoć alata Claude prema uputama autorice;
+'           autorica ga je iscrtala, provjerila prema specifikacijama u 3.2 i
+'           odgovara za sadržaj.
+'
+' Diagram level: System Requirements
+' Diagram type:  Use Case Diagram
+' ==============================================================================
+
+@startuml
+' Smjer veza (predavanja, slajd 24): aktivni akter -> obrazac, obrazac -> pasivni akter.
+title UniDeal – partneri i ponude (Slika 3.3)
+left to right direction
+
+skinparam shadowing false
+skinparam defaultFontName Arial
+skinparam ArrowColor #212529
+
+skinparam actor {
+    BackgroundColor #F8F9FA
+    BorderColor #212529
+    BackgroundColor<<external system>> #FFF3CD
+    BorderColor<<external system>> #856404
+}
+
+skinparam usecase {
+    BackgroundColor #E7F1FF
+    BorderColor #0D6EFD
+}
+
+actor "Partner" as Partner
+actor "Posjetitelj" as Visitor
+
+actor "Google Maps API" as Maps <<external system>>
+actor "Vremenski okidač" as Timer <<external system>>
+
+rectangle "Sustav UniDeal" {
+    (UC-2.1\nRegistracija\nposlovnog subjekta) as UC21
+    (UC-2.2\nUređivanje javnog\nprofila partnera) as UC22
+    (UC-4.3\nOznačavanje lokacije\npartnera) as UC43
+    (UC-3.1\nIzrada, uređivanje i\nbrisanje ponude) as UC31
+    (UC-3.2\nObjava ponude) as UC32
+    (UC-2.3\nPregled profila\npartnera) as UC23
+}
+
+Partner --> UC21
+Partner --> UC22
+Partner --> UC31
+Partner --> UC32
+
+' Lokacija se upisuje pri registraciji ili uređivanju profila (UC-4.3, korak 1).
+UC21 <.. UC43 : <<extend>>\n[adresa upisana]
+UC22 <.. UC43 : <<extend>>\n[adresa promijenjena]
+
+Visitor --> UC23
+
+UC43 --> Maps
+' Vremenski okidač ponudama kojima je prošao rok postavlja status „istekla”.
+UC32 --> Timer
+@enduml

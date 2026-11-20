@@ -29,7 +29,7 @@
 | od 2. 11. 2026. (paralelno) | Kuponi: generiranje koda i QR koda, ograničenje korištenja, potvrda kod partnera, povijest kupona, recenzije | EB | [#27]–[#31] |
 | od 2. 11. 2026. (paralelno) | Plaćanje: Stripe proizvodi i Checkout, webhook, skrivanje ponuda bez pretplate, stranica pretplate | JČ | [#32]–[#36] |
 | od 2. 11. 2026. (paralelno) | Administracija: korisnici, odobravanje partnera, kategorije, moderacija, cijene pretplate, statistika za administratora, izvoz CSV/PDF | FČ | [#37]–[#42], [#44] |
-| 11.–20. 11. 2026. | Priprema za prvu predaju (20. 11. 2026.): dokumentacija, granice projekta, ručno ispitivanje prijave, ažuriranje README-a | EB ([#48], [#86]), KB ([#49], [#84]), FL ([#46], [#85]), JČ ([#50]), KD ([#51]), FČ ([#47], [#87]), MB ([#9]) | oznaka [`zajednicko`][oznaka-zajednicko] |
+| 11.–20. 11. 2026. | Priprema za prvu predaju (20. 11. 2026.): dokumentacija, granice projekta, ručno ispitivanje prijave, ažuriranje README-a | EB ([#48], [#86]; dijagram obrazaca uporabe 3.1), KB ([#49]; [#84] arhitekturne odluke 4.1), FL ([#46], [#85]), JČ ([#50]), KD ([#51]), FČ ([#47], [#87]), MB ([#9]) | oznaka [`zajednicko`][oznaka-zajednicko] |
 | od 21. 11. 2026. | Nastavak rada na zadacima koji nisu riješeni do prve predaje, dovršetak otvorenih zadataka u svakom području i integracija područja (pretplata ↔ vidljivost ponuda, kuponi ↔ recenzije, statistika) | svi, svatko za svoje područje | otvoreni zadaci po oznaci područja |
 
 [#1]: https://github.com/matejban/UniDeal/issues/1
@@ -69,7 +69,7 @@
 | Aktivnost ili rezultat | Član | Prijavljeni sati | Reprezentativni rezultat ili poveznica |
 | --- | --- | --- | --- |
 | Otvaranje repozitorija | FČ |  | Početni commit repozitorija |
-| Struktura projekta prema predlošku kolegija | EB |  | Direktoriji `docs/`, `tests/`, `db/`, `build/` |
+| Struktura projekta prema predlošku kolegija | EB | 3 | Direktoriji `docs/`, `tests/`, `db/`, `build/` |
 | Odjeljak 1.4 Postojeći pristupi | FČ |  | `docs/1-Projekt.md` |
 | Opis projekta, osnovna Next.js aplikacija, objektno orijentirana struktura i prijava Google računom | MB |  | `README.md`, `src/` |
 | Analiza zahtjeva | KB |  | `docs/2-Analiza-zahtjeva.md` |
@@ -78,15 +78,15 @@
 | Članovi tima u README-u i dorada analize zahtjeva | KB |  | Zadatak [#45] |
 | Shema baze i migracije, RLS po ulogama, Supabase repozitoriji, zaštita ruta po ulozi, uređivanje profila, CI i README | MB |  | Zadaci [#2]–[#5], [#7]–[#9] |
 | Registracija partnera s provjerom OIB-a | FL |  | Zadatak [#10] |
-| Generiranje kupona s jedinstvenim kodom i QR kodom | EB |  | Zadatak [#27] |
+| Generiranje kupona s jedinstvenim kodom i QR kodom | EB | 7 | Zadatak [#27] |
 | Odobravanje partnera u administraciji | FČ |  | Zadatak [#37], PR [#68] |
 | Javni profil partnera i uređivanje profila | FL |  | Zadatak [#11] |
 | Upload logotipa partnera u Supabase Storage | FL |  | Zadatak [#13] |
 | E-mail obavijesti preko Resenda | FL |  | Zadatak [#14] |
-| Ograničenje korištenja kupona (jednom po studentu) | EB |  | Zadatak [#29] |
+| Ograničenje korištenja kupona (jednom po studentu) | EB | 3 | Zadatak [#29] |
 | Stripe klijent i cijene mjesečne i godišnje pretplate | JČ |  | Zadatak [#32] |
 | Dokumentacija i testovi temelja i autentifikacije | MB |  | UC-1.1 – UC-1.4, CT-1.x, ST-1.x |
-| Obrasci uporabe, sljedivost i ispitivanje kupona | EB |  | Zadatak [#48]; UC-5.1 – UC-5.4, CT-5.1, CT-5.2, ST-5.1 – ST-5.4 |
+| Obrasci uporabe, sljedivost i ispitivanje kupona | EB | 5 | Zadatak [#48]; UC-5.1 – UC-5.4, CT-5.1, CT-5.2, ST-5.1 – ST-5.4 |
 | Upravljanje kategorijama ponuda | FČ |  | Zadatak [#39], PR [#78] |
 | Statistika za administratora (u tijeku) | FČ |  | Zadatak [#42] |
 | Izrada, uređivanje i brisanje ponude te dijagram razreda (4.3.2) | KD |  | Zadatak [#16] |
@@ -98,8 +98,10 @@
 | Google Maps karta s oznakama partnera | KB |  | Zadatak [#23] |
 | Geokodiranje adrese partnera i ručno označavanje lokacije | KB |  | Zadatak [#24] |
 | Dokumentacija administratorskog područja | FČ |  | UC-7.1 – UC-7.4 |
-| Dijagram razreda za kupone: `Coupon`, `CouponService` i `CouponRepository` | EB |  | PR [#95]; `docs/puml/4-3-unideal-domain-CD.puml` |
+| Dijagram razreda za kupone: `Coupon`, `CouponService` i `CouponRepository` | EB | 2 | PR [#95]; `docs/puml/4-3-unideal-domain-CD.puml` |
 | Dokumentacija pretplate: obrasci uporabe, sljedivost i ispitivanje | JČ |  | PR [#94]; UC-6.1, UC-6.2, CT-6.1 – CT-6.3, ST-6.1 – ST-6.4 |
+| Izjava o uporabi AI-ja, licenca i stanje funkcionalnosti u README-u; dorada Home.md | EB | 4 | Zadaci [#51] i [#86], PR #98 |
+| Dijagrami obrazaca uporabe (3.1) i preuređen dijagram razreda (4.3.2) | EB | 4 | `docs/puml/3-1-unideal-*-UC.puml`, `docs/puml/4-3-unideal-domain-CD.puml` |
 
 [#2]: https://github.com/matejban/UniDeal/issues/2
 [#5]: https://github.com/matejban/UniDeal/issues/5
@@ -137,8 +139,11 @@ Graf može pokazati kada su zapisi promjena napravljeni i tko ih je napravio, al
 | Status studenta trebalo je potvrditi bez ručne provjere dokumenata, a domena e-mail adrese ne razlikuje studenta od djelatnika iste ustanove (AS-01). | MB je uveo prijavu studenata studentskim Microsoft računom; SQL funkcija `student_institution` dodjeljuje status studenta prema popisu domena hrvatskih visokih učilišta. MB i EB dodali su uvjete korištenja (F-032) s obvezom pokazivanja X-ice pri korištenju kupona, a prijava putem AAI@EduHr zapisana je kao budući rad (7.3). | Student FER-a dobiva potvrđen status pri prvoj prijavi (ST-1.1). Ostaje ograničenje: djelatnik može dobiti status studenta, popis domena održava se ručno, a stvarnim računom provjerena je samo domena `fer.hr` (5.4). |
 | Nakon zamjene loga partnera ili fotografije ponude stara datoteka ostajala je u Supabase Storageu, a brisanje nije javljalo grešku. | MB je utvrdio da Storage za brisanje treba i pravilo za `select` nad `storage.objects`. Dodao je to pravilo (vlasnik vidi samo datoteke u mapi svojeg partnera) i funkciju `deleteImage()`, koja briše staru sliku pri zamjeni i pri brisanju ponude ([#81]). | Nakon zamjene u Storageu ostaje samo nova datoteka. Neuspjelo brisanje samo se zapisuje u log, a partnerova radnja svejedno uspijeva, pa datoteka u tom slučaju i dalje može ostati. |
 | Stripe ključ nije radio na starijoj preview inačici aplikacije, iako je bio upisan u Vercel. | Uočeno je da je pri slanju ključa preko Outlooka (JČ je ključ iz Stripea poslao MB-u, koji ga je upisao u Vercel) prvo slovo ključa automatski postalo veliko. Ključ je ponovno upisan u Vercel u izvornom obliku. | Plaćanje preko Stripea je proradilo, jer je promijenjeno slovo bilo jedina greška. |
+| Kod kupona morao je biti jedinstven i teško pogodiv (NF-07), a dva studenta mogu istodobno generirati kupon s istim nasumičnim kodom. | EB je uvela nasumični kod od 10 znakova bez lako zamjenjivih znakova (0, O, 1, I). Stupac `code` u bazi je jedinstven, pa kad baza javi da je kod zauzet (greška 23505), `CouponService.issue()` generira novi kod, najviše tri puta. | Komponentni test CT-5.1 generira 10 000 kodova i svi su različiti. |
+| Pravilo „jednom po studentu” (F-021) trebalo je ispitati i za iskorišten kupon, a partnerska potvrda kupona još ne postoji. | EB je u ispitivanju ST-5.4 kupon ručno označila kao iskorišten izravno u bazi (Supabase, tablica `coupons`) i provjerila da student ne dobiva novi kupon. Ograničenje je zapisano u 5.4. | Pravilo radi (ST-5.4 prošao). Kad bude ostvarena partnerska potvrda ([#28]), ispitivanje treba ponoviti kroz aplikaciju. |
 
 [#81]: https://github.com/matejban/UniDeal/pull/81
+[#28]: https://github.com/matejban/UniDeal/issues/28
 
 ---
 
