@@ -1,0 +1,61 @@
+' ==============================================================================
+' 3-1-unideal-admin-UC.puml
+'
+' Svrha:    Pretplata i administracija: plaćanje pretplate partnera i poslovi administratora (UC-6.1, UC-6.2, UC-7.1 – UC-7.4).
+' Autor:    Elide Babić
+' AI:       Nacrt je izrađen uz pomoć alata Claude prema uputama autorice;
+'           autorica ga je iscrtala, provjerila prema specifikacijama u 3.2 i
+'           odgovara za sadržaj.
+'
+' Diagram level: System Requirements
+' Diagram type:  Use Case Diagram
+' ==============================================================================
+
+@startuml
+' Smjer veza (predavanja, slajd 24): aktivni akter -> obrazac, obrazac -> pasivni akter.
+title UniDeal – pretplata i administracija (Slika 3.5)
+left to right direction
+
+skinparam shadowing false
+skinparam defaultFontName Arial
+skinparam ArrowColor #212529
+
+skinparam actor {
+    BackgroundColor #F8F9FA
+    BorderColor #212529
+    BackgroundColor<<external system>> #FFF3CD
+    BorderColor<<external system>> #856404
+}
+
+skinparam usecase {
+    BackgroundColor #E7F1FF
+    BorderColor #0D6EFD
+}
+
+actor "Partner" as Partner
+actor "Administrator" as Admin
+
+actor "Stripe" as Stripe <<external system>>
+actor "Resend\n(e-mail)" as Mail <<external system>>
+
+rectangle "Sustav UniDeal" {
+    (UC-6.1\nPlaćanje pretplate) as UC61
+    (UC-6.2\nAžuriranje stanja\npretplate) as UC62
+    (UC-7.1\nOdobravanje partnera) as UC71
+    (UC-7.2\nUpravljanje\nkorisničkim računima) as UC72
+    (UC-7.3\nUpravljanje\nkategorijama ponuda) as UC73
+    (UC-7.4\nPregled statistike\nplatforme) as UC74
+}
+
+Partner --> UC61
+UC61 --> Stripe
+' Stripe je aktivni akter UC-6.2: sam šalje obavijest o plaćanju.
+Stripe --> UC62
+
+Admin --> UC71
+Admin --> UC72
+Admin --> UC73
+Admin --> UC74
+
+UC71 --> Mail
+@enduml

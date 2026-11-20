@@ -1,0 +1,71 @@
+' ==============================================================================
+' 3-1-unideal-student-UC.puml
+'
+' Svrha:    Student i kuponi: pretraga, karta, favoriti, kuponi, recenzije i obavijesti (UC-2.4, UC-4.1, UC-4.2, UC-4.4, UC-5.1 – UC-5.4).
+' Autor:    Elide Babić
+' AI:       Nacrt je izrađen uz pomoć alata Claude prema uputama autorice;
+'           autorica ga je iscrtala, provjerila prema specifikacijama u 3.2 i
+'           odgovara za sadržaj.
+'
+' Diagram level: System Requirements
+' Diagram type:  Use Case Diagram
+' ==============================================================================
+
+@startuml
+' Smjer veza (predavanja, slajd 24): aktivni akter -> obrazac, obrazac -> pasivni akter.
+title UniDeal – pretraga, kuponi i recenzije (Slika 3.4)
+left to right direction
+
+skinparam shadowing false
+skinparam defaultFontName Arial
+skinparam ArrowColor #212529
+
+skinparam actor {
+    BackgroundColor #F8F9FA
+    BorderColor #212529
+    BackgroundColor<<external system>> #FFF3CD
+    BorderColor<<external system>> #856404
+}
+
+skinparam usecase {
+    BackgroundColor #E7F1FF
+    BorderColor #0D6EFD
+}
+
+actor "Posjetitelj" as Visitor
+actor "Student" as Student
+actor "Partner" as Partner
+
+actor "Google Maps API" as Maps <<external system>>
+actor "Resend\n(e-mail)" as Mail <<external system>>
+
+' Student može sve što i posjetitelj.
+Student -|> Visitor
+
+rectangle "Sustav UniDeal" {
+    (UC-4.1\nPretraga i\nfiltriranje ponuda) as UC41
+    (UC-4.2\nPregled partnera\nna karti) as UC42
+    (UC-4.4\nSpremanje u favorite) as UC44
+    (UC-2.4\nPraćenje kategorija\ni partnera) as UC24
+    (UC-5.1\nGeneriranje kupona\nza ponudu) as UC51
+    (UC-5.3\nPregled povijesti\nkupona) as UC53
+    (UC-5.4\nOcjenjivanje\npartnera) as UC54
+    (UC-5.2\nPotvrda korištenja\nkupona) as UC52
+}
+
+Visitor --> UC41
+Visitor --> UC42
+
+Student --> UC44
+Student --> UC24
+Student --> UC51
+Student --> UC53
+
+' Ocjena se ostavlja iz povijesti kupona, za iskorišten kupon.
+UC53 <.. UC54 : <<extend>>\n[kupon iskorišten]
+
+Partner --> UC52
+
+UC42 --> Maps
+UC24 --> Mail
+@enduml

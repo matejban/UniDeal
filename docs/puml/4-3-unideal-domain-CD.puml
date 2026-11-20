@@ -5,7 +5,14 @@
 '           OfferService, PartnerService i CouponService te sučelja repozitorija
 '           kojima je trajna pohrana apstrahirana. Servisi primaju repozitorije
 '           kroz konstruktor.
+' Raspored: odozgo prema dolje: vrijednosti (enum), domenski razredi, servisi,
+'           sučelja repozitorija, implementacije za Supabase. Svaki stupac
+'           pripada jednom pojmu: partner, ponuda, kupon.
 ' Kod:      src/domain, src/services, src/repositories
+' Autor:    Elide Babić
+' AI:       Nacrt je izrađen uz pomoć alata Claude prema uputama autorice;
+'           autorica ga je iscrtala, usporedila s kodom, preuredila i
+'           odgovara za sadržaj.
 '
 ' Diagram level: Structural / Domain Design
 ' Diagram type:  Class Diagram
@@ -17,141 +24,177 @@ title UniDeal – domenski model ponuda, partnera i kupona
 
 skinparam shadowing false
 skinparam defaultFontName Arial
-skinparam packageStyle rectangle
 skinparam ArrowColor #212529
+skinparam nodesep 60
+skinparam ranksep 50
 
 skinparam class {
     BackgroundColor #E7F1FF
     BorderColor #0D6EFD
 }
 
-package "Aplikacijski sloj" {
-    class OfferService {
-        +search(filter: OfferFilter): OfferListing[]
-        +getActiveOffer(id: String): OfferListing
-        +getPartnerOffers(partnerId: String): Offer[]
-        +getOwnOffer(ownerId: String, offerId: String): Offer
-        +createOffer(ownerId: String, data: OfferInput, photo: File): OfferErrors
-        +updateOffer(ownerId: String, offerId: String, data: OfferInput, photo: File): OfferErrors
-        +deleteOffer(ownerId: String, offerId: String): Boolean
-    }
-    class PartnerService {
-        +getAll(): Partner[]
-        +getByOwner(ownerId: String): Partner
-        +getCities(): String[]
-        +getProfile(id: String): Profile
-    }
-    class CouponService {
-        +issue(user: User, offerId: String): IssueResult
-        +getCoupon(id: String): Coupon
-    }
+' ==============================================================================
+' Vrijednosti (enum)
+' ==============================================================================
+
+enum OfferStatus {
+    nacrt
+    aktivna
+    istekla
+}
+enum DiscountType {
+    postotak
+    iznos
+}
+enum UsageLimit {
+    jednom_po_studentu
+    neograniceno
+}
+enum CouponStatus {
+    izdan
+    iskoristen
+    istekao
 }
 
-package "Domenski sloj" {
-    enum OfferStatus {
-        nacrt
-        aktivna
-        istekla
-    }
-    enum DiscountType {
-        postotak
-        iznos
-    }
-    enum UsageLimit {
-        jednom_po_studentu
-        neograniceno
-    }
-    enum CouponStatus {
-        izdan
-        iskoristen
-        istekao
-    }
-    class Offer {
-        +id: String
-        +title: String
-        +description: String
-        +category: String
-        +categoryId: String
-        +discountType: DiscountType
-        +discountValue: Number
-        +validUntil: String
-        +conditions: String
-        +status: OfferStatus
-        +photoUrl: String
-        +usageLimit: UsageLimit
-        +isActive(): Boolean
-        +isOncePerStudent(): Boolean
-        +canBeActivated(): Boolean
-        +canBeEdited(): Boolean
-        +discountLabel: String
-    }
-    class Partner {
-        +id: String
-        +name: String
-        +category: String
-        +city: String
-        +address: String
-        +hours: String
-    }
-    class Coupon {
-        +id: String
-        +offerId: String
-        +studentId: String
-        +code: String
-        +status: CouponStatus
-        +issuedAt: Date
-        +validUntil: String
-        +isValid(): Boolean
-    }
-    interface OfferRepository {
-        +findAll(): Offer[]
-        +findById(id: String): Offer
-        +findByPartner(partnerId: String): Offer[]
-        +create(partnerId: String, data: OfferInput): String
-        +update(id: String, data: OfferInput): void
-        +setPhoto(id: String, photoUrl: String): void
-        +delete(id: String): void
-    }
-    interface PartnerRepository {
-        +findAll(): Partner[]
-        +findById(id: String): Partner
-        +findByOwner(ownerId: String): Partner
-    }
-    interface CategoryRepository {
-        +findAll(): Category[]
-    }
-    interface CouponRepository {
-        +create(offerId: String, studentId: String, code: String): Coupon
-        +findById(id: String): Coupon
-        +findByStudentAndOffer(studentId: String, offerId: String): Coupon[]
-    }
+' ==============================================================================
+' Domenski razredi
+' ==============================================================================
+
+class Partner {
+    +id: String
+    +name: String
+    +category: String
+    +city: String
+    +address: String
+    +hours: String
 }
 
-package "Infrastruktura" {
-    class SupabaseOfferRepository
-    class SupabasePartnerRepository
-    class SupabaseCouponRepository
+class Offer {
+    +id: String
+    +title: String
+    +description: String
+    +category: String
+    +categoryId: String
+    +discountType: DiscountType
+    +discountValue: Number
+    +discountLabel: String
+    +validUntil: String
+    +conditions: String
+    +status: OfferStatus
+    +photoUrl: String
+    +usageLimit: UsageLimit
+    +isActive(): Boolean
+    +isOncePerStudent(): Boolean
+    +canBeActivated(): Boolean
+    +canBeEdited(): Boolean
 }
 
-Partner "1" -- "0..*" Offer : objavljuje >
-Offer --> OfferStatus
-Offer --> DiscountType
-Offer --> UsageLimit
-Offer "1" -- "0..*" Coupon : ima >
-Coupon --> CouponStatus
+class Coupon {
+    +id: String
+    +offerId: String
+    +studentId: String
+    +code: String
+    +status: CouponStatus
+    +issuedAt: Date
+    +validUntil: String
+    +isValid(): Boolean
+}
 
+' ==============================================================================
+' Servisi
+' ==============================================================================
 
-OfferService --> OfferRepository
-OfferService --> PartnerRepository
-OfferService --> CategoryRepository
-PartnerService --> PartnerRepository
-PartnerService --> OfferRepository
-CouponService --> CouponRepository
-CouponService --> OfferRepository
+class PartnerService {
+    +getAll(): Partner[]
+    +getByOwner(ownerId: String): Partner
+    +getCities(): String[]
+    +getProfile(id: String): Profile
+}
 
-SupabaseOfferRepository ..|> OfferRepository
-SupabasePartnerRepository ..|> PartnerRepository
-SupabaseCouponRepository ..|> CouponRepository
+class OfferService {
+    +search(filter: OfferFilter): OfferListing[]
+    +getActiveOffer(id: String): OfferListing
+    +getPartnerOffers(partnerId: String): Offer[]
+    +getOwnOffer(ownerId: String, offerId: String): Offer
+    +createOffer(ownerId: String, data: OfferInput, photo: File): OfferErrors
+    +updateOffer(ownerId: String, offerId: String, data: OfferInput, photo: File): OfferErrors
+    +deleteOffer(ownerId: String, offerId: String): Boolean
+}
+
+class CouponService {
+    +issue(user: User, offerId: String): IssueResult
+    +getCoupon(id: String): Coupon
+}
+
+' ==============================================================================
+' Sučelja repozitorija i implementacije
+' ==============================================================================
+
+interface PartnerRepository {
+    +findAll(): Partner[]
+    +findById(id: String): Partner
+    +findByOwner(ownerId: String): Partner
+}
+
+interface OfferRepository {
+    +findAll(): Offer[]
+    +findById(id: String): Offer
+    +findByPartner(partnerId: String): Offer[]
+    +create(partnerId: String, data: OfferInput): String
+    +update(id: String, data: OfferInput): void
+    +setPhoto(id: String, photoUrl: String): void
+    +delete(id: String): void
+}
+
+interface CategoryRepository {
+    +findAll(): Category[]
+}
+
+interface CouponRepository {
+    +create(offerId: String, studentId: String, code: String): Coupon
+    +findById(id: String): Coupon
+    +findByStudentAndOffer(studentId: String, offerId: String): Coupon[]
+}
+
+class SupabasePartnerRepository
+class SupabaseOfferRepository
+class SupabaseCouponRepository
+
+' ==============================================================================
+' Veze između domenskih razreda (jedan red: partner – ponuda – kupon)
+' ==============================================================================
+
+Partner "1" -right- "0..*" Offer : objavljuje >
+Offer "1" -right- "0..*" Coupon : ima >
+
+' Vrijednosti iznad razreda koji ih koristi
+OfferStatus <-up- Offer
+DiscountType <-up- Offer
+UsageLimit <-up- Offer
+CouponStatus <-up- Coupon
+
+' ==============================================================================
+' Servisi koriste repozitorije (svaki servis ispod svojeg razreda)
+' ==============================================================================
+
+Partner -[hidden]down- PartnerService
+Offer -[hidden]down- OfferService
+Coupon -[hidden]down- CouponService
+
+PartnerService -down-> PartnerRepository
+PartnerService -down-> OfferRepository
+OfferService -down-> OfferRepository
+OfferService -down-> PartnerRepository
+OfferService -down-> CategoryRepository
+CouponService -down-> CouponRepository
+CouponService -down-> OfferRepository
+
+' ==============================================================================
+' Implementacije ispod sučelja
+' ==============================================================================
+
+SupabasePartnerRepository .up.|> PartnerRepository
+SupabaseOfferRepository .up.|> OfferRepository
+SupabaseCouponRepository .up.|> CouponRepository
 
 @enduml
- 

@@ -92,6 +92,7 @@ Kratak sažetak: [README – Uporaba umjetne inteligencije](../README.md#ai-usag
 | ER dijagram 4.3.1 | Izvor dijagrama | Nacrt PlantUML-a prema SQL migracijama | Dijagram sam iscrtao na plantuml.com i usporedio s tablicama u Supabaseu, zadržao samo reprezentativne atribute i ispravio kardinalnosti veza | [`4-2-unideal-data-ERD.puml`](puml/4-2-unideal-data-ERD.puml), [4.3.1](4-Arhitektura-i-oblikovanje.md) |
 | README | Izrada nacrta i jezično dotjerivanje | Nacrt opisa aplikacije, brzog početka i tablice tehnologija te dotjerani jezik i formatiranje | Korake brzog početka (`git clone`, `npm ci`, `.env.local`, `npm run dev`) prošao sam i provjerio; sam sam odlučio što se navodi kao ostvareno, a što pod Ograničenja | [README](../README.md) |
 | Temelji i autentifikacija (#1 – #9, #53) | Objašnjenje | Objašnjenja Next.js-a, Supabasea, RLS-a i poruka o greškama | Kod sam napisao sam i provjerio lokalno (`npm run dev`, `npm run lint`, `npm run build`), automatskim testovima (`npm test` i SQL test RLS-a) i ručno na [www.unideal.site](https://www.unideal.site) | PR #57 – #65 |
+| Dijagrami obrazaca uporabe 3.1 | Izvor dijagrama | Nacrt PlantUML-a prema uputama | Pregledni dijagram i četiri usmjerena dijagrama prema savjetu asistentice; iscrtani i provjereni prema UC-1.1 – UC-7.4 | [`docs/puml`](puml) |
 
 Stranice i artefakti koji nisu navedeni iznad izrađeni su bez pomoći generativne umjetne inteligencije.
 
@@ -110,6 +111,8 @@ Stranice i artefakti koji nisu navedeni iznad izrađeni su bez pomoći generativ
 | Problem | Kako je pronađen | Rješenje |
 | --- | --- | --- |
 | Koraci CT-5.1 i CT-5.2 tražili su da se u ispisu pogleda skupina testova | Pokretanjem `npm test`: zadani ispis Vitesta ne prikazuje skupine | Koraci promijenjeni u `npm test -- --reporter=verbose` |
+| Dijagram obrazaca uporabe 3.1: prvi nacrt imao je sve obrasce na jednom dijagramu, zatim podjelu bez preglednog dijagrama i veze bez smjera; jedan nacrt imao je i sintaksnu grešku | Savjet asistentice o preglednosti, usporedba s uputama s predavanja i iscrtavanje na plantuml.com | Pregledni dijagram (Slika 3.1) i četiri usmjerena dijagrama (Slike 3.2 – 3.5) sa strelicama od aktivnih aktera; [3.1](3-Obrasci-uporabe.md) |
+| Dijagram razreda 4.3.2: razredi su bili podijeljeni u pakete po slojevima (aplikacijski, domenski, infrastruktura), što je otežavalo pregled | Savjet asistentice | Paketi uklonjeni, razredi složeni u retke i stupce, sadržaj isti; [`4-3-unideal-domain-CD.puml`](puml/4-3-unideal-domain-CD.puml) |
 | Karta za ručno označavanje lokacije nakon spremanja nove adrese zadržavala je staru oznaku | Ispitivanjem ST-4.6 | Karta se ponovno stvara kad se lokacija u bazi promijeni (PR #92) |
 | Nacrt analize zahtjeva sadržavao je izmišljene datume i sastanak s asistentom koji se nije dogodio | Pregledom nacrta | Datumi i sastanak uklonjeni |
 | Komponenta karte pozivala je setState izravno u efektu | `npm run lint` | Ispravljeno prije commita |
@@ -121,7 +124,9 @@ Stranice i artefakti koji nisu navedeni iznad izrađeni su bez pomoći generativ
 | Nacrti su sadržavali krive nazive ruta, tablica i stupaca te putanje datoteka i naredbe | Usporedbom s kodom i shemom baze u Supabaseu te pokretanjem naredbi | Ispravljeno prema kodu i shemi |
 | Nacrt ER dijagrama imao je krive kardinalnosti veza Profil – Partner, Partner – Pretplata, Kupon – Recenzija te Favorit i Pretplata na obavijesti | Usporedbom sa stranim ključevima i ograničenjima `unique` u migracijama | Ispravljeno: partner pripada najviše jednom profilu i ima najviše jednu pretplatu, kupon ima najviše jednu recenziju, a favorit i pretplata na obavijesti imaju zadan točno jedan od dvaju stranih ključeva |
 
-<!-- UPUTA: Zabilježite stvarne ispravke ili napišite „Nisu utvrđene”. Općenita tvrdnja poput „sav tekst je pregledan” nije dokaz; dokaz su prethodne tablice. Tim mora moći objasniti svaku rečenicu koju objavi. -->
+<!--| [Netočna, izmišljena ili iz predloška preuzeta tvrdnja] | [Pregled, ispitivanje ili usporedba s aplikacijom] | [Ispravak s poveznicom] |
+
+ UPUTA: Zabilježite stvarne ispravke ili napišite „Nisu utvrđene”. Općenita tvrdnja poput „sav tekst je pregledan” nije dokaz; dokaz su prethodne tablice. Tim mora moći objasniti svaku rečenicu koju objavi. 
 
 <details>
 <summary><strong>Primjer zapisa uporabe umjetne inteligencije</strong></summary>
@@ -141,3 +146,4 @@ Stranice i artefakti koji nisu navedeni iznad izrađeni su bez pomoći generativ
 **Analiza primjera:** Svaki redak navodi stranicu ili datoteku, ono što je alat generirao i ono što je tim promijenio. Pogreške su tipične za generiranu dokumentaciju: funkcionalnost koja ne postoji i tekst predloška prikazan kao činjenica o projektu. Tvrdnje poput „AI je korišten svugdje” ili „sav tekst je pregledan” nije moguće provjeriti. Ovo je nastavni scenarij, a ne opis objavljenog projekta.
 
 </details>
+-->
