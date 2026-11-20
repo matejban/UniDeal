@@ -76,18 +76,12 @@
 | Opis projekta, osnovna Next.js aplikacija, objektno orijentirana struktura i prijava Google računom | MB |  | `README.md`, `src/` |
 | Analiza zahtjeva | KB | 2 | `docs/2-Analiza-zahtjeva.md` |
 | Supabase projekt, prijava studenata Microsoft računom, prijava partnera e-mailom i profili s ulogom | MB |  | Zadaci [#1] i [#6] |
-| Upravljanje korisničkim računima i deaktivacija | FČ |  | Zadatak [#38], PR [#56] |
 | Članovi tima u README-u i dorada analize zahtjeva | KB | 1,5 | Zadatak [#45] |
 | Upravljanje korisničkim računima i deaktivacija | FČ | 8 | Zadatak [#38], PR [#56] |
-| Članovi tima u README-u i dorada analize zahtjeva | KB |  | Zadatak [#45] |
 | Shema baze i migracije, RLS po ulogama, Supabase repozitoriji, zaštita ruta po ulozi, uređivanje profila, CI i README | MB |  | Zadaci [#2]–[#5], [#7]–[#9] |
 | Registracija partnera s provjerom OIB-a | FL | 6 | Zadatak [#10], PR [#69] |
 | Generiranje kupona s jedinstvenim kodom i QR kodom | EB |  | Zadatak [#27] |
 | Odobravanje partnera u administraciji | FČ | 6 | Zadatak [#37], PR [#68] |
-| Javni profil partnera i uređivanje profila | FL |  | Zadatak [#11] |
-| Upload logotipa partnera u Supabase Storage | FL |  | Zadatak [#13] |
-| E-mail obavijesti preko Resenda | FL |  | Zadatak [#14] |
-| Odobravanje partnera u administraciji | FČ |  | Zadatak [#37], PR [#68] |
 | Javni profil partnera i uređivanje profila | FL | 2,5 | Zadatak [#11], PR [#70] |
 | Upload logotipa partnera u Supabase Storage | FL | 3,5 | Zadatak [#13], PR [#71] |
 | E-mail obavijesti preko Resenda i predlošci e-mailova Supabase Autha na hrvatskom | FL | 3 | Zadatak [#14], PR [#72] |
@@ -97,29 +91,18 @@
 | Obrasci uporabe, sljedivost i ispitivanje kupona | EB |  | Zadatak [#48]; UC-5.1 – UC-5.4, CT-5.1, CT-5.2, ST-5.1 – ST-5.4 |
 | Upravljanje kategorijama ponuda | FČ | 7 | Zadatak [#39], PR [#78] |
 | Statistika za administratora (u tijeku) | FČ | 7 | Zadatak [#42], PR [#79] (prikaz statistike bez prihoda od pretplata; prihod čeka #34) |
-| Izrada, uređivanje i brisanje ponude te dijagram razreda (4.3.2) | KD |  | Zadatak [#16] |
-| Upravljanje kategorijama ponuda | FČ |  | Zadatak [#39], PR [#78] |
-| Statistika za administratora (u tijeku) | FČ |  | Zadatak [#42] |
 | Izrada, uređivanje i brisanje ponude te dijagram razreda (4.3.2) | KD | 15 | Zadatak [#16] |
 | Sljedivost F-016 i opis načina rada u README-u | MB |  | `README.md`, `docs/2-Analiza-zahtjeva.md` |
 | Stripe Checkout za partnera | JČ | 8 | Zadatak [#33] |
-| Granice projekta (1.3) i dorada postojećih pristupa (1.4) | FČ |  | Zadatak [#47] |
 | Brisanje stare slike iz Storagea, ispravak RLS testa, ispitivanje CT-1.3 i ST-1.3 – ST-1.6, dorada obrazaca | MB |  | `docs/5-Ispitivanje.md` |
-| Ručno ispitivanje prijave Microsoft računom | FČ |  | Zadatak [#87]; ST-1.1, ST-1.2 |
 | Google Maps karta s oznakama partnera | KB | 4 | Zadatak [#23], PR [#91] |
 | Geokodiranje adrese partnera i ručno označavanje lokacije | KB | 3,5 | Zadatak [#24], PR [#92] |
-| Dokumentacija administratorskog područja | FČ |  | UC-7.1 – UC-7.4 |
-| Stripe Checkout za partnera | JČ |  | Zadatak [#33] |
 | Granice projekta (1.3) i dorada postojećih pristupa (1.4) | FČ | 1,5 | Zadatak [#47] |
-| Brisanje stare slike iz Storagea, ispravak RLS testa, ispitivanje CT-1.3 i ST-1.3 – ST-1.6, dorada obrazaca | MB |  | `docs/5-Ispitivanje.md` |
 | Ručno ispitivanje prijave Microsoft računom | FČ | 1,5 | Zadatak [#87]; ST-1.1, ST-1.2 |
-| Google Maps karta s oznakama partnera | KB |  | Zadatak [#23] |
-| Geokodiranje adrese partnera i ručno označavanje lokacije | KB |  | Zadatak [#24] |
 | Obrasci uporabe administratorskog područja | FČ | 7 | UC-7.1 – UC-7.4; PR [#93] |
 | Pregled aktivnosti grupe: A.1 Evidencija sastanaka, A.2 Plan rada i A.3 Aktivnosti i doprinosi članova | FČ | 3 | `docs/A-Pregled-aktivnosti-grupe.md`; PR [#96] |
 | Ispitni slučajevi s ručnim ispitivanjem na produkciji, sljedivost zahtjeva F-025 – F-031, 6.3, 7.2 i A.5 | FČ | 6 | CT-7.1 – CT-7.4, ST-7.1 – ST-7.5; PR [#103] |
 | Dijagram razreda za kupone: `Coupon`, `CouponService` i `CouponRepository` | EB |  | PR [#95]; `docs/puml/4-3-unideal-domain-CD.puml` |
-| Dokumentacija pretplate: obrasci uporabe, sljedivost i ispitivanje | JČ |  | PR [#94]; UC-6.1, UC-6.2, CT-6.1 – CT-6.3, ST-6.1 – ST-6.4 |
 | Obrasci uporabe područja 4 (pretraga, karta i favoriti) | KB | 1 | Zadatak [#48], PR [#100]; UC-4.1 – UC-4.4 |
 | Sljedivost i ispitivanje područja 4 | KB | 2 | PR [#100]; CT-4.1 – CT-4.4, ST-4.1 – ST-4.9 |
 | Ključne arhitekturne odluke (4.1) | KB | 1,5 | Zadatak [#84], PR [#109] |
@@ -153,7 +136,6 @@
 [#92]: https://github.com/matejban/UniDeal/pull/92
 [#100]: https://github.com/matejban/UniDeal/pull/100
 [#109]: https://github.com/matejban/UniDeal/pull/109
-[#50]: https://github.com/matejban/UniDeal/issues/50
 [#101]: https://github.com/matejban/UniDeal/pull/101
 [#104]: https://github.com/matejban/UniDeal/pull/104
 [#103]: https://github.com/matejban/UniDeal/pull/103
