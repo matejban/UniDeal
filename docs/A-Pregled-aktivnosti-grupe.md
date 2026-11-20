@@ -81,12 +81,16 @@
 | Upravljanje korisničkim računima i deaktivacija | FČ | 8 | Zadatak [#38], PR [#56] |
 | Članovi tima u README-u i dorada analize zahtjeva | KB |  | Zadatak [#45] |
 | Shema baze i migracije, RLS po ulogama, Supabase repozitoriji, zaštita ruta po ulozi, uređivanje profila, CI i README | MB |  | Zadaci [#2]–[#5], [#7]–[#9] |
-| Registracija partnera s provjerom OIB-a | FL |  | Zadatak [#10] |
+| Registracija partnera s provjerom OIB-a | FL | 6 | Zadatak [#10], PR [#69] |
 | Generiranje kupona s jedinstvenim kodom i QR kodom | EB |  | Zadatak [#27] |
 | Odobravanje partnera u administraciji | FČ | 6 | Zadatak [#37], PR [#68] |
 | Javni profil partnera i uređivanje profila | FL |  | Zadatak [#11] |
 | Upload logotipa partnera u Supabase Storage | FL |  | Zadatak [#13] |
 | E-mail obavijesti preko Resenda | FL |  | Zadatak [#14] |
+| Odobravanje partnera u administraciji | FČ |  | Zadatak [#37], PR [#68] |
+| Javni profil partnera i uređivanje profila | FL | 2,5 | Zadatak [#11], PR [#70] |
+| Upload logotipa partnera u Supabase Storage | FL | 3,5 | Zadatak [#13], PR [#71] |
+| E-mail obavijesti preko Resenda i predlošci e-mailova Supabase Autha na hrvatskom | FL | 3 | Zadatak [#14], PR [#72] |
 | Ograničenje korištenja kupona (jednom po studentu) | EB |  | Zadatak [#29] |
 | Stripe klijent i cijene mjesečne i godišnje pretplate | JČ | 3 | Zadatak [#32] |
 | Dokumentacija i testovi temelja i autentifikacije | MB |  | UC-1.1 – UC-1.4, CT-1.x, ST-1.x |
@@ -123,6 +127,8 @@
 | Dokumentacija pretplate: obrasci uporabe, sljedivost i ispitivanje | JČ | 3 | PR [#94]; UC-6.1, UC-6.2, CT-6.1 – CT-6.3, ST-6.1 – ST-6.4 |
 | Ručno ispitivanje pretplate i upis rezultata | JČ | 2 | PR [#101]; ST-6.1 – ST-6.4 |
 | Evidencija sastanaka (A.1), pregled promjena u repozitoriju (A.4) i izjava o uporabi umjetne inteligencije za područje 6 | JČ | 2 | Zadatak [#50], PR [#104] |
+| Obrasci uporabe i sljedivost područja partnera | FL | 1,5 | PR [#99]; UC-2.1 – UC-2.4 |
+| Ispitni slučajevi područja partnera | FL | 1 | PR [#106]; CT-2.1 – CT-2.3, ST-2.1 – ST-2.6 |
 
 [#2]: https://github.com/matejban/UniDeal/issues/2
 [#5]: https://github.com/matejban/UniDeal/issues/5
@@ -153,6 +159,12 @@
 [#103]: https://github.com/matejban/UniDeal/pull/103
 [#93]: https://github.com/matejban/UniDeal/pull/93
 [#96]: https://github.com/matejban/UniDeal/pull/96
+[#69]: https://github.com/matejban/UniDeal/pull/69
+[#70]: https://github.com/matejban/UniDeal/pull/70
+[#71]: https://github.com/matejban/UniDeal/pull/71
+[#72]: https://github.com/matejban/UniDeal/pull/72
+[#99]: https://github.com/matejban/UniDeal/pull/99
+[#106]: https://github.com/matejban/UniDeal/pull/106
 
 ## A.4 Pregled promjena u repozitoriju
 
