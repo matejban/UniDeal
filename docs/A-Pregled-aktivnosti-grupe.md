@@ -12,6 +12,8 @@
 | --- | --- | --- | --- |
 | 12. 10. 2026.; MB, KB, EB, JČ, FČ | Upoznavanje tima, odabir teme i tehnologija | Tim je odabrao vlastitu temu, platformu studentskih popusta UniDeal, i dogovorio tehnologije (Next.js, Supabase, Vercel). Na sastanku je započet opis ideje; MB i EB su ga dovršili i poslali asistentici na pregled. | [1. Opseg projekta](1-Projekt.md) |
 | 26. 10. 2026.; MB, FL, KD, KB, EB, JČ, FČ | Podjela rada po područjima | Svaki član radi kao fullstack i preuzima jedno područje: MB temelje, bazu i prijavu; FL partnere i obavijesti; KD ponude i statistiku; KB pretragu, kartu i favorite; EB kupone, QR i recenzije; JČ plaćanje i pretplate; FČ administraciju i izvještaje. Tim je zajedno napravio plan rada po područjima, a MB je kao vlasnik repozitorija otvorio issue za svaku funkcionalnost. | [GitHub Issues](https://github.com/matejban/UniDeal/issues), s oznakom područja (npr. `podrucje-3-ponude`) |
+| 11. 11. 2026. (online poziv); MB, FL, KD, KB, EB, JČ, FČ | Provjera napretka po područjima | Svaki član je javio dokle je stigao sa svojim zadacima; tim je provjerio ide li rad prema planu i međusobno se posavjetovao oko otvorenih problema. | [GitHub Issues](https://github.com/matejban/UniDeal/issues) |
+| 16. 11. 2026.; MB, FL, KD, KB, EB, JČ, FČ | Stanje koda i plan do predaje | Pregledano je dokle je tko stigao s kodom. Dogovoreno je da se do predaje ne otvaraju novi zadaci i da je fokus dovršetak dokumentacije. | [Dokumentacija](Home.md) |
 
 ## A.2 Plan rada
 
@@ -68,42 +70,48 @@
 
 | Aktivnost ili rezultat | Član | Prijavljeni sati | Reprezentativni rezultat ili poveznica |
 | --- | --- | --- | --- |
-| Otvaranje repozitorija | FČ |  | Početni commit repozitorija |
+| Otvaranje repozitorija | FČ | 1 | Početni commit repozitorija |
 | Struktura projekta prema predlošku kolegija | EB |  | Direktoriji `docs/`, `tests/`, `db/`, `build/` |
-| Odjeljak 1.4 Postojeći pristupi | FČ |  | `docs/1-Projekt.md` |
+| Odjeljak 1.4 Postojeći pristupi | FČ | 2 | `docs/1-Projekt.md` |
 | Opis projekta, osnovna Next.js aplikacija, objektno orijentirana struktura i prijava Google računom | MB |  | `README.md`, `src/` |
 | Analiza zahtjeva | KB | 2 | `docs/2-Analiza-zahtjeva.md` |
 | Supabase projekt, prijava studenata Microsoft računom, prijava partnera e-mailom i profili s ulogom | MB |  | Zadaci [#1] i [#6] |
-| Upravljanje korisničkim računima i deaktivacija | FČ |  | Zadatak [#38], PR [#56] |
 | Članovi tima u README-u i dorada analize zahtjeva | KB | 1,5 | Zadatak [#45] |
+| Upravljanje korisničkim računima i deaktivacija | FČ | 8 | Zadatak [#38], PR [#56] |
 | Shema baze i migracije, RLS po ulogama, Supabase repozitoriji, zaštita ruta po ulozi, uređivanje profila, CI i README | MB |  | Zadaci [#2]–[#5], [#7]–[#9] |
-| Registracija partnera s provjerom OIB-a | FL |  | Zadatak [#10] |
+| Registracija partnera s provjerom OIB-a | FL | 6 | Zadatak [#10], PR [#69] |
 | Generiranje kupona s jedinstvenim kodom i QR kodom | EB |  | Zadatak [#27] |
-| Odobravanje partnera u administraciji | FČ |  | Zadatak [#37], PR [#68] |
-| Javni profil partnera i uređivanje profila | FL |  | Zadatak [#11] |
-| Upload logotipa partnera u Supabase Storage | FL |  | Zadatak [#13] |
-| E-mail obavijesti preko Resenda | FL |  | Zadatak [#14] |
+| Odobravanje partnera u administraciji | FČ | 6 | Zadatak [#37], PR [#68] |
+| Javni profil partnera i uređivanje profila | FL | 2,5 | Zadatak [#11], PR [#70] |
+| Upload logotipa partnera u Supabase Storage | FL | 3,5 | Zadatak [#13], PR [#71] |
+| E-mail obavijesti preko Resenda i predlošci e-mailova Supabase Autha na hrvatskom | FL | 3 | Zadatak [#14], PR [#72] |
 | Ograničenje korištenja kupona (jednom po studentu) | EB |  | Zadatak [#29] |
-| Stripe klijent i cijene mjesečne i godišnje pretplate | JČ |  | Zadatak [#32] |
+| Stripe klijent i cijene mjesečne i godišnje pretplate | JČ | 3 | Zadatak [#32] |
 | Dokumentacija i testovi temelja i autentifikacije | MB |  | UC-1.1 – UC-1.4, CT-1.x, ST-1.x |
 | Obrasci uporabe, sljedivost i ispitivanje kupona | EB |  | Zadatak [#48]; UC-5.1 – UC-5.4, CT-5.1, CT-5.2, ST-5.1 – ST-5.4 |
-| Upravljanje kategorijama ponuda | FČ |  | Zadatak [#39], PR [#78] |
-| Statistika za administratora (u tijeku) | FČ |  | Zadatak [#42] |
-| Izrada, uređivanje i brisanje ponude te dijagram razreda (4.3.2) | KD |  | Zadatak [#16] |
+| Upravljanje kategorijama ponuda | FČ | 7 | Zadatak [#39], PR [#78] |
+| Statistika za administratora (u tijeku) | FČ | 7 | Zadatak [#42], PR [#79] (prikaz statistike bez prihoda od pretplata; prihod čeka #34) |
+| Izrada, uređivanje i brisanje ponude te dijagram razreda (4.3.2) | KD | 15 | Zadatak [#16] |
 | Sljedivost F-016 i opis načina rada u README-u | MB |  | `README.md`, `docs/2-Analiza-zahtjeva.md` |
-| Stripe Checkout za partnera | JČ |  | Zadatak [#33] |
-| Granice projekta (1.3) i dorada postojećih pristupa (1.4) | FČ |  | Zadatak [#47] |
+| Stripe Checkout za partnera | JČ | 8 | Zadatak [#33] |
 | Brisanje stare slike iz Storagea, ispravak RLS testa, ispitivanje CT-1.3 i ST-1.3 – ST-1.6, dorada obrazaca | MB |  | `docs/5-Ispitivanje.md` |
-| Ručno ispitivanje prijave Microsoft računom | FČ |  | Zadatak [#87]; ST-1.1, ST-1.2 |
 | Google Maps karta s oznakama partnera | KB | 4 | Zadatak [#23], PR [#91] |
 | Geokodiranje adrese partnera i ručno označavanje lokacije | KB | 3,5 | Zadatak [#24], PR [#92] |
-| Dokumentacija administratorskog područja | FČ |  | UC-7.1 – UC-7.4 |
+| Granice projekta (1.3) i dorada postojećih pristupa (1.4) | FČ | 1,5 | Zadatak [#47] |
+| Ručno ispitivanje prijave Microsoft računom | FČ | 1,5 | Zadatak [#87]; ST-1.1, ST-1.2 |
+| Obrasci uporabe administratorskog područja | FČ | 7 | UC-7.1 – UC-7.4; PR [#93] |
+| Pregled aktivnosti grupe: A.1 Evidencija sastanaka, A.2 Plan rada i A.3 Aktivnosti i doprinosi članova | FČ | 3 | `docs/A-Pregled-aktivnosti-grupe.md`; PR [#96] |
+| Ispitni slučajevi s ručnim ispitivanjem na produkciji, sljedivost zahtjeva F-025 – F-031, 6.3, 7.2 i A.5 | FČ | 6 | CT-7.1 – CT-7.4, ST-7.1 – ST-7.5; PR [#103] |
 | Dijagram razreda za kupone: `Coupon`, `CouponService` i `CouponRepository` | EB |  | PR [#95]; `docs/puml/4-3-unideal-domain-CD.puml` |
-| Dokumentacija pretplate: obrasci uporabe, sljedivost i ispitivanje | JČ |  | PR [#94]; UC-6.1, UC-6.2, CT-6.1 – CT-6.3, ST-6.1 – ST-6.4 |
 | Obrasci uporabe područja 4 (pretraga, karta i favoriti) | KB | 1 | Zadatak [#48], PR [#100]; UC-4.1 – UC-4.4 |
 | Sljedivost i ispitivanje područja 4 | KB | 2 | PR [#100]; CT-4.1 – CT-4.4, ST-4.1 – ST-4.9 |
 | Ključne arhitekturne odluke (4.1) | KB | 1,5 | Zadatak [#84], PR [#109] |
 | Izjava o uporabi umjetne inteligencije za područje 4 i sati u A.3 | KB | 1 | Zadatak [#51] |
+| Dokumentacija pretplate: obrasci uporabe, sljedivost i ispitivanje | JČ | 3 | PR [#94]; UC-6.1, UC-6.2, CT-6.1 – CT-6.3, ST-6.1 – ST-6.4 |
+| Ručno ispitivanje pretplate i upis rezultata | JČ | 2 | PR [#101]; ST-6.1 – ST-6.4 |
+| Evidencija sastanaka (A.1), pregled promjena u repozitoriju (A.4) i izjava o uporabi umjetne inteligencije za područje 6 | JČ | 2 | Zadatak [#50], PR [#104] |
+| Obrasci uporabe i sljedivost područja partnera | FL | 1,5 | PR [#99]; UC-2.1 – UC-2.4 |
+| Ispitni slučajevi područja partnera | FL | 1 | PR [#106]; CT-2.1 – CT-2.3, ST-2.1 – ST-2.6 |
 
 [#2]: https://github.com/matejban/UniDeal/issues/2
 [#5]: https://github.com/matejban/UniDeal/issues/5
@@ -121,20 +129,34 @@
 [#56]: https://github.com/matejban/UniDeal/pull/56
 [#68]: https://github.com/matejban/UniDeal/pull/68
 [#78]: https://github.com/matejban/UniDeal/pull/78
+[#79]: https://github.com/matejban/UniDeal/pull/79
 [#94]: https://github.com/matejban/UniDeal/pull/94
 [#95]: https://github.com/matejban/UniDeal/pull/95
 [#91]: https://github.com/matejban/UniDeal/pull/91
 [#92]: https://github.com/matejban/UniDeal/pull/92
 [#100]: https://github.com/matejban/UniDeal/pull/100
 [#109]: https://github.com/matejban/UniDeal/pull/109
+[#101]: https://github.com/matejban/UniDeal/pull/101
+[#104]: https://github.com/matejban/UniDeal/pull/104
+[#103]: https://github.com/matejban/UniDeal/pull/103
+[#93]: https://github.com/matejban/UniDeal/pull/93
+[#96]: https://github.com/matejban/UniDeal/pull/96
+[#69]: https://github.com/matejban/UniDeal/pull/69
+[#70]: https://github.com/matejban/UniDeal/pull/70
+[#71]: https://github.com/matejban/UniDeal/pull/71
+[#72]: https://github.com/matejban/UniDeal/pull/72
+[#99]: https://github.com/matejban/UniDeal/pull/99
+[#106]: https://github.com/matejban/UniDeal/pull/106
 
 ## A.4 Pregled promjena u repozitoriju
 
 **Cilj:** Prikazati kada su promjene napravljene u repozitoriju i tko ih je napravio, uz napomenu da sam broj zapisa promjena ne mjeri kvalitetu doprinosa.
 
-**Prikaz aktivnosti repozitorija:** [Ugradite ili povežite GitHubov prikaz `Contributors` i generirani graf za projektni repozitorij; navedite razdoblje koje obuhvaća.]
+**Prikaz aktivnosti repozitorija:** GitHubov prikaz [Contributors](https://github.com/matejban/UniDeal/graphs/contributors), snimljen 19. 11. 2026. Prikazuje tjedni broj commitova u granu `master` bez merge commitova, od početka rada u listopadu do tjedna 16. 11. 2026. (na GitHubu razdoblje „Last 3 months”; prije listopada nema aktivnosti).
 
-Graf može pokazati kada su zapisi promjena napravljeni i tko ih je napravio, ali ne prikazuje sav rad na oblikovanju, ispitivanju, integraciji, pregledu ili dokumentaciji. Ako postoji uočljiv nesklad s tablicom aktivnosti, kratko ga objasnite; nemojte iz grafa izvoditi broj sati. Generirani prikaz neka bude vezan uz stvarni repozitorij umjesto da se ručno crta drugi graf.
+![GitHub Contributors za matejban/UniDeal, stanje 19. 11. 2026.](assets/screenshots/a4-github-contributors-2026-11-19.png)
+
+Graf broji samo commitove, pa ne prikazuje pregled i spajanje pull requestova (MB pregledava i spaja PR-ove, a merge commitovi se ne broje), sastanke ni ručno ispitivanje. Broj commitova ovisi i o načinu rada: neki članovi zadatak predaju jednim commitom, a drugi s više manjih, pa iz grafa nije moguće izvesti uloženi trud. `github-actions[bot]` je automatski posao koji iz PlantUML izvora ponovno iscrtava dijagrame, a `brrrkic` je drugi GitHub račun Karla Brkića (KB) s kojim je 27. 10. predan jedan commit analize zahtjeva.
 
 ## A.5 Ključni inženjerski izazovi i rješenja
 
