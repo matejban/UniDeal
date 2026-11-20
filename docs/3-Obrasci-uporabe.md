@@ -212,6 +212,8 @@ _Trenutačno oblikovanje: favoriti (#26) još nisu ostvareni. Tablica `favorites
 
 ### UC-5.2: Potvrda korištenja kupona
 
+_Trenutačno oblikovanje: potvrda kupona (#28) još nije ostvarena._
+
 | Element specifikacije             | Opis |
 | :-------------------------------- | :--- |
 | **Primarni akter**                | A-03 Partner |
@@ -223,6 +225,8 @@ _Trenutačno oblikovanje: favoriti (#26) još nisu ostvareni. Tablica `favorites
 
 ### UC-5.3: Pregled povijesti kupona
 
+_Trenutačno oblikovanje: povijest kupona (#30) još nije ostvarena._
+
 | Element specifikacije             | Opis |
 | :-------------------------------- | :--- |
 | **Primarni akter**                | A-02 Student |
@@ -233,6 +237,8 @@ _Trenutačno oblikovanje: favoriti (#26) još nisu ostvareni. Tablica `favorites
 | **Posljedice (ishod)**            | Nema promjene podataka. |
 
 ### UC-5.4: Ocjenjivanje partnera
+
+_Trenutačno oblikovanje: recenzije (#31) još nisu ostvarene; tablica `reviews` već postoji u bazi._
 
 | Element specifikacije             | Opis |
 | :-------------------------------- | :--- |

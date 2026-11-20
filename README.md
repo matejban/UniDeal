@@ -13,7 +13,7 @@ Aplikacija je u izradi. Označene funkcionalnosti već rade na javnoj adresi, a 
 **Ključne funkcionalnosti**
 
 - [x] Prijava studenata računom visokog učilišta (Microsoft), čime je potvrđen status studenta, a partnera Google računom ili e-mailom
-- [x] Pretraga ponuda prema kategoriji, gradu, visini popusta i roku trajanja te prikaz partnera na interaktivnoj karti
+- [x] Pretraga ponuda prema kategoriji i gradu te prikaz partnera na interaktivnoj karti; filtri po visini popusta i roku trajanja tek trebaju biti ostvareni
 - [x] Digitalni kupon s jedinstvenim kodom i QR kodom; potvrdu kupona kod partnera tek treba ostvariti
 - [ ] Ocjene i recenzije koje može ostaviti samo student koji je ponudu stvarno iskoristio
 - [x] Plaćanje pretplate partnera (Stripe); automatsko aktiviranje pretplate nakon plaćanja tek treba ostvariti
