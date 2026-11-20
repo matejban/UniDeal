@@ -14,7 +14,7 @@
 
 ---
 
-Za svaki UML dijagram čuvajte čitljivu sliku i PlantUML izvor, kako je opisano na stranici [Home](./Home.md). U dovršenoj stranici koristite vlastite projektne odluke i modele.
+<!--Za svaki UML dijagram čuvajte čitljivu sliku i PlantUML izvor, kako je opisano na stranici [Home](./Home.md). U dovršenoj stranici koristite vlastite projektne odluke i modele.-->
 
 ## 4.1 Ključne arhitekturne odluke
 
@@ -27,21 +27,6 @@ Za svaki UML dijagram čuvajte čitljivu sliku i PlantUML izvor, kako je opisano
 | Studenti se prijavljuju studentskim Microsoft računom, a domena adrese potvrđuje status studenta (F-002) | Potvrda studentske e-mail adrese poveznicom (izvorni F-003, vidi 2.5); prijava putem AAI@EduHr | Studentske adrese hrvatskih visokih učilišta uglavnom su Microsoft računi, pa prijava ujedno dokazuje da student ima tu adresu, bez zasebne poveznice; `/auth/callback` domenu provjerava prema tablici `allowed_student_domains`. AAI@EduHr bi razlikovao studente od djelatnika, ali traži registraciju aplikacije kod ustanove ili Srca, pa je odgođen (7.3). **Kompromis:** domena ne razlikuje studenta od djelatnika iste ustanove (AS-01), pa student uz kupon pokazuje X-icu (F-032); student učilišta bez Microsoft računa ne može se prijaviti kao student. |
 | Pretplata se plaća na Stripeovoj stranici (Stripe Checkout) | Vlastiti obrazac za unos kartice u aplikaciji (npr. Stripe Elements) | Podaci kartice ne prolaze kroz aplikaciju (NF-05), pa ih ona ne obrađuje ni ne pohranjuje. Stripe je iza sučelja `PaymentGateway`, pa se pravila pretplate ispituju bez Stripea, a demonstracija koristi Stripeov testni način (C-02). **Kompromis:** partner tijekom plaćanja napušta aplikaciju, a pretplata postaje aktivna tek kad stigne Stripeova obavijest (webhook, UC-6.2), koja još nije ostvarena (#34). |
 
-Objasnite glavne arhitekturne odluke bez ponavljanja popisa tehnologija. Ako važna odluka ima ADR, dovoljno je u tablici navesti njegov ID.
-
-<details>
-<summary><strong>Primjer arhitekturnih odluka i kompromisa</strong></summary>
-
-**Primjer — CrisisMap:**
-
-| Odluka | Razmatrana alternativa | Projektno specifično obrazloženje i kompromis |
-| --- | --- | --- |
-| Klijent u pregledniku i jedan poslužiteljski API | Više zasebno postavljenih poslužiteljskih usluga | Klijent prikazuje kartu, dok poslužiteljski sustav provjerava i pohranjuje prijave. Jedan poslužiteljski sustav upravljiv je za ovaj opseg; njegov kvar može privremeno prekinuti rad s prijavama. Obrazloženje je u ADR-01. |
-| Relacijska pohrana prijava | Dokumentno orijentirana pohrana | Prijave imaju prepoznatljive veze s korisnicima i lokacijama. Relacijska shema te veze čini eksplicitnima, ali zahtijeva migracije kada se shema promijeni. |
-
-**Analiza primjera:** Obje odluke navode razlog vezan uz aplikaciju za prijavljivanje kriznih događaja i priznaju kompromis. Odluka o poslužiteljskom sustavu upućuje na ADR-01 umjesto ponavljanja cijele usporedbe. Moduli unutar jedne aplikacije koja se postavlja kao cjelina nisu zasebne mikrousluge. U vlastitoj tablici navedite alternative koje je tim doista razmatrao.
-
-</details>
 
 ## 4.2 Gradivni blokovi i UML dijagram komponenata
 
